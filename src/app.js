@@ -14,9 +14,9 @@ app.get('/products', async (req, res) => {
     const products = await pm.getProducts()
 
     if (!limit || limit < 0) {
-        res.send({ products })
+        res.json({ products })
     } else {
-        res.send({ products: products.slice(0, limit) })
+        res.json({ products: products.slice(0, limit) })
     }
 })
 
@@ -25,10 +25,10 @@ app.get('/products/:pid', async (req, res) => {
 
     try {
         const product = await pm.getProductById(pid)
-        res.send({ product })
+        res.json({ product })
     } catch (error) {
         res.status(400)
-        res.send({ error: "Product not found"})
+        res.json({ error: "Product not found"})
     }
 })
 
