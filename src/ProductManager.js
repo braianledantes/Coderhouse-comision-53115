@@ -56,20 +56,21 @@ class ProductManager {
     }
 
     async addProduct({
+        code,
         title,
         description,
-        price,
         thumbnail,
-        code,
-        stock
+        stock,
+        price
     }) {
         const newProduct = {
+            id: this.#getNewId(),
+            code,
             title,
             description,
-            price,
             thumbnail,
-            code,
-            stock
+            stock,
+            price
         }
         this.#validateProductFields(newProduct)
 
@@ -77,8 +78,6 @@ class ProductManager {
             throw new Error(`Product with code ${code} already exists`)
         }
 
-        
-        newProduct.id = this.#getNewId()
         this.#products.push(newProduct)
 
         await this.#saveProductsFile()
@@ -91,37 +90,29 @@ class ProductManager {
     async getProductById(id) {
         const product = this.#products.find(p => p.id === id)
         if (!product) {
-            throw new Error("Product with id ${id} not found")
+            throw new Error(`Product with id ${id} not found`)
         }
         return product
     }
-    
-    async updateProduct({
+
+    async updateProduct(updatedProduct = {
         id,
+        code,
         title,
         description,
-        price,
         thumbnail,
-        code,
-        stock
+        stock,
+        price
     }) {
-        this.#validateProductFields(newProduct)        
-        
-        const productIndex = this.#products.findIndex(p => p.id === id)
-        
+        this.#validateProductFields(updatedProduct)
+
+        const productIndex = this.#products.findIndex(p => p.id === updatedProduct.id)
+
         if (productIndex < 0) {
-            throw new Error("Product with id ${id} not found")
+            throw new Error(`Product with id ${updatedProduct.id} not found`)
         }
 
-        this.#products[productIndex] = {
-            id,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock
-        }
+        this.#products[productIndex] = updatedProduct
 
         await this.#saveProductsFile()
     }
@@ -129,11 +120,13 @@ class ProductManager {
     async deleteProduct(id) {
         const i = this.#products.findIndex(p => p.id === id)
 
-        if (i >= 0) {
-            this.#products.splice(i, 1)
-
-            await this.#saveProductsFile()
+        if (i === -1) {
+            throw new Error(`Product with id ${id} not found`)
         }
+
+        this.#products.splice(i, 1)
+        
+        await this.#saveProductsFile()
     }
 }
 
