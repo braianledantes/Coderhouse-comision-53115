@@ -11,13 +11,12 @@ app.use(express.urlencoded({ extended: true }))
 app.get('/products', async (req, res) => {
     const limit = Number.parseInt(req.query.limit)
 
-    const products = await pm.getProducts()
+    let products = await pm.getProducts()
 
-    if (!limit || limit < 0) {
-        res.json({ products })
-    } else {
-        res.json({ products: products.slice(0, limit) })
+    if (limit && limit >= 0) {
+        products = products.slice(0, limit)
     }
+    res.json({ products })
 })
 
 app.get('/products/:pid', async (req, res) => {
@@ -28,7 +27,7 @@ app.get('/products/:pid', async (req, res) => {
         res.json({ product })
     } catch (error) {
         res.status(400)
-        res.json({ error: "Product not found"})
+        res.json({ error: "Product not found" })
     }
 })
 
