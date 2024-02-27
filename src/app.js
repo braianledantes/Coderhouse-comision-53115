@@ -50,6 +50,17 @@ app.post('/products', async (req, res) => {
     }
 })
 
+app.put('/products', async (req, res) => {
+    const product = req.body
+    try {
+        const productUpdated = await pm.updateProduct(product)
+        res.json({ product: productUpdated })
+    } catch (error) {
+        res.status(400)
+        res.json({ error: error.message })
+    }
+})
+
 app.listen(PORT, async () => {
     await pm.initialize()
     console.log(`App listening on port ${PORT}`);

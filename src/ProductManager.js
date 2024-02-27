@@ -116,6 +116,7 @@ class ProductManager {
         this.#products[productIndex] = updatedProduct
 
         await this.#saveProductsFile()
+        return updatedProduct
     }
 
     async deleteProduct(id) {

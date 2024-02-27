@@ -22,3 +22,17 @@ Content-Type: application/json
     "price": 10,
     "stock": 0
 }
+
+### Create a product
+PUT  http://localhost:8080/products
+Content-Type: application/json
+
+{
+    "id": 2,
+    "code": "2123",
+    "title": "mi nuevo titulo",
+    "description": "ahora tiene una descripcion",
+    "thumbnail": "nada",
+    "price": 10,
+    "stock": 0
+}
