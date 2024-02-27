@@ -23,11 +23,17 @@ app.get('/products', async (req, res) => {
 app.get('/products/:pid', async (req, res) => {
     const pid = Number.parseInt(req.params.pid)
 
+    if (Number.isNaN(pid)) {
+        res.status(400)
+        res.json({ error: "Invalid Product ID" })
+        return
+    }
+
     try {
         const product = await pm.getProductById(pid)
         res.json({ product })
     } catch (error) {
-        res.status(400)
+        res.status(404)
         res.json({ error: "Product not found" })
     }
 })
