@@ -81,6 +81,7 @@ class ProductManager {
         this.#products.push(newProduct)
 
         await this.#saveProductsFile()
+        return newProduct
     }
 
     async getProducts() {
