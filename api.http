@@ -69,13 +69,13 @@ Content-Type: application/json
 }
 
 ### Delete a product
-DELETE  http://localhost:8080/api/products/1
+DELETE  http://localhost:8080/api/products/2
 
 ### Create a cart
 POST  http://localhost:8080/api/carts
 
 ### Add product to cart
-POST  http://localhost:8080/api/carts/1/product/2
+POST  http://localhost:8080/api/carts/2/product/1
 
 ### Get cart products
 GET http://localhost:8080/api/carts/1
