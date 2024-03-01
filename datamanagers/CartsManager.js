@@ -3,22 +3,14 @@ const fs = require('node:fs/promises')
 
 class CartsManager {
     #path
-    #carts
 
     constructor(path) {
         this.#path = path
     }
 
-    /**
-     * This method initialize the carts array from file with the path property.
-     */
-    async initialize() {
-        this.#carts = await this.#getCartsFromFile()
-    }
-
-    #getNewId() {
-        if (this.#carts.length > 0) {
-            return this.#carts[this.#carts.length - 1].id + 1
+    #getNewId(carts) {
+        if (carts.length > 0) {
+            return carts[carts.length - 1].id + 1
         } else {
             return 1
         }
@@ -32,29 +24,31 @@ class CartsManager {
         }
     }
 
-    async #saveCartsFile() {
-        const data = JSON.stringify(this.#carts, null, 4)
+    async #saveCartsFile(carts) {
+        const data = JSON.stringify(carts, null, 4)
         await fs.writeFile(this.#path, data)
     }
 
     async addCart({ products }) {
+        const carts = await this.#getCartsFromFile()
         const newCart = {
-            id: this.#getNewId(),
+            id: this.#getNewId(carts),
             products
         }
 
-        this.#carts.push(newCart)
+        carts.push(newCart)
 
-        await this.#saveCartsFile()
+        await this.#saveCartsFile(carts)
         return newCart
     }
 
     async getCarts() {
-        return this.#carts
+        return await this.#getCartsFromFile()
     }
 
     async getCartById(id) {
-        const cart = this.#carts.find(c => c.id == id)
+        const carts = await this.#getCartsFromFile()
+        const cart = carts.find(c => c.id == id)
         if (!cart) {
             throw new Error(`Cart with id ${id} not found`)
         }
@@ -62,29 +56,31 @@ class CartsManager {
     }
 
     async updateCart(id, data) {
-        const index = this.#carts.findIndex(c => c.id == id)
+        const carts = await this.#getCartsFromFile()
+        const index = carts.findIndex(c => c.id == id)
 
         if (index < 0) {
             throw new Error(`Cart with id ${id} not found`)
         }
-        const updatedCart = { ...this.#carts[index], ...data }
+        const updatedCart = { ...carts[index], ...data }
 
-        this.#carts[index] = updatedCart
+        carts[index] = updatedCart
 
-        await this.#saveCartsFile()
+        await this.#saveCartsFile(carts)
         return updatedCart
     }
 
     async deleteCart(id) {
-        const i = this.#carts.findIndex(c => c.id == id)
+        const carts = await this.#getCartsFromFile()
+        const i = carts.findIndex(c => c.id == id)
 
         if (i === -1) {
             throw new Error(`Cart with id ${id} not found`)
         }
 
-        this.#carts.splice(i, 1)
+        carts.splice(i, 1)
 
-        await this.#saveCartsFile()
+        await this.#saveCartsFile(carts)
     }
 }
 

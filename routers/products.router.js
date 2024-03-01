@@ -2,11 +2,7 @@ const { Router } = require('express')
 const { validatePartialProduct, validateProduct } = require('../schemas/products.schema.js')
 const ProductManager = require('../datamanagers/ProductManager.js')
 
-const pm = new ProductManager('./assets/productos.json');
-
-(async () => {
-    await pm.initialize()
-})()
+const pm = new ProductManager('./assets/productos.json')
 
 const router = Router()
 

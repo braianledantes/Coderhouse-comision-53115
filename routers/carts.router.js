@@ -3,11 +3,7 @@ const CartsManager = require('../datamanagers/CartsManager.js')
 const ProductManager = require('../datamanagers/ProductManager.js')
 
 const cm = new CartsManager('./assets/corritos.json')
-const pm = new ProductManager('./assets/productos.json');
-
-(async () => {
-    await Promise.all([cm.initialize(), pm.initialize()])
-})()
+const pm = new ProductManager('./assets/productos.json')
 
 const router = Router()
 
