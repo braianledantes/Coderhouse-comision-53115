@@ -1,16 +1,18 @@
 const express = require('express')
 const morgan = require('morgan')
 const products = require('./routers/products.router')
+const carts = require('./routers/carts.router')
 
 const app = express()
 const PORT = 8080
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(morgan())
+app.use(morgan('tiny'))
 
 app.use(express.static('public'))
 app.use('/api/products', products)
+app.use('/api/carts', carts)
 
 
 app.listen(PORT, () => {
