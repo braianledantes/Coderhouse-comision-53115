@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const { validatePartialProduct, validateProduct } = require('../schemas/products.schema.js')
 const ProductManager = require('../datamanagers/ProductManager.js')
 
 const pm = new ProductManager('./assets/products.json');
@@ -21,13 +22,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:pid', async (req, res) => {
-    const pid = Number.parseInt(req.params.pid)
-
-    if (Number.isNaN(pid)) {
-        res.status(400)
-        res.json({ error: "Invalid Product ID" })
-        return
-    }
+    const pid = req.params.pid
 
     try {
         const product = await pm.getProductById(pid)
@@ -38,23 +33,52 @@ router.get('/:pid', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res, next) => {
+    const result = validateProduct(req.body)
+    if (result.success) {
+        next()
+    } else {
+        res.status(400)
+            .json({ message: JSON.parse(result.error.message) });
+    }
+}, async (req, res) => {
     const newProduct = req.body
     try {
         const productCreated = await pm.addProduct(newProduct)
         res.status(201)
-        res.json({ message: "Product created", product: productCreated })
+            .json({ message: "Product created", product: productCreated })
     } catch (error) {
         res.status(400)
-        res.json({ error: error.message })
+            .json({ error: error.message })
     }
 })
 
-router.put('/', async (req, res) => {
-    const product = req.body
+router.put('/:pid', (req, res, next) => {
+    const result = validatePartialProduct(req.body)
+    if (result.success) {
+        req.body = result.data
+        next()
+    } else {
+        res.status(400)
+            .json({ message: JSON.parse(result.error.message) });
+    }
+}, async (req, res) => {
+    const data = req.body
+    const pid = req.params.pid
     try {
-        const productUpdated = await pm.updateProduct(product)
+        const productUpdated = await pm.updateProduct(pid, data)
         res.json({ product: productUpdated })
+    } catch (error) {
+        res.status(400)
+            .json({ error: error.message })
+    }
+})
+
+router.delete('/:pid', async (req, res) => {
+    const pid = req.params.pid
+    try {
+        await pm.deleteProduct(pid)
+        res.json({ message: `Product ${pid} deleted` })
     } catch (error) {
         res.status(400)
         res.json({ error: error.message })

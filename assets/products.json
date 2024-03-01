@@ -1,155 +1,16 @@
 [
     {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "1",
-        "stock": 0,
-        "id": 1
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 2
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 3
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 4
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 5
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 6
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 7
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 8
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 9
-    },
-    {
-        "title": "titulo",
-        "description": "",
-        "price": 10,
-        "thumbnail": "nada",
-        "code": "2",
-        "stock": 0,
-        "id": 10
-    },
-    {
-        "id": 11,
-        "code": "1234",
-        "title": "una prueba",
-        "description": "esta es la descripcion de prueba",
-        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
-        "stock": "5",
-        "price": "5"
-    },
-    {
-        "id": 12,
-        "code": "12343",
-        "title": "una prueba",
-        "description": "esta es la descripcion de prueba",
-        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
-        "stock": "5",
-        "price": "5"
-    },
-    {
-        "id": 13,
-        "code": "123434",
-        "title": "una prueba",
-        "description": "esta es la descripcion de prueba",
-        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
-        "stock": "5",
-        "price": "5"
-    },
-    {
-        "id": 14,
-        "code": "342",
-        "title": "asdfasdf",
-        "description": "asdfasdf",
-        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
-        "stock": "4",
-        "price": "3"
-    },
-    {
-        "id": 15,
-        "code": "3421",
-        "title": "asdfasdf",
-        "description": "asdfasdf",
-        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
-        "stock": "4",
-        "price": "3"
-    },
-    {
-        "id": 16,
-        "code": "34211",
-        "title": "asdfasdf",
-        "description": "asdfasdf",
-        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
-        "stock": "4",
-        "price": "3"
-    },
-    {
-        "id": 17,
-        "code": "342111",
-        "title": "asdfasdf",
-        "description": "asdfasdf",
-        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
-        "stock": "4",
-        "price": "3"
+        "id": "0f24830f-6746-4531-b157-fcdaf6f2b1e6",
+        "code": "304",
+        "title": "304 Not Modified",
+        "description": "The HTTP 304 Not Modified client redirection response code indicates that there is no need to retransmit the requested resources. This response code is sent when the request is a conditional GET or HEAD request with an If-None-Match or an If-Modified-Since header and the condition evaluates to false. It is an implicit redirection to a cached resource that would have resulted in a 200 OK response if the condition evaluated to true.\nThe response must not contain a body and must include the headers that would have been sent in an equivalent 200 OK response: Cache-Control, Content-Location, Date, ETag, Expires, and Vary.",
+        "thumbnail": [
+            "https://http.dog/static/codes/dogs/large/304.avif",
+            "https://http.cat/images/304.jpg"
+        ],
+        "stock": 1,
+        "price": 304,
+        "status": true,
+        "category": "300"
     }
 ]

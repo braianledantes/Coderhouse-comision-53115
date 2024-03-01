@@ -1,3 +1,4 @@
+const { randomUUID } = require('node:crypto')
 const fs = require('node:fs/promises')
 
 class ProductManager {
@@ -16,11 +17,7 @@ class ProductManager {
     }
 
     #getNewId() {
-        if (this.#products.length > 0) {
-            return this.#products[this.#products.length - 1].id + 1
-        } else {
-            return 1
-        }
+        return randomUUID()
     }
 
     async #getProductsFromFile() {
@@ -34,26 +31,6 @@ class ProductManager {
     async #saveProductsFile() {
         const data = JSON.stringify(this.#products, null, 4)
         await fs.writeFile(this.#path, data)
-    }
-
-    #validateProductFields(product) {
-        if (!product.code) {
-            throw new Error(`Invalid field code ${product.code}`)
-        }
-
-        const textFields = ["title", "description", "thumbnail", "code"]
-        for (const field of textFields) {
-            if (typeof product[field] !== "string") {
-                throw new Error(`Invalid field ${field} ${product[field]} must be a string`)
-            }
-        }
-        const numbersFields = ["price", "stock"]
-        for (const field of numbersFields) {
-            const num = parseInt(product[field])
-            if (isNaN(num) || num < 0) {
-                throw new Error(`Invalid field ${field} ${num} must be a positive number`)
-            }
-        }
     }
 
     async addProduct({
@@ -73,7 +50,6 @@ class ProductManager {
             stock,
             price
         }
-        this.#validateProductFields(newProduct)
 
         if (this.#products.some(p => p.code === code)) {
             throw new Error(`Product with code ${code} already exists`)
@@ -97,22 +73,13 @@ class ProductManager {
         return product
     }
 
-    async updateProduct(updatedProduct = {
-        id,
-        code,
-        title,
-        description,
-        thumbnail,
-        stock,
-        price
-    }) {
-        this.#validateProductFields(updatedProduct)
-
-        const productIndex = this.#products.findIndex(p => p.id === updatedProduct.id)
+    async updateProduct(id, data) {
+        const productIndex = this.#products.findIndex(p => p.id === id)
 
         if (productIndex < 0) {
-            throw new Error(`Product with id ${updatedProduct.id} not found`)
+            throw new Error(`Product with id ${id} not found`)
         }
+        const updatedProduct = { ...this.#products[productIndex], ...data }
 
         this.#products[productIndex] = updatedProduct
 
@@ -128,7 +95,7 @@ class ProductManager {
         }
 
         this.#products.splice(i, 1)
-        
+
         await this.#saveProductsFile()
     }
 }
