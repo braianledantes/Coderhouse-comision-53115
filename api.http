@@ -5,28 +5,45 @@ GET http://localhost:8080/api/products
 GET http://localhost:8080/api/products?limit=5
 
 ### Get product
-GET http://localhost:8080/api/products/0f24830f-6746-4531-b157-fcdaf6f2b1e6
+GET http://localhost:8080/api/products/2
 
 ### Get product that not exits
-GET http://localhost:8080/api/products/25a9bec8-500f-4f54-9935-b1cdd6d2a5e2
+GET http://localhost:8080/api/products/12343457
 
 ### Create a product
 POST http://localhost:8080/api/products
 Content-Type: application/json
 
 {
-    "title": "304",
-    "description": "Not Modified",
-    "code": "304",
-    "price": 10,
+    "title": "200",
+    "description": "OK",
+    "code": "200",
+    "price": 304,
     "status": true,
-    "stock": 12,
+    "stock": 22,
+    "category": "300",
+    "thumbnail": [
+        "https://http.dog/200.jpg"
+    ]
+}
+
+### Create a product
+POST http://localhost:8080/api/products
+Content-Type: application/json
+
+{
+    "title": "304 Not Modified",
+    "description": "The HTTP 304 Not Modified client redirection response code indicates that there is no need to retransmit the requested resources. This response code is sent when the request is a conditional GET or HEAD request with an If-None-Match or an If-Modified-Since header and the condition evaluates to false. It is an implicit redirection to a cached resource that would have resulted in a 200 OK response if the condition evaluated to true.\nThe response must not contain a body and must include the headers that would have been sent in an equivalent 200 OK response: Cache-Control, Content-Location, Date, ETag, Expires, and Vary.",
+    "code": "304",
+    "price": 304,
+    "status": true,
+    "stock": 1,
     "category": "300",
     "thumbnail": ["https://http.dog/static/codes/dogs/large/304.avif"]
 }
 
-### Create a product
-PUT  http://localhost:8080/api/products/0f24830f-6746-4531-b157-fcdaf6f2b1e6
+### Update product
+PUT  http://localhost:8080/api/products/3
 Content-Type: application/json
 
 {
@@ -40,16 +57,25 @@ Content-Type: application/json
     "thumbnail": ["https://http.dog/static/codes/dogs/large/304.avif", "https://http.cat/images/304.jpg"]
 }
 
-### Update the stock of a product
-PUT  http://localhost:8080/api/products/0f24830f-6746-4531-b157-fcdaf6f2b1e6
+### Update product
+PUT  http://localhost:8080/api/products/2
 Content-Type: application/json
 
 {
     "id": "asdf",
-    "stock": 25,
+    "stock": 253,
     "price": 1234,
     "hola": "esto no deveria estar"
 }
 
 ### Delete a product
-DELETE  http://localhost:8080/api/products/5292705e-713f-4976-abd9-a9d9bb7062fa
+DELETE  http://localhost:8080/api/products/1
+
+### Create a cart
+POST  http://localhost:8080/api/carts
+
+### Add product to cart
+POST  http://localhost:8080/api/carts/1/product/2
+
+### Get cart products
+GET http://localhost:8080/api/carts/1
