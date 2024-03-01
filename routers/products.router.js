@@ -1,15 +1,15 @@
-const express = require('express')
-const ProductManager = require('./ProductManager.js')
+const { Router } = require('express')
+const ProductManager = require('../datamanagers/ProductManager.js')
 
-const pm = new ProductManager('./assets/products.json')
+const pm = new ProductManager('./assets/products.json');
 
-const app = express()
-const PORT = 8080
+(async () => {
+    await pm.initialize()
+})()
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+const router = Router()
 
-app.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
     const limit = Number.parseInt(req.query.limit)
 
     let products = await pm.getProducts()
@@ -20,7 +20,7 @@ app.get('/products', async (req, res) => {
     res.json({ products })
 })
 
-app.get('/products/:pid', async (req, res) => {
+router.get('/:pid', async (req, res) => {
     const pid = Number.parseInt(req.params.pid)
 
     if (Number.isNaN(pid)) {
@@ -38,7 +38,7 @@ app.get('/products/:pid', async (req, res) => {
     }
 })
 
-app.post('/products', async (req, res) => {
+router.post('/', async (req, res) => {
     const newProduct = req.body
     try {
         const productCreated = await pm.addProduct(newProduct)
@@ -50,7 +50,7 @@ app.post('/products', async (req, res) => {
     }
 })
 
-app.put('/products', async (req, res) => {
+router.put('/', async (req, res) => {
     const product = req.body
     try {
         const productUpdated = await pm.updateProduct(product)
@@ -61,7 +61,4 @@ app.put('/products', async (req, res) => {
     }
 })
 
-app.listen(PORT, async () => {
-    await pm.initialize()
-    console.log(`App listening on port ${PORT}`);
-})
+module.exports = router

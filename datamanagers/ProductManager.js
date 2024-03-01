@@ -49,8 +49,9 @@ class ProductManager {
         }
         const numbersFields = ["price", "stock"]
         for (const field of numbersFields) {
-            if (typeof product[field] !== 'number' || product[field] < 0) {
-                throw new Error(`Invalid field ${field} ${product[field]} must be a positive number`)
+            const num = parseInt(product[field])
+            if (isNaN(num) || num < 0) {
+                throw new Error(`Invalid field ${field} ${num} must be a positive number`)
             }
         }
     }

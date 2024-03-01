@@ -88,5 +88,68 @@
         "code": "2",
         "stock": 0,
         "id": 10
+    },
+    {
+        "id": 11,
+        "code": "1234",
+        "title": "una prueba",
+        "description": "esta es la descripcion de prueba",
+        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
+        "stock": "5",
+        "price": "5"
+    },
+    {
+        "id": 12,
+        "code": "12343",
+        "title": "una prueba",
+        "description": "esta es la descripcion de prueba",
+        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
+        "stock": "5",
+        "price": "5"
+    },
+    {
+        "id": 13,
+        "code": "123434",
+        "title": "una prueba",
+        "description": "esta es la descripcion de prueba",
+        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
+        "stock": "5",
+        "price": "5"
+    },
+    {
+        "id": 14,
+        "code": "342",
+        "title": "asdfasdf",
+        "description": "asdfasdf",
+        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
+        "stock": "4",
+        "price": "3"
+    },
+    {
+        "id": 15,
+        "code": "3421",
+        "title": "asdfasdf",
+        "description": "asdfasdf",
+        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
+        "stock": "4",
+        "price": "3"
+    },
+    {
+        "id": 16,
+        "code": "34211",
+        "title": "asdfasdf",
+        "description": "asdfasdf",
+        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
+        "stock": "4",
+        "price": "3"
+    },
+    {
+        "id": 17,
+        "code": "342111",
+        "title": "asdfasdf",
+        "description": "asdfasdf",
+        "thumbnail": "https://i.creativecommons.org/l/by-sa/3.0/us/80x15.png",
+        "stock": "4",
+        "price": "3"
     }
 ]
