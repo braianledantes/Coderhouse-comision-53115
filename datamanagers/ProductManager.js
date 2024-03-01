@@ -3,22 +3,14 @@ const fs = require('node:fs/promises')
 
 class ProductManager {
     #path
-    #products
 
     constructor(path) {
         this.#path = path
     }
 
-    /**
-     * This method initialize the products array from file with the path property.
-     */
-    async initialize() {
-        this.#products = await this.#getProductsFromFile()
-    }
-
-    #getNewId() {
-        if (this.#products.length > 0) {
-            return this.#products[this.#products.length - 1].id + 1
+    #getNewId(products) {
+        if (products.length > 0) {
+            return products[products.length - 1].id + 1
         } else {
             return 1
         }
@@ -32,8 +24,8 @@ class ProductManager {
         }
     }
 
-    async #saveProductsFile() {
-        const data = JSON.stringify(this.#products, null, 4)
+    async #saveProductsFile(products) {
+        const data = JSON.stringify(products, null, 4)
         await fs.writeFile(this.#path, data)
     }
 
@@ -45,32 +37,34 @@ class ProductManager {
         stock,
         price
     }) {
+        const products = await this.#getProductsFromFile()
         const newProduct = {
-            id: this.#getNewId(),
+            id: this.#getNewId(products),
             code,
             title,
             description,
             thumbnail,
             stock,
             price
-        }
+        }      
 
-        if (this.#products.some(p => p.code == code)) {
+        if (products.some(p => p.code == code)) {
             throw new Error(`Product with code ${code} already exists`)
         }
 
-        this.#products.push(newProduct)
+        products.push(newProduct)
 
-        await this.#saveProductsFile()
+        await this.#saveProductsFile(products)
         return newProduct
     }
 
     async getProducts() {
-        return this.#products
+        return await this.#getProductsFromFile()
     }
 
     async getProductById(id) {
-        const product = this.#products.find(p => p.id == id)
+        const products = await this.#getProductsFromFile()
+        const product = products.find(p => p.id == id)
         if (!product) {
             throw new Error(`Product with id ${id} not found`)
         }
@@ -78,29 +72,31 @@ class ProductManager {
     }
 
     async updateProduct(id, data) {
-        const productIndex = this.#products.findIndex(p => p.id == id)
+        const products = await this.#getProductsFromFile()
+        const productIndex = products.findIndex(p => p.id == id)
 
         if (productIndex < 0) {
             throw new Error(`Product with id ${id} not found`)
         }
-        const updatedProduct = { ...this.#products[productIndex], ...data }
+        const updatedProduct = { ...products[productIndex], ...data }
 
-        this.#products[productIndex] = updatedProduct
+        products[productIndex] = updatedProduct
 
-        await this.#saveProductsFile()
+        await this.#saveProductsFile(products)
         return updatedProduct
     }
 
     async deleteProduct(id) {
-        const i = this.#products.findIndex(p => p.id == id)
+        const products = await this.#getProductsFromFile()
+        const i = products.findIndex(p => p.id == id)
 
         if (i === -1) {
             throw new Error(`Product with id ${id} not found`)
         }
 
-        this.#products.splice(i, 1)
+        products.splice(i, 1)
 
-        await this.#saveProductsFile()
+        await this.#saveProductsFile(products)
     }
 }
 
