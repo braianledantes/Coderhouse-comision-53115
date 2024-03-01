@@ -6,8 +6,27 @@ GET http://localhost:8080/api/products?limit=5
 
 ### Get product
 GET http://localhost:8080/api/products/2
+GET http://localhost:8080/api/products/2
 
 ### Get product that not exits
+GET http://localhost:8080/api/products/12343457
+
+### Create a product
+POST http://localhost:8080/api/products
+Content-Type: application/json
+
+{
+    "title": "200",
+    "description": "OK",
+    "code": "200",
+    "price": 304,
+    "status": true,
+    "stock": 22,
+    "category": "300",
+    "thumbnail": [
+        "https://http.dog/200.jpg"
+    ]
+}
 GET http://localhost:8080/api/products/12343457
 
 ### Create a product
@@ -34,14 +53,20 @@ Content-Type: application/json
 {
     "title": "304 Not Modified",
     "description": "The HTTP 304 Not Modified client redirection response code indicates that there is no need to retransmit the requested resources. This response code is sent when the request is a conditional GET or HEAD request with an If-None-Match or an If-Modified-Since header and the condition evaluates to false. It is an implicit redirection to a cached resource that would have resulted in a 200 OK response if the condition evaluated to true.\nThe response must not contain a body and must include the headers that would have been sent in an equivalent 200 OK response: Cache-Control, Content-Location, Date, ETag, Expires, and Vary.",
+    "title": "304 Not Modified",
+    "description": "The HTTP 304 Not Modified client redirection response code indicates that there is no need to retransmit the requested resources. This response code is sent when the request is a conditional GET or HEAD request with an If-None-Match or an If-Modified-Since header and the condition evaluates to false. It is an implicit redirection to a cached resource that would have resulted in a 200 OK response if the condition evaluated to true.\nThe response must not contain a body and must include the headers that would have been sent in an equivalent 200 OK response: Cache-Control, Content-Location, Date, ETag, Expires, and Vary.",
     "code": "304",
     "price": 304,
+    "price": 304,
     "status": true,
+    "stock": 1,
     "stock": 1,
     "category": "300",
     "thumbnail": ["https://http.dog/static/codes/dogs/large/304.avif"]
 }
 
+### Update product
+PUT  http://localhost:8080/api/products/3
 ### Update product
 PUT  http://localhost:8080/api/products/3
 Content-Type: application/json
@@ -59,10 +84,13 @@ Content-Type: application/json
 
 ### Update product
 PUT  http://localhost:8080/api/products/2
+### Update product
+PUT  http://localhost:8080/api/products/2
 Content-Type: application/json
 
 {
     "id": "asdf",
+    "stock": 253,
     "stock": 253,
     "price": 1234,
     "hola": "esto no deveria estar"
