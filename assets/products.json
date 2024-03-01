@@ -1,6 +1,6 @@
 [
     {
-        "id": "0f24830f-6746-4531-b157-fcdaf6f2b1e6",
+        "id": 1,
         "code": "304",
         "title": "304 Not Modified",
         "description": "The HTTP 304 Not Modified client redirection response code indicates that there is no need to retransmit the requested resources. This response code is sent when the request is a conditional GET or HEAD request with an If-None-Match or an If-Modified-Since header and the condition evaluates to false. It is an implicit redirection to a cached resource that would have resulted in a 200 OK response if the condition evaluated to true.\nThe response must not contain a body and must include the headers that would have been sent in an equivalent 200 OK response: Cache-Control, Content-Location, Date, ETag, Expires, and Vary.",
@@ -12,5 +12,27 @@
         "price": 304,
         "status": true,
         "category": "300"
+    },
+    {
+        "id": 2,
+        "code": "304",
+        "title": "304",
+        "description": "Not Modified",
+        "thumbnail": [
+            "https://http.dog/static/codes/dogs/large/304.avif"
+        ],
+        "stock": 25,
+        "price": 1234
+    },
+    {
+        "id": 3,
+        "code": "200",
+        "title": "200",
+        "description": "OK",
+        "thumbnail": [
+            "https://http.dog/200.jpg"
+        ],
+        "stock": 12,
+        "price": 10
     }
 ]

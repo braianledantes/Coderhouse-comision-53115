@@ -28,8 +28,7 @@ router.get('/:pid', async (req, res) => {
         const product = await pm.getProductById(pid)
         res.json({ product })
     } catch (error) {
-        res.status(404)
-        res.json({ error: "Product not found" })
+        res.status(404).json({ message: error.message })
     }
 })
 
@@ -38,8 +37,7 @@ router.post('/', (req, res, next) => {
     if (result.success) {
         next()
     } else {
-        res.status(400)
-            .json({ message: JSON.parse(result.error.message) });
+        res.status(400).json({ message: JSON.parse(result.error.message) })
     }
 }, async (req, res) => {
     const newProduct = req.body
@@ -48,8 +46,7 @@ router.post('/', (req, res, next) => {
         res.status(201)
             .json({ message: "Product created", product: productCreated })
     } catch (error) {
-        res.status(400)
-            .json({ error: error.message })
+        res.status(400).json({ message: error.message })
     }
 })
 
@@ -59,8 +56,7 @@ router.put('/:pid', (req, res, next) => {
         req.body = result.data
         next()
     } else {
-        res.status(400)
-            .json({ message: JSON.parse(result.error.message) });
+        res.status(400).json({ message: JSON.parse(result.error.message) })
     }
 }, async (req, res) => {
     const data = req.body
@@ -69,8 +65,7 @@ router.put('/:pid', (req, res, next) => {
         const productUpdated = await pm.updateProduct(pid, data)
         res.json({ product: productUpdated })
     } catch (error) {
-        res.status(400)
-            .json({ error: error.message })
+        res.status(400).json({ message: error.message })
     }
 })
 
@@ -80,8 +75,7 @@ router.delete('/:pid', async (req, res) => {
         await pm.deleteProduct(pid)
         res.json({ message: `Product ${pid} deleted` })
     } catch (error) {
-        res.status(400)
-        res.json({ error: error.message })
+        res.status(400).json({ message: error.message })
     }
 })
 

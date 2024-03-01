@@ -17,7 +17,11 @@ class ProductManager {
     }
 
     #getNewId() {
-        return randomUUID()
+        if (this.#products.length > 0) {
+            return this.#products[this.#products.length - 1].id + 1
+        } else {
+            return 1
+        }
     }
 
     async #getProductsFromFile() {
@@ -51,7 +55,7 @@ class ProductManager {
             price
         }
 
-        if (this.#products.some(p => p.code === code)) {
+        if (this.#products.some(p => p.code == code)) {
             throw new Error(`Product with code ${code} already exists`)
         }
 
@@ -66,7 +70,7 @@ class ProductManager {
     }
 
     async getProductById(id) {
-        const product = this.#products.find(p => p.id === id)
+        const product = this.#products.find(p => p.id == id)
         if (!product) {
             throw new Error(`Product with id ${id} not found`)
         }
@@ -74,7 +78,7 @@ class ProductManager {
     }
 
     async updateProduct(id, data) {
-        const productIndex = this.#products.findIndex(p => p.id === id)
+        const productIndex = this.#products.findIndex(p => p.id == id)
 
         if (productIndex < 0) {
             throw new Error(`Product with id ${id} not found`)
@@ -88,7 +92,7 @@ class ProductManager {
     }
 
     async deleteProduct(id) {
-        const i = this.#products.findIndex(p => p.id === id)
+        const i = this.#products.findIndex(p => p.id == id)
 
         if (i === -1) {
             throw new Error(`Product with id ${id} not found`)
