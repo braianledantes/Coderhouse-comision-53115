@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
-const products = require('./routers/products.router')
-const carts = require('./routers/carts.router')
+const products = require('./routers/products.routes')
+const carts = require('./routers/carts.routes')
 
 const app = express()
 const PORT = 8080
