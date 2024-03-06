@@ -19,4 +19,4 @@ function validateProduct(product) {
     return productSchema.safeParse(product)
 }
 
-module.exports = { productSchema, validatePartialProduct, validateProduct }
+module.exports = { validatePartialProduct, validateProduct }

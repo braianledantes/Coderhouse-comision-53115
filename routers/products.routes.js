@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { validatePartialProduct, validateProduct } = require('../schemas/products.schema.js')
+const { validatePartialProduct, validateProduct } = require('../validations/products.validations.js')
 const ProductManager = require('../datamanagers/ProductManager.js')
 
 const pm = new ProductManager('./assets/productos.json')
