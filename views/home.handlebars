@@ -1,0 +1,16 @@
+<section class="products-list">
+    {{#if isEmpty}}
+    <p>No hay productos para mostrar 😢</p>
+    {{else}}
+    {{#each products}}
+    <article class="product">
+        <img class="img" src="{{this.thumbnail}}">
+        <h3 class="title">{{this.title}}</h3>
+        <p class="code">Code: {{this.code}}</p>
+        <p class="stock">Stock: {{this.stock}}</p>
+        <p class="price">Price: ${{this.price}}</p>
+        <p class="category">Category: {{this.category}}</p>
+    </article>
+    {{/each}}
+    {{/if}}
+</section>
