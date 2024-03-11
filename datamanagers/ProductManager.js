@@ -35,7 +35,9 @@ class ProductManager {
         description,
         thumbnail,
         stock,
-        price
+        price,
+        category,
+        status
     }) {
         const products = await this.#getProductsFromFile()
         const newProduct = {
@@ -45,7 +47,9 @@ class ProductManager {
             description,
             thumbnail,
             stock,
-            price
+            price,
+            category,
+            status
         }      
 
         if (products.some(p => p.code == code)) {

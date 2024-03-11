@@ -8,7 +8,9 @@
             "https://http2.mlstatic.com/D_NQ_NP_732057-MLA70868353813_082023-O.webp"
         ],
         "stock": 4,
-        "price": 79999
+        "price": 79999,
+        "category": "telefonos",
+        "status": true
     },
     {
         "id": 4,
@@ -19,7 +21,9 @@
             "https://http2.mlstatic.com/D_NQ_NP_685497-MLA74907932535_032024-O.webp"
         ],
         "stock": 31,
-        "price": 54429
+        "price": 54429,
+        "category": "zapatillas",
+        "status": true
     },
     {
         "id": 5,
@@ -30,7 +34,9 @@
             "https://http2.mlstatic.com/D_NQ_NP_712164-MLU74841568328_032024-O.webp"
         ],
         "stock": 3,
-        "price": 22
+        "price": 22,
+        "category": "televisores",
+        "status": true
     },
     {
         "id": 6,
@@ -41,6 +47,8 @@
             "https://http2.mlstatic.com/D_NQ_NP_805929-MLU72675217442_112023-O.webp"
         ],
         "stock": 4,
-        "price": 609999
+        "price": 609999,
+        "category": "consolas",
+        "status": true
     }
 ]
