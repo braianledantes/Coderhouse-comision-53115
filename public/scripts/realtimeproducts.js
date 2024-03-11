@@ -8,7 +8,7 @@ document.getElementById("btnCreateProduct")
 
 socket.on('product-created', (data) => {
     const productsList = document.getElementById("products-list")
-    productsList.appendChild(createNewArticle(product))
+    productsList.appendChild(createNewArticle(data.product))
 })
 
 socket.on('product-deleted', (data) => {
@@ -27,26 +27,33 @@ function createNewArticle(product) {
     article.id = product.id
 
     const img = document.createElement('img')
+    img.className = "img"
     img.src = product.thumbnail
     article.appendChild(img)
 
     const title = document.createElement('h3')
+    title.className = "title"
     title.textContent = product.title
     article.appendChild(title)
 
     const code = document.createElement('p')
+    code.className = "code"
     code.textContent = `Code: ${product.code}`
     article.appendChild(code)
 
     const stock = document.createElement('p')
+    stock.className = "stock"
     stock.textContent = `Stock: ${product.stock}`
+    img.className = "img"
     article.appendChild(stock)
 
     const price = document.createElement('p')
+    price.className = "price"
     price.textContent = `Price: $${product.price}`
     article.appendChild(price)
 
     const category = document.createElement('p')
+    category.className = "category"
     category.textContent = `Category: ${product.category}`
     article.appendChild(category)
 
