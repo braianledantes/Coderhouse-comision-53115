@@ -1,27 +1,46 @@
 [
     {
-        "id": 1,
-        "code": "304",
-        "title": "304 Not Modified",
-        "description": "The HTTP 304 Not Modified client redirection response code indicates that there is no need to retransmit the requested resources. This response code is sent when the request is a conditional GET or HEAD request with an If-None-Match or an If-Modified-Since header and the condition evaluates to false. It is an implicit redirection to a cached resource that would have resulted in a 200 OK response if the condition evaluated to true.\nThe response must not contain a body and must include the headers that would have been sent in an equivalent 200 OK response: Cache-Control, Content-Location, Date, ETag, Expires, and Vary.",
+        "id": 3,
+        "code": "s-a54",
+        "title": "Samsung Galaxy A54",
+        "description": "Samsung Galaxy A54 5G 256 GB Awesome graphite 8 GB RAM",
         "thumbnail": [
-            "https://http.dog/static/codes/dogs/large/304.avif",
-            "https://http.cat/images/304.jpg"
+            "https://http2.mlstatic.com/D_NQ_NP_732057-MLA70868353813_082023-O.webp"
         ],
-        "stock": 1,
-        "price": 304,
-        "status": true,
-        "category": "300"
+        "stock": 4,
+        "price": 79999
     },
     {
-        "id": 2,
-        "code": "304",
-        "title": "304",
-        "description": "Not Modified",
+        "id": 4,
+        "code": "Gb5408",
+        "title": "Galaxy Star W Gb5408 adidas",
+        "description": "Galaxy Star W Gb5408 adidas",
         "thumbnail": [
-            "https://http.dog/static/codes/dogs/large/304.avif"
+            "https://http2.mlstatic.com/D_NQ_NP_685497-MLA74907932535_032024-O.webp"
         ],
-        "stock": 12,
-        "price": 10
+        "stock": 31,
+        "price": 54429
+    },
+    {
+        "id": 5,
+        "code": "Un50cu7000gczb",
+        "title": "Smart Tv Samsung 50 Un50cu7000gczb Led 4k",
+        "description": "Smart Tv Samsung 50 Un50cu7000gczb Led 4k",
+        "thumbnail": [
+            "https://http2.mlstatic.com/D_NQ_NP_712164-MLU74841568328_032024-O.webp"
+        ],
+        "stock": 3,
+        "price": 22
+    },
+    {
+        "id": 6,
+        "code": "xbox-series-s",
+        "title": "Consola Xbox Series S 512gb Digital Blanco",
+        "description": "Consola Xbox Series S 512gb Digital Blanco",
+        "thumbnail": [
+            "https://http2.mlstatic.com/D_NQ_NP_805929-MLU72675217442_112023-O.webp"
+        ],
+        "stock": 4,
+        "price": 609999
     }
 ]
