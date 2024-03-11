@@ -19,4 +19,9 @@ router.get('/home', async (_, res) => {
     })
 })
 
+router.get('/realtimeproducts', async (req, res) => {
+    const products = await pm.getProducts()
+    res.render('realtimeproducts', { products })
+})
+
 module.exports = router

@@ -39,6 +39,9 @@ router.post('/', (req, res, next) => {
     const newProduct = req.body
     try {
         const productCreated = await pm.addProduct(newProduct)
+
+        req.app.get('websocket').emit('product-created', { product: productCreated })
+
         res.status(201)
             .json({ message: "Product created", product: productCreated })
     } catch (error) {
@@ -59,6 +62,9 @@ router.put('/:pid', (req, res, next) => {
     const pid = req.params.pid
     try {
         const productUpdated = await pm.updateProduct(pid, data)
+
+        req.app.get('websocket').emit('product-updated', { product: productUpdated })
+
         res.json({ product: productUpdated })
     } catch (error) {
         res.status(400).json({ message: error.message })
@@ -69,6 +75,9 @@ router.delete('/:pid', async (req, res) => {
     const pid = req.params.pid
     try {
         await pm.deleteProduct(pid)
+        
+        req.app.get('websocket').emit('product-deleted', { productId: pid })
+        
         res.json({ message: `Product ${pid} deleted` })
     } catch (error) {
         res.status(400).json({ message: error.message })
