@@ -1,19 +1,25 @@
 const mongoose = require('mongoose')
 
-const ItemSchema = new mongoose.Schema({
-    product: {
-        type: String,
-        required: true
+const ItemSchema = new mongoose.Schema(
+    {
+        product: {
+            type: String,
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true,
+            min: 1
+        }
     },
-    quantity: { 
-        type: Number,
-        required: true,
-        min: 1
-    }
-})
+    { _id: false }
+)
 
 const schema = new mongoose.Schema({
-    products: [ItemSchema]
+    products: {
+        type: [ItemSchema],
+        default: []
+    }
 }, {
     virtual: {
         id: {

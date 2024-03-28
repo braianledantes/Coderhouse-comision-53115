@@ -1,6 +1,6 @@
 const { Router } = require('express')
-const CartsManager = require('../dao/fileManagers/CartsManager.js')
-const ProductManager = require('../dao/fileManagers/ProductManager.js')
+const CartsManager = require('../dao/dbManagers/CartsManager.js')
+const ProductManager = require('../dao/dbManagers/ProductManager.js')
 
 const cm = new CartsManager('./assets/corritos.json')
 const pm = new ProductManager('./assets/productos.json')
@@ -39,7 +39,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
         if (productCart) {
             productCart.quantity++
         } else {
-            const newProductCart = { product: parseInt(pid), quantity: 1 }
+            const newProductCart = { product: pid, quantity: 1 }
             cart.products.push(newProductCart)
         }
 
