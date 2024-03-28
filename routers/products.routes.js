@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const { validatePartialProduct, validateProduct } = require('../validations/products.validations.js')
-const ProductManager = require('../dao/fileManages/ProductManager.js')
+const ProductManager = require('../dao/dbManagers/ProductManager.js')
 
 const pm = new ProductManager('./assets/productos.json')
 
@@ -62,7 +62,6 @@ router.put('/:pid', (req, res, next) => {
     const pid = req.params.pid
     try {
         const productUpdated = await pm.updateProduct(pid, data)
-
         req.app.get('websocket').emit('product-updated', { product: productUpdated })
 
         res.json({ product: productUpdated })

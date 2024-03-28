@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose')
 const handlebars = require('express-handlebars')
 const morgan = require('morgan')
 const { createServer } = require('node:http')
@@ -27,10 +28,21 @@ app.use('/api/products', products)
 app.use('/api/carts', carts)
 app.use('/', views)
 
-io.on('connection', socket => {
-    console.log('Cliente conectado')
-})
+const main = async () => {
+    await mongoose.connect(
+        'mongodb+srv://braianledantes:chutebnl@codercluster.hi6cwhh.mongodb.net/',
+        {
+            dbName: 'e-commerce'
+        }
+    )
 
-server.listen(PORT, () => {
-    console.log(`App listening on http://localhost:${PORT}`);
-})
+    io.on('connection', socket => {
+        console.log('Cliente conectado')
+    })
+    
+    server.listen(PORT, () => {
+        console.log(`App listening on http://localhost:${PORT}`);
+    })
+}
+
+main()
