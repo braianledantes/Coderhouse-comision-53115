@@ -32,7 +32,7 @@
         <p class="stock">Stock: {{this.stock}}</p>
         <p class="price">Price: ${{this.price}}</p>
         <p class="category">Category: {{this.category}}</p>
-        <button onclick="deleteProduct({{this.id}})">Delete</button>
+        <button onclick="deleteProduct('{{this.id}}')">Delete</button>
     </article>
     {{/each}}
     {{/if}}
