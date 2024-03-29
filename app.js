@@ -6,6 +6,7 @@ const { createServer } = require('node:http')
 const { Server } = require('socket.io')
 const products = require('./routers/products.routes')
 const carts = require('./routers/carts.routes')
+const chat = require('./routers/chat.routes')
 const views = require('./routers/views.routes')
 
 const PORT = 8080
@@ -26,6 +27,7 @@ app.use(morgan('tiny'))
 app.use(express.static('public'))
 app.use('/api/products', products)
 app.use('/api/carts', carts)
+app.use('/api/chat', chat)
 app.use('/', views)
 
 const main = async () => {

@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    margin: 0;
 }
 
 .products-list {
@@ -52,4 +53,52 @@
     grid-column: 2/3;
     justify-self: right;
     padding: .5rem 2rem;
+}
+
+.chat {
+    border: 1px solid black;
+    height: 80vh;
+    max-width: 400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background-color: antiquewhite;
+}
+
+.chat .chat-title  {
+    margin: 0;
+    padding: .5rem;
+    box-sizing: border-box;
+    background-color: burlywood;
+    border-bottom: 1px solid gray;
+}
+
+.chat .chat-input {
+    background-color: bisque;
+    padding: .5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    border-top: 1px solid gray;
+}
+
+.chat .chat-messages {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: .5rem;
+}
+
+.chat .message {
+    background-color: lightgray;
+    padding: .5rem;
+}
+
+.chat .message-content {
+    margin-top: .2rem;
+}
+
+.chat button {
+    align-self: self-start;
 }
