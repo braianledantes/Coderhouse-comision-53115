@@ -5,10 +5,10 @@ GET http://localhost:8080/api/products
 GET http://localhost:8080/api/products?limit=5
 
 ### Get product
-GET http://localhost:8080/api/products/2
+GET http://localhost:8080/api/products/6605d7d9d94afd9cd6954923
 
 ### Get product that not exits
-GET http://localhost:8080/api/products/12343457
+GET http://localhost:8080/api/products/6617dd6aa32e02cdb884e755
 
 ### Create a product
 POST http://localhost:8080/api/products
@@ -43,26 +43,27 @@ Content-Type: application/json
 }
 
 ### Update product
-PUT  http://localhost:8080/api/products/1
+PUT  http://localhost:8080/api/products/6617dd6aa32e02cdb884e755
 Content-Type: application/json
 
 {
+    "code": "200",
     "title": "200",
     "description": "OK",
-    "code": "200",
-    "price": 304,
-    "status": true,
-    "stock": 22,
-    "category": "300",
     "thumbnail": [
-        "https://http.dog/200.jpg"
-    ]
-}
+      "https://http.dog/200.jpg"
+    ],
+    "stock": 22,
+    "price": 3042,
+    "category": "300",
+    "status": true,
+    "id": "6617dd6aa32e02cdb884e755"
+  }
 
 ### Update product
-PUT  http://localhost:8080/api/products/2
+PUT  http://localhost:8080/api/products/6617dd6aa32e02cdb884e755
 ### Update product
-PUT  http://localhost:8080/api/products/2
+PUT  http://localhost:8080/api/products/6617dd6aa32e02cdb884e755
 Content-Type: application/json
 
 {
@@ -74,13 +75,13 @@ Content-Type: application/json
 }
 
 ### Delete a product
-DELETE  http://localhost:8080/api/products/2
+DELETE  http://localhost:8080/api/products/6617dd6aa32e02cdb884e755
 
 ### Create a cart
 POST  http://localhost:8080/api/carts
 
 ### Add product to cart
-POST  http://localhost:8080/api/carts/2/product/1
+POST  http://localhost:8080/api/carts/6617dde2a32e02cdb884e768/product/6605d7d9d94afd9cd6954923
 
 ### Get cart products
-GET http://localhost:8080/api/carts/1
+GET http://localhost:8080/api/carts/6617dde2a32e02cdb884e768
