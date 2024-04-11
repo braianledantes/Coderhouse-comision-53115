@@ -29,9 +29,20 @@ class ProductManager {
         }
     }
 
-    async getProducts() {
-        const products = await ProductModel.find({}, projection)
-        return products.map(p => this.#toProductJson(p))
+    async getProducts({ limit, page, query, sort }) {
+        // TODO ver qué enviar en la query
+        const pQuery = { status: false }
+
+        return await ProductModel.paginate(
+            pQuery,
+            {
+                sort: sort ? { price: sort } : undefined,
+                limit: limit,
+                page: page,
+                projection,
+                lean: true
+            }
+        )
     }
 
     async getProductById(id) {

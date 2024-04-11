@@ -7,14 +7,19 @@ const pm = new ProductManager('./assets/productos.json')
 const router = Router()
 
 router.get('/', validateGetProducts, async (req, res) => {
-    const limit = Number.parseInt(req.query.limit)
+    let result = await pm.getProducts(req.query)
 
-    let products = await pm.getProducts()
-
-    if (limit && limit >= 0) {
-        products = products.slice(0, limit)
-    }
-    res.json({ products })
+    res.json({
+        status: "success",
+        payload: result.docs,
+        prevPage: result.prevPage,
+        nextPage: result.nextPage,
+        page: result.page,
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        prevLink: result.hasPrevPage ? `/` : null,
+        nextLink: result.hasNextPage? `/` : null
+    })
 })
 
 router.get('/:pid', async (req, res) => {

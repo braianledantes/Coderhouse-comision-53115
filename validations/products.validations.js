@@ -14,7 +14,7 @@ validateGetProducts = [
         .escape(),
     query('sort')
         .default(undefined)
-        .isIn([undefined, 'asc', 'des']),
+        .isIn([undefined, 'asc', 'desc']),
     (req, res, next) => {
         try {
             validationResult(req).throw()
