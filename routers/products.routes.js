@@ -1,12 +1,12 @@
 const { Router } = require('express')
-const { validatePartialProduct, validateProduct } = require('../validations/products.validations.js')
+const { validateGetProducts, validateNewProduct, validateUpdateProduct } = require('../validations/products.validations.js')
 const ProductManager = require('../dao/dbManagers/ProductManager.js')
 
 const pm = new ProductManager('./assets/productos.json')
 
 const router = Router()
 
-router.get('/', async (req, res) => {
+router.get('/', validateGetProducts, async (req, res) => {
     const limit = Number.parseInt(req.query.limit)
 
     let products = await pm.getProducts()
@@ -28,14 +28,7 @@ router.get('/:pid', async (req, res) => {
     }
 })
 
-router.post('/', (req, res, next) => {
-    const result = validateProduct(req.body)
-    if (result.success) {
-        next()
-    } else {
-        res.status(400).json({ message: JSON.parse(result.error.message) })
-    }
-}, async (req, res) => {
+router.post('/', validateNewProduct, async (req, res) => {
     const newProduct = req.body
     try {
         const productCreated = await pm.addProduct(newProduct)
@@ -49,15 +42,7 @@ router.post('/', (req, res, next) => {
     }
 })
 
-router.put('/:pid', (req, res, next) => {
-    const result = validatePartialProduct(req.body)
-    if (result.success) {
-        req.body = result.data
-        next()
-    } else {
-        res.status(400).json({ message: JSON.parse(result.error.message) })
-    }
-}, async (req, res) => {
+router.put('/:pid', validateUpdateProduct, async (req, res) => {
     const data = req.body
     const pid = req.params.pid
     try {
@@ -74,9 +59,9 @@ router.delete('/:pid', async (req, res) => {
     const pid = req.params.pid
     try {
         await pm.deleteProduct(pid)
-        
+
         req.app.get('websocket').emit('product-deleted', { productId: pid })
-        
+
         res.json({ message: `Product ${pid} deleted` })
     } catch (error) {
         res.status(400).json({ message: error.message })

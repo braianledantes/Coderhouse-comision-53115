@@ -1,4 +1,31 @@
+const { query, validationResult, matchedData } = require('express-validator')
 const z = require('zod')
+
+validateGetProducts = [
+    query('limit')
+        .default(10)
+        .isInt({ min: 1 }),
+    query('page')
+        .default(1)
+        .isInt({ min: 1 }),
+    query('query')
+        .default('')
+        .isString()
+        .escape(),
+    query('sort')
+        .default(undefined)
+        .isIn([undefined, 'asc', 'des']),
+    (req, res, next) => {
+        try {
+            validationResult(req).throw()
+            req.query = matchedData(req)
+            next()
+        } catch (error) {
+            res.status(400)
+            res.send({ errors: error.array() })
+        }
+    }
+]
 
 const productSchema = z.object({
     title: z.string(),
@@ -11,12 +38,22 @@ const productSchema = z.object({
     thumbnail: z.array(z.string().url()).optional(),
 })
 
-function validatePartialProduct(product) {
-    return productSchema.partial().safeParse(product)
+function validateNewProduct(req, res, next) {
+    const result = productSchema.partial().safeParse(req.body)
+    if (result.success) {
+        return next()
+    }
+
+    return res.status(400).json({ message: JSON.parse(result.error.message) })
 }
 
-function validateProduct(product) {
-    return productSchema.safeParse(product)
+function validateUpdateProduct(req, res, next) {
+    const result = productSchema.safeParse(req.body)
+    if (result.success) {
+        return next()
+    }
+
+    return res.status(400).json({ message: JSON.parse(result.error.message) })
 }
 
-module.exports = { validatePartialProduct, validateProduct }
+module.exports = { validateGetProducts, validateNewProduct, validateUpdateProduct }
