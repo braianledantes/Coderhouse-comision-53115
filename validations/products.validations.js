@@ -41,6 +41,8 @@ const productSchema = z.object({
 function validateNewProduct(req, res, next) {
     const result = productSchema.partial().safeParse(req.body)
     if (result.success) {
+        // cambia el contenido del body con los datos correctos
+        req.body = result.data
         return next()
     }
 
@@ -50,6 +52,8 @@ function validateNewProduct(req, res, next) {
 function validateUpdateProduct(req, res, next) {
     const result = productSchema.safeParse(req.body)
     if (result.success) {
+        // cambia el contenido del body con los datos correctos
+        req.body = result.data
         return next()
     }
 
