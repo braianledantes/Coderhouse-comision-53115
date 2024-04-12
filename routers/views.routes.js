@@ -11,7 +11,7 @@ const mm = new MessageManager()
 const router = Router()
 
 router.get('/home', async (req, res) => {
-    const result = await pm.getProducts({ limit: Number.MAX_VALUE })
+    const result = await pm.getProducts({ limit: 9999999 })
     const products = result.docs.map(p => ({
         ...p,
         thumbnail: p.thumbnail[0]
@@ -46,8 +46,17 @@ router.get('/products', validateGetProducts, async (req, res) => {
 })
 
 router.get('/realtimeproducts', async (req, res) => {
-    const products = await pm.getProducts({})
-    res.render('realtimeproducts', { products })
+    const result = await pm.getProducts({ limit: 9999999, sort: 'desc' })
+    const products = result.docs.map(p => ({
+        ...p,
+        thumbnail: p.thumbnail[0]
+    }))
+    const isEmpty = products.length === 0
+
+    res.render('realtimeproducts', {
+        isEmpty,
+        products
+    })
 })
 
 router.get('/chat', async (_, res) => {

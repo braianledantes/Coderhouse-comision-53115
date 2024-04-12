@@ -1,13 +1,14 @@
+<h2 class="section-title">Paginación de productos</h2>
 <section class="products">
     <div class="products-list">
         {{#each payload}}
         <article class="product" id="{{this.id}}">
             <img class="img" src="{{this.thumbnail}}">
             <h3 class="title">{{this.title}}</h3>
-            <p class="code">Code: {{this.code}}</p>
+            <p class="code">Código: {{this.code}}</p>
             <p class="stock">Stock: {{this.stock}}</p>
-            <p class="price">Price: ${{this.price}}</p>
-            <p class="category">Category: {{this.category}}</p>
+            <p class="price">Precio: ${{this.price}}</p>
+            <p class="category">Categoría: {{this.category}}</p>
             {{!-- TODO ver como obtener el carrito --}}
             <button onclick="addProductToCart('{{this.id}}')">Agregar al carrito</button>
 
@@ -16,10 +17,10 @@
     </div>
     <div class="page-nav">
         {{#if hasPrevPage}}
-        <a href="{{prevLink}}" class="btn-prev">Prev</a>
+        <a href="{{prevLink}}" class="btn-prev">Anterior</a>
         {{/if}}
         {{#if hasNextPage}}
-        <a href="{{nextLink}}" class="btn-prev">Next</a>
+        <a href="{{nextLink}}" class="btn-prev">Siguiente</a>
         {{/if}}
     </div>
 </section>

@@ -8,10 +8,10 @@
         </article>
         {{/each}}
     </div>
-    <div class="chat-input">
-        <textarea id="input-message" type="text" title="input" placeholder="Escribe un mensaje" rows="1"></textarea>
-        <button id="btn-enviar">Enviar</button>
-    </div>
+    <form id="chat-form">
+        <input id="input-message" type="text" title="input" placeholder="Escribe un mensaje" />
+        <input id="btn-submit" type="submit" value="Enviar">
+    </form>
 </section>
 
 <script src="/socket.io/socket.io.js"></script>

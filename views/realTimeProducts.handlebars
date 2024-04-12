@@ -1,41 +1,45 @@
-<form id="form" class="form-create-product">
-    <h2>Create new product</h2>
-    <label for="code">Code: </label>
-    <input type="text" name="code" id="code">
-    <label for="title">Title: </label>
-    <input type="text" name="title" id="title">
-    <label for="description">Description: </label>
-    <input type="text" name="description" id="description">
-    <label for="thumbnail">Thumbnail: </label>
-    <input type="url" name="thumbnail" id="thumbnail">
-    <label for="price">Price: </label>
-    <input type="number" name="price" id="price">
-    <label for="status">Status: </label>
-    <input type="checkbox" name="status" id="status">
-    <label for="stock">Stock: </label>
-    <input type="number" name="stock" id="stock">
-    <label for="category">Category: </label>
-    <input type="text" name="category" id="category">
-    <button id="btnCreateProduct">Create</button>
-</form>
+<h2 class="section-title">Productos en tiempo real</h2>
+<section class="realtimeproducts">
+    <form id="form" class="form-create-product">
+        <h3>Crear producto nuevo</h3>
+        <label for="code">Código: </label>
+        <input type="text" name="code" id="code">
+        <label for="title">Título: </label>
+        <input type="text" name="title" id="title">
+        <label for="description">Descripción: </label>
+        <input type="text" name="description" id="description">
+        <label for="thumbnail">Miniatura: </label>
+        <input type="url" name="thumbnail" id="thumbnail">
+        <label for="price">Precio: </label>
+        <input type="number" name="price" id="price">
+        <label for="status">Estado: </label>
+        <input type="checkbox" name="status" id="status">
+        <label for="stock">Stock: </label>
+        <input type="number" name="stock" id="stock">
+        <label for="category">Categoría: </label>
+        <input type="text" name="category" id="category">
+        <button id="btnCreateProduct">Crear</button>
+    </form>
 
-<h2>Lista de productos</h2>
-<section id="products-list" class="products-list">
-    {{#if isEmpty}}
-    <p>No hay productos para mostrar 😢</p>
-    {{else}}
-    {{#each products}}
-    <article class="product" id="{{this.id}}">
-        <img class="img" src="{{this.thumbnail}}">
-        <h3 class="title">{{this.title}}</h3>
-        <p class="code">Code: {{this.code}}</p>
-        <p class="stock">Stock: {{this.stock}}</p>
-        <p class="price">Price: ${{this.price}}</p>
-        <p class="category">Category: {{this.category}}</p>
-        <button onclick="deleteProduct('{{this.id}}')">Delete</button>
-    </article>
-    {{/each}}
-    {{/if}}
+    <div>
+        <section id="products-list" class="products-list">
+            {{#if isEmpty}}
+            <p>No hay productos para mostrar 😢</p>
+            {{else}}
+            {{#each products}}
+            <article class="product" id="{{this.id}}">
+                <img class="img" src="{{this.thumbnail}}">
+                <h3 class="title">{{this.title}}</h3>
+                <p class="code">Código: {{this.code}}</p>
+                <p class="stock">Stock: {{this.stock}}</p>
+                <p class="price">Precio: ${{this.price}}</p>
+                <p class="category">Categoría: {{this.category}}</p>
+                <button onclick="deleteProduct('{{this.id}}')">Eliminar</button>
+            </article>
+            {{/each}}
+            {{/if}}
+        </section>
+    </div>
 </section>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/scripts/realtimeproducts.js"></script>

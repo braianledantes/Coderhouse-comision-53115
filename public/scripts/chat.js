@@ -7,24 +7,28 @@ if (!localStorage.getItem('user')) {
 }
 
 const chat = document.getElementById('chat-messages')
+const form = document.getElementById('chat-form')
 const inputMessage = document.getElementById('input-message')
-const btnEnviar = document.getElementById('btn-enviar')
 
-btnEnviar.addEventListener('click', async () => {
-    const message = {
-        user: localStorage.getItem('user'),
-        message: inputMessage.value
+form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    if (inputMessage.value) {
+        const message = {
+            user: localStorage.getItem('user'),
+            message: inputMessage.value
+        }
+
+        await fetch('/api/chat', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(message)
+        })
+
+        inputMessage.value = ''
     }
-
-    await fetch('/api/chat', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(message)
-    })
-
-    inputMessage.value = ''
 })
 
 socket.on('new-message', data => {
