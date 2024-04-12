@@ -31,10 +31,10 @@ class ProductManager {
 
     async getProducts({ limit, page, query, sort }) {
         // TODO ver qué enviar en la query
-        const pQuery = { status: false }
+        // const pQuery = { status: false }
 
         return await ProductModel.paginate(
-            pQuery,
+            {},
             {
                 sort: sort ? { price: sort } : undefined,
                 limit: limit,
