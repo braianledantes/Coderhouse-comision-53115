@@ -5,6 +5,8 @@
 }
 
 header {
+    position: sticky;
+    top: 0;
     display: flex;
     justify-content: space-between;
     background-color: lightgray;
@@ -37,6 +39,10 @@ main {
     padding: 1.5rem 3rem;
 }
 
+button {
+    padding: .5rem 2rem;
+}
+
 .section-title {
     margin-bottom: 1rem;
     font-size: 2rem;
@@ -60,6 +66,7 @@ main {
     box-shadow: 5px 5px 5px gray;
 }
 
+/* Realtime products */
 .realtimeproducts {
     display: flex;
     align-items: start;
@@ -96,6 +103,8 @@ main {
 }
 
 .form-create-product {
+    position: sticky;
+    top: 6rem;
     display: grid;
     gap: 1rem;
     grid-template-columns: 1fr 4fr;
@@ -120,29 +129,26 @@ main {
     justify-self: left;
 }
 
-button {
-    margin-top: 1rem;
-    grid-column: 2/3;
-    justify-self: right;
-    padding: .5rem 2rem;
+.form-create-product button {
+    grid-column: -2;
 }
 
 /* Chat */
 .chat {
     border: 1px solid black;
-    height: 80vh;
+    height: 85vh;
     max-width: 400px;
     margin: 0 auto;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    background-color: antiquewhite;
+    background-color: rgb(245, 245, 245);
 }
 
 .chat .chat-title {
     margin: 0;
     padding: .5rem;
     box-sizing: border-box;
-    background-color: burlywood;
+    background-color: lightgray;
     border-bottom: 1px solid gray;
 }
 
@@ -164,10 +170,36 @@ button {
 }
 
 #chat-form {
-    background-color: bisque;
+    background-color: lightgray;
     padding: .5rem;
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 1rem;
     border-top: 1px solid gray;
+}
+
+/* individual product */
+.individual-product {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 400px));
+    gap: 2rem;
+    justify-content: center;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: .5rem 2rem;
+}
+
+.individual-product button {
+    grid-column: 1;
+}
+
+.individual-product img {
+    width: 100%;
+    border-radius: 5px;
 }

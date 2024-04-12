@@ -6,12 +6,11 @@
             <img class="img" src="{{this.thumbnail}}">
             <h3 class="title">{{this.title}}</h3>
             <p class="code">Código: {{this.code}}</p>
-            <p class="stock">Stock: {{this.stock}}</p>
             <p class="price">Precio: ${{this.price}}</p>
-            <p class="category">Categoría: {{this.category}}</p>
-            {{!-- TODO ver como obtener el carrito --}}
-            <button onclick="addProductToCart('{{this.id}}')">Agregar al carrito</button>
-
+            <div class="product-item-buttons">
+                <a href="/products/{{this.id}}"><button>Ver</button></a>
+                <button onclick="addProductToCart('{{this.id}}')">Agregar al carrito</button>
+            </div>
         </article>
         {{/each}}
     </div>

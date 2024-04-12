@@ -1,0 +1,17 @@
+<section class="individual-product">
+    <img class="img" src="{{this.thumbnail}}" alt="{{this.title}}">
+
+    <div class="product-info">
+        <h3 class="title">{{this.title}}</h3>
+        <p class="code">Código: {{this.code}}</p>
+        <p class="description">Descripción: {{this.description}}</p>
+        <p class="stock">Stock: {{this.stock}}</p>
+        <p class="price">Precio: ${{this.price}}</p>
+        <p class="category">Categoría: {{this.category}}</p>
+    </div>
+
+    <button type="button" onclick="addProductToCart('{{this.id}}')">Agregar al carrito</button>
+
+
+</section>
+<script src="/scripts/products.js"></script>

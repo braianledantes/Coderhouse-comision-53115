@@ -32,7 +32,7 @@ router.get('/products', validateGetProducts, async (req, res) => {
         thumbnail: p.thumbnail[0]
     }))
 
-    res.render('products',{
+    res.render('products', {
         status: "success",
         payload: products,
         prevPage: result.prevPage,
@@ -41,8 +41,19 @@ router.get('/products', validateGetProducts, async (req, res) => {
         hasPrevPage: result.hasPrevPage,
         hasNextPage: result.hasNextPage,
         prevLink: result.hasPrevPage ? `/products?page=${result.prevPage}` : null,
-        nextLink: result.hasNextPage? `/products?page=${result.nextPage}` : null
+        nextLink: result.hasNextPage ? `/products?page=${result.nextPage}` : null
     })
+})
+
+router.get('/products/:pid', async (req, res) => {
+    try {
+        let result = await pm.getProductById(req.params.pid)
+
+        res.render('product', result)
+    } catch (error) {
+        res.render('product', {})
+    }
+    
 })
 
 router.get('/realtimeproducts', async (req, res) => {
@@ -66,7 +77,6 @@ router.get('/chat', async (_, res) => {
 
 router.get('/carts/:cid', async (req, res) => {
     const products = await cm.getCartById(req.params.cid)
-    console.log(products);
     res.render('carts', products)
 })
 
