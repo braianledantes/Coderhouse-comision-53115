@@ -35,7 +35,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
         // verifica que exista el producto, si no existe lanza un error
         await pm.getProductById(pid)
 
-        const productCart = cart.products.find(e => e.product == pid)
+        const productCart = cart.products.find(e => e.product.id == pid)
         if (productCart) {
             productCart.quantity++
         } else {
