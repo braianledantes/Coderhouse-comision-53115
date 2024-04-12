@@ -25,10 +25,12 @@ class CartManager {
 
     async getCartById(id) {
         try {
-            const cart = await CartModel.findById(
-                id,
-                projection
-            )
+            const cart = await CartModel
+                .findById(
+                    id,
+                    projection
+                )
+                .populate('products.product')
             return this.#toCartJson(cart)
         } catch (error) {
             throw new Error(`Cart with id ${id} not found`)

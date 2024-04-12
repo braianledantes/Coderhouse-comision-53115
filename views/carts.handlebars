@@ -1,0 +1,15 @@
+<section class="cart">
+    <h2>Productos del carrito</h2>
+    <section id="products-list" class="products-list">
+        {{#each products}}
+        <article class="product" id="{{this.product.id}}">
+            <img class="img" src="{{this.product.thumbnail}}">
+            <h3 class="title">{{this.product.title}}</h3>
+            <p class="code">Code: {{this.product.code}}</p>
+            <p class="stock">Stock: {{this.product.stock}}</p>
+            <p class="price">Price: ${{this.product.price}}</p>
+            <p class="category">Category: {{this.product.category}}</p>
+            <p><strong>Cantidad: {{this.quantity}}</strong></p>
+        </article>
+        {{/each}}
+    </section>
