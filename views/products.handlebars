@@ -1,0 +1,27 @@
+<section class="products">
+    <div class="products-list">
+        {{#each payload}}
+        <article class="product" id="{{this.id}}">
+            <img class="img" src="{{this.thumbnail}}">
+            <h3 class="title">{{this.title}}</h3>
+            <p class="code">Code: {{this.code}}</p>
+            <p class="stock">Stock: {{this.stock}}</p>
+            <p class="price">Price: ${{this.price}}</p>
+            <p class="category">Category: {{this.category}}</p>
+            {{!-- TODO ver como obtener el carrito --}}
+            <button onclick="addProductToCart('{{this.id}}')">Agregar al carrito</button>
+
+        </article>
+        {{/each}}
+    </div>
+    <div class="page-nav">
+        {{#if hasPrevPage}}
+        <a href="{{prevLink}}" class="btn-prev">Prev</a>
+        {{/if}}
+        {{#if hasNextPage}}
+        <a href="{{nextLink}}" class="btn-prev">Next</a>
+        {{/if}}
+    </div>
+</section>
+
+<script src="/scripts/products.js"></script>
