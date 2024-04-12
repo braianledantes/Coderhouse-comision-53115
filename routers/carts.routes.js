@@ -8,6 +8,9 @@ const pm = new ProductManager('./assets/productos.json')
 
 const router = Router()
 
+/**
+ * Crea un carrito vacio. Devuelve el carrito.
+ */
 router.post('/', async (_, res) => {
     try {
         const newCart = await cm.addCart({ products: [] })
@@ -17,6 +20,9 @@ router.post('/', async (_, res) => {
     }
 })
 
+/**
+ * Dado un id de un carrito se obtienen los productos del mismo.
+ */
 router.get('/:cid', async (req, res) => {
     const cid = req.params.cid
 
@@ -64,6 +70,9 @@ router.delete('/:cid', async (req, res) => {
     }
 })
 
+/**
+ * Agrega un producto a un carrito, si el producto ya está en el carrito se suma la cantidad.
+ */
 router.post('/:cid/product/:pid', async (req, res) => {
     const { cid, pid } = req.params
 
