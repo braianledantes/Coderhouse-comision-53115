@@ -8,6 +8,7 @@ header {
     position: sticky;
     top: 0;
     display: flex;
+    gap: 1rem;
     justify-content: space-between;
     background-color: lightgray;
     border-bottom: 1px solid black;
@@ -180,8 +181,10 @@ button {
 
 /* individual product */
 .individual-product {
+    max-width: 1000px;
     display: grid;
-    grid-template-columns: repeat(2, minmax(300px, 400px));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
+    margin: 0 auto;
     gap: 2rem;
     justify-content: center;
 }
@@ -201,5 +204,14 @@ button {
 
 .individual-product img {
     width: 100%;
-    border-radius: 5px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border: 1px solid gray;
+    border-radius: 5px;    
+}
+
+@media screen and (max-width: 900px) {
+    header {
+        flex-direction: column;
+    }
 }
