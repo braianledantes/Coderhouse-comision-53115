@@ -34,7 +34,9 @@
                 <p class="stock">Stock: {{this.stock}}</p>
                 <p class="price">Precio: ${{this.price}}</p>
                 <p class="category">Categoría: {{this.category}}</p>
-                <button onclick="deleteProduct('{{this.id}}')">Eliminar</button>
+                <div class="product-item-buttons">
+                    <button onclick="deleteProduct('{{this.id}}')">Eliminar</button>
+                </div>
             </article>
             {{/each}}
             {{/if}}
