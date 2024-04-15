@@ -4,14 +4,19 @@ const z = require('zod')
 validateGetProducts = [
     query('limit')
         .default(10)
+        .toInt()
         .isInt({ min: 1 }),
     query('page')
         .default(1)
+        .toInt()
         .isInt({ min: 1 }),
-    query('query')
-        .default('')
+    query('category')
         .isString()
-        .escape(),
+        .optional(),
+    query('availability')
+        .isBoolean()
+        .toBoolean()
+        .optional(),
     query('sort')
         .default(undefined)
         .isIn([undefined, 'asc', 'desc']),

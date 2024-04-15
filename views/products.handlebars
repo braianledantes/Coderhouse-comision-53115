@@ -1,5 +1,16 @@
 <h2 class="section-title">Paginación de productos</h2>
 <section class="products">
+    <form class="products-query-form" action="/products">
+        <label for="category">Categoría:</label>
+        <input type="search" name="category" placeholder="Filtrar por categoría">
+        <label for="sort">Orden:</label>
+        <select name="sort" id="">
+            <option value="asc">Ascendente</option>
+            <option value="desc">Descendente</option>
+        </select>
+        <button type="submit">Buscar</button>
+    </form>
+
     <div class="products-list">
         {{#each payload}}
         <article class="product" id="{{this.id}}">

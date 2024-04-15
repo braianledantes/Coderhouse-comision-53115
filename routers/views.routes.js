@@ -24,8 +24,8 @@ router.get('/home', async (req, res) => {
     })
 })
 
-router.get('/products', validateGetProducts, async (req, res) => {
-    let result = await pm.getProducts(req.query)
+router.get('/products', validateGetProducts, async (req, res) => {    
+    const result = await pm.getProducts(req.query)
 
     const products = result.docs.map(p => ({
         ...p,
@@ -53,7 +53,7 @@ router.get('/products/:pid', async (req, res) => {
     } catch (error) {
         res.render('product', {})
     }
-    
+
 })
 
 router.get('/realtimeproducts', async (req, res) => {

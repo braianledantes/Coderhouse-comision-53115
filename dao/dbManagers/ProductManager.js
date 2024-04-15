@@ -29,12 +29,24 @@ class ProductManager {
         }
     }
 
-    async getProducts({ limit, page, query, sort }) {
-        // TODO ver qué enviar en la query
-        // const pQuery = { status: false }
+    async getProducts({ limit, page, category, availability, sort }) {
+        // crea la consulta para aplicar el filtro
+        const andArray = []
+        if (category) {
+            andArray.push({ category })
+        }
+        // el producto está disponible si su estado es verdadero y hay stock
+        if (availability == true) {
+            andArray.push({ status: true })
+            andArray.push({ stock: { $gt: 0 } })
+        } else if (availability == false) {
+            andArray.push({ $or: [{ status: false }, { stock: 0 }] })
+        }
+
+        const query = andArray.length > 0 ? { $and: andArray } : {}
 
         return await ProductModel.paginate(
-            {},
+            query,
             {
                 sort: sort ? { price: sort } : undefined,
                 limit: limit,
