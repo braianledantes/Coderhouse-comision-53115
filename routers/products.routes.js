@@ -9,17 +9,22 @@ const router = Router()
 router.get('/', validateGetProducts, async (req, res) => {
     let result = await pm.getProducts(req.query)
 
-    res.json({
-        status: "success",
-        payload: result.docs,
-        prevPage: result.prevPage,
-        nextPage: result.nextPage,
-        page: result.page,
-        hasPrevPage: result.hasPrevPage,
-        hasNextPage: result.hasNextPage,
-        prevLink: result.hasPrevPage ? `/` : null,
-        nextLink: result.hasNextPage? `/` : null
-    })
+    // crea la url
+    const params = Object.keys(req.query)
+        // elimina la propiedad page
+        .filter(key => key != 'page')
+        // quita las propiedades sin valor
+        .filter(key => req.query[key] != undefined)
+        // transforma las propiedades en query params
+        .map(key => `${key}=${req.query[key]}`)
+        .join('&')
+    const url = `${req.baseUrl}?${params}`
+
+    // // setea los links de navegacion
+    result.prevLink = result.hasPrevPage ? `${url}&page=${result.prevPage}` : null
+    result.nextLink = result.hasNextPage ? `${url}&page=${result.nextPage}` : null
+
+    res.json(result)
 })
 
 router.get('/:pid', async (req, res) => {

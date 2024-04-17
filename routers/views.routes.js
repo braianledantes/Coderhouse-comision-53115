@@ -12,10 +12,7 @@ const router = Router()
 
 router.get('/home', async (req, res) => {
     const result = await pm.getProducts({ limit: 9999999 })
-    const products = result.docs.map(p => ({
-        ...p,
-        thumbnail: p.thumbnail[0]
-    }))
+    const products = result.payload
     const isEmpty = products.length === 0
 
     res.render('home', {
@@ -24,25 +21,25 @@ router.get('/home', async (req, res) => {
     })
 })
 
-router.get('/products', validateGetProducts, async (req, res) => {    
+router.get('/products', validateGetProducts, async (req, res) => {
     const result = await pm.getProducts(req.query)
 
-    const products = result.docs.map(p => ({
-        ...p,
-        thumbnail: p.thumbnail[0]
-    }))
+    // crea la url
+    const params = Object.keys(req.query)
+        // elimina la propiedad page
+        .filter(key => key != 'page')
+        // quita las propiedades sin valor
+        .filter(key => req.query[key] != undefined)
+        // transforma las propiedades en query params
+        .map(key => `${key}=${req.query[key]}`)
+        .join('&')
+    const url = `${req.route.path}?${params}`
 
-    res.render('products', {
-        status: "success",
-        payload: products,
-        prevPage: result.prevPage,
-        nextPage: result.nextPage,
-        page: result.page,
-        hasPrevPage: result.hasPrevPage,
-        hasNextPage: result.hasNextPage,
-        prevLink: result.hasPrevPage ? `/products?page=${result.prevPage}` : null,
-        nextLink: result.hasNextPage ? `/products?page=${result.nextPage}` : null
-    })
+    // // setea los links de navegacion
+    result.prevLink = result.hasPrevPage ? `${url}&page=${result.prevPage}` : null
+    result.nextLink = result.hasNextPage ? `${url}&page=${result.nextPage}` : null
+
+    res.render('products', result)
 })
 
 router.get('/products/:pid', async (req, res) => {
