@@ -4,6 +4,8 @@ const handlebars = require('express-handlebars')
 const morgan = require('morgan')
 const { createServer } = require('node:http')
 const { Server } = require('socket.io')
+const { dbName, mongoUrl } = require('./dbConfig')
+const sessionMiddleware = require('./session/mongoStorage')
 const productsRouter = require('./routers/products.routes')
 const cartsRouter = require('./routers/carts.routes')
 const chatRouter = require('./routers/chat.routes')
@@ -23,6 +25,7 @@ app.set('view engine', 'handlebars')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('tiny'))
+app.use(sessionMiddleware)
 
 app.use(express.static('public'))
 app.use('/api/products', productsRouter)
@@ -32,7 +35,7 @@ app.use('/', viewsRouter)
 
 const main = async () => {
     await mongoose.connect(
-        'mongodb+srv://braianledantes:chutebnl@codercluster.hi6cwhh.mongodb.net/',
+        mongoUrl,
         {
             dbName
         }
