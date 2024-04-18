@@ -4,10 +4,10 @@ const handlebars = require('express-handlebars')
 const morgan = require('morgan')
 const { createServer } = require('node:http')
 const { Server } = require('socket.io')
-const products = require('./routers/products.routes')
-const carts = require('./routers/carts.routes')
-const chat = require('./routers/chat.routes')
-const views = require('./routers/views.routes')
+const productsRouter = require('./routers/products.routes')
+const cartsRouter = require('./routers/carts.routes')
+const chatRouter = require('./routers/chat.routes')
+const viewsRouter = require('./routers/views.routes')
 
 const PORT = 8080
 
@@ -25,10 +25,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(morgan('tiny'))
 
 app.use(express.static('public'))
-app.use('/api/products', products)
-app.use('/api/carts', carts)
-app.use('/api/chat', chat)
-app.use('/', views)
+app.use('/api/products', productsRouter)
+app.use('/api/carts', cartsRouter)
+app.use('/api/chat', chatRouter)
+app.use('/', viewsRouter)
 
 const main = async () => {
     await mongoose.connect(
