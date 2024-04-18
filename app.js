@@ -34,7 +34,7 @@ const main = async () => {
     await mongoose.connect(
         'mongodb+srv://braianledantes:chutebnl@codercluster.hi6cwhh.mongodb.net/',
         {
-            dbName: 'e-commerce'
+            dbName
         }
     )
 
