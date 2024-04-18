@@ -55,10 +55,7 @@ router.get('/products/:pid', async (req, res) => {
 
 router.get('/realtimeproducts', async (req, res) => {
     const result = await pm.getProducts({ limit: 9999999, sort: 'desc' })
-    const products = result.docs.map(p => ({
-        ...p,
-        thumbnail: p.thumbnail[0]
-    }))
+    const products = result.payload
     const isEmpty = products.length === 0
 
     res.render('realtimeproducts', {
