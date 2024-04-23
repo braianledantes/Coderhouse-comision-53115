@@ -1,14 +1,27 @@
 const { Router } = require('express')
-const { validateGetProducts } = require('../validations/products.validations.js')
-const ProductManager = require('../dao/dbManagers/ProductManager.js')
-const MessageManager = require('../dao/dbManagers/MessagesManager.js')
-const CartsManager = require('../dao/dbManagers/CartsManager.js')
+const { validateGetProducts } = require('../validations/products.validations')
+const { userIsLoggedIn, userIsNotLoggedIn } = require('../middlewares/auth.middleware')
+const ProductManager = require('../dao/dbManagers/ProductManager')
+const MessageManager = require('../dao/dbManagers/MessagesManager')
+const CartsManager = require('../dao/dbManagers/CartsManager')
+const UsersManager = require('../dao/dbManagers/UsersManager')
 
 const pm = new ProductManager('./assets/productos.json')
 const cm = new CartsManager()
 const mm = new MessageManager()
+const um = new UsersManager()
 
 const router = Router()
+
+router.get('/', (req, res) => {
+    const isLoggedIn = ![null, undefined].includes(req.session.user)
+
+    res.render('index', {
+        title: 'Home',
+        isLoggedIn,
+        isNotLoggedIn: !isLoggedIn,
+    })
+})
 
 router.get('/home', async (req, res) => {
     const result = await pm.getProducts({ limit: 9999999 })
@@ -74,4 +87,33 @@ router.get('/carts/:cid', async (req, res) => {
     res.render('carts', products)
 })
 
+router.get('/login', userIsNotLoggedIn, (req, res) => {
+    res.render('login', {
+        title: 'Iniciar Sesión'
+    })
+})
+
+router.get('/register', userIsNotLoggedIn, (req, res) => {
+    res.render('register', {
+        title: 'Registrarse'
+    })
+})
+
+router.get('/profile', userIsLoggedIn, async (req, res) => {
+    const emailFromSession = req.session.user.email
+    const user = await um.getUserByEmail({ email: emailFromSession })
+
+    res.render('profile', {
+        title: 'My profile',
+        user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            age: user.age,
+            email: user.email
+        }
+    })
+    res.render('profile', {
+        title: 'Mi Perfil'
+    })
+})
 module.exports = router

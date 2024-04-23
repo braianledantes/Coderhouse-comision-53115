@@ -241,6 +241,30 @@ button {
     border-radius: 5px;    
 }
 
+/* Formularios de registro e inicio de sesion */
+.form-login,
+.form-register {
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    max-width: 400px;
+    gap: 1rem;
+    border: 1px solid black;
+    padding: 1.5rem;
+    box-shadow: 5px 5px 5px gray;
+    border-radius: 10px;
+}
+
+.form-login label:nth-child(odd),
+.form-register label:nth-child(odd) {
+    justify-self: right;
+}
+
+.form-login button,
+.form-register button {
+    grid-column: 2
+}
+
 @media screen and (max-width: 900px) {
     header {
         flex-direction: column;
