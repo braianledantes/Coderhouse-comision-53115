@@ -9,6 +9,7 @@ const sessionMiddleware = require('./session/mongoStorage')
 const productsRouter = require('./routers/products.routes')
 const cartsRouter = require('./routers/carts.routes')
 const chatRouter = require('./routers/chat.routes')
+const sessionsRouter = require('./routers/sessions.routes')
 const viewsRouter = require('./routers/views.routes')
 
 const PORT = 8080
@@ -31,6 +32,7 @@ app.use(express.static('public'))
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 app.use('/api/chat', chatRouter)
+app.use('/api/sessions', sessionsRouter)
 app.use('/', viewsRouter)
 
 const main = async () => {
