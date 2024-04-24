@@ -11,6 +11,13 @@
         <button type="submit">Buscar</button>
     </form>
 
+    <div class="user-info">
+        <h2>Bienvenido {{user.firstName}} {{user.lastName}}</h2>
+        <h3>Datos del perfil:</h3>
+        <p>Edad: {{user.age}}</p>
+        <p>Email: {{user.email}}</p>
+    </div>
+
     <div class="products-list">
         {{#each payload}}
         <article class="product" id="{{this.id}}">

@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const { validateUser, validateEmailAndPasswordUser } = require('../validations/user.validations')
 const UsersManager = require('../dao/dbManagers/UsersManager')
+const admin = require('../admin')
 
 const userManager = new UsersManager()
 
@@ -10,10 +11,18 @@ router.post('/login', validateEmailAndPasswordUser, async (req, res) => {
     try {
         const { email, password } = req.body
 
-        // 1. verificar que el usuario exista en la BD
-        const user = await userManager.getUserByEmailAndPassword({ email, password })
-        if (!user) {
-            return res.status(400).json({ error: 'User not found!' })
+        // verifica que el usuario sea admin
+        if (admin.validateLogin(email, password)) {
+            // rol de admin
+            req.session.role = "admin"
+        } else {
+            // verificar que el usuario exista en la BD
+            const user = await userManager.getUserByEmailAndPassword({ email, password })
+            if (!user) {
+                return res.status(400).json({ error: 'User not found!' })
+            }
+            // rol de user
+            req.session.role = "user"
         }
 
         // 2. crear nueva sesión si el usuario existe
@@ -31,7 +40,7 @@ router.get('/logout', (req, res) => {
         if (!err) {
             return res.redirect('/')
         }
-        
+
         return res.status(500).json({ error: err })
     })
 })
@@ -53,7 +62,7 @@ router.post('/register', validateUser, (req, res) => {
 
     } catch (error) {
         return res.status(500).json({ error })
-    }   
+    }
 })
 
 module.exports = router
