@@ -96,6 +96,16 @@ button {
     box-shadow: 5px 5px 5px gray;
 }
 
+/* User profile */
+.user-info {
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 10px;
+    max-width: 400px;
+    min-width: fit-content;
+    margin-bottom: 1rem;
+}
+
 /* Realtime products */
 .realtimeproducts {
     display: flex;

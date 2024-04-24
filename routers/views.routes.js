@@ -5,6 +5,8 @@ const ProductManager = require('../dao/dbManagers/ProductManager')
 const MessageManager = require('../dao/dbManagers/MessagesManager')
 const CartsManager = require('../dao/dbManagers/CartsManager')
 const UsersManager = require('../dao/dbManagers/UsersManager')
+const { userAdmin } = require('../admin')
+const admin = require('../admin')
 
 const pm = new ProductManager('./assets/productos.json')
 const cm = new CartsManager()
@@ -35,6 +37,15 @@ router.get('/home', async (req, res) => {
 })
 
 router.get('/products', validateGetProducts, async (req, res) => {
+    const emailFromSession = req.session.user.email
+
+    let user
+    if (admin.isAdmin(emailFromSession)) {
+        user = admin.userAdmin
+    } else {
+        user = await um.getUserByEmail({ email: emailFromSession })
+    }
+
     const result = await pm.getProducts(req.query)
 
     // crea la url
@@ -52,7 +63,16 @@ router.get('/products', validateGetProducts, async (req, res) => {
     result.prevLink = result.hasPrevPage ? `${url}&page=${result.prevPage}` : null
     result.nextLink = result.hasNextPage ? `${url}&page=${result.nextPage}` : null
 
-    res.render('products', result)
+    res.render('products', {
+        title: 'Productos',
+        ...result,
+        user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            age: user.age,
+            email: user.email
+        }
+    })
 })
 
 router.get('/products/:pid', async (req, res) => {
@@ -101,19 +121,22 @@ router.get('/register', userIsNotLoggedIn, (req, res) => {
 
 router.get('/profile', userIsLoggedIn, async (req, res) => {
     const emailFromSession = req.session.user.email
-    const user = await um.getUserByEmail({ email: emailFromSession })
+
+    let user
+    if (admin.isAdmin(emailFromSession)) {
+        user = admin.userAdmin
+    } else {
+        user = await um.getUserByEmail({ email: emailFromSession })
+    }
 
     res.render('profile', {
-        title: 'My profile',
+        title: 'Mi Perfil',
         user: {
             firstName: user.firstName,
             lastName: user.lastName,
             age: user.age,
             email: user.email
         }
-    })
-    res.render('profile', {
-        title: 'Mi Perfil'
     })
 })
 module.exports = router
