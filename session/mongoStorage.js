@@ -1,6 +1,6 @@
 const MongoStore = require('connect-mongo')
 const session = require('express-session')
-const DbConfig = require('../dbConfig')
+const DbConfig = require('../config/db.config')
 
 const storage = MongoStore.create({
     dbName: DbConfig.dbName,

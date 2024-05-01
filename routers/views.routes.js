@@ -5,8 +5,7 @@ const ProductManager = require('../dao/dbManagers/ProductManager')
 const MessageManager = require('../dao/dbManagers/MessagesManager')
 const CartsManager = require('../dao/dbManagers/CartsManager')
 const UsersManager = require('../dao/dbManagers/UsersManager')
-const { userAdmin } = require('../admin')
-const admin = require('../admin')
+const admin = require('../config/admin')
 
 const pm = new ProductManager('./assets/productos.json')
 const cm = new CartsManager()
@@ -128,6 +127,8 @@ router.get('/profile', userIsLoggedIn, async (req, res) => {
     } else {
         user = await um.getUserByEmail({ email: emailFromSession })
     }
+
+    console.log("/profile", user);
 
     res.render('profile', {
         title: 'Mi Perfil',
