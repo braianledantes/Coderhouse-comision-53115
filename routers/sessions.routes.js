@@ -12,17 +12,6 @@ router.post('/login', validateEmailAndPasswordUser,
     passport.authenticate('login', { failureRedirect: '/api/sessions/faillogin' }),
     async (req, res) => {
         try {
-            const { email, password } = req.body
-
-            // verifica que el usuario sea admin
-            if (admin.validateLogin(email, password)) {
-                // rol de admin
-                req.session.role = "admin"
-            } else {
-                // rol de user
-                req.session.role = "user"
-            }
-
             // crear nueva sesión si el usuario existe
             req.session.user = { email: req.user.email, _id: req.user._id }
 
@@ -62,6 +51,24 @@ router.get('/github', passport.authenticate('github', { scope: ['user:email'] })
 router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
     req.session.user = { email: req.user.email }
     res.redirect('/products')
+})
+
+router.get('/current', async (req, res) => {
+    try {
+        const emailFromSession = req.session.user?.email
+
+        if (!emailFromSession) {
+            return res.status(401).json({ message: "User not logged in" })
+        }
+
+        const user = await userManager.getUserByEmail({ email: emailFromSession })
+        // quita la password
+        delete user.password
+        return res.json(user)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message })
+    }
 })
 
 module.exports = router
