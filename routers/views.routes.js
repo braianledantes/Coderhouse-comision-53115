@@ -102,8 +102,13 @@ router.get('/chat', async (_, res) => {
 })
 
 router.get('/carts/:cid', async (req, res) => {
-    const products = await cm.getCartById(req.params.cid)
-    res.render('carts', products)
+    try {
+        const result = await cm.getCartById(req.params.cid)
+        result.products = result.products.filter(i => i && i.product)
+        return res.render('carts', result)
+    } catch (error) {
+        return res.render('carts', [])
+    }
 })
 
 router.get('/login', userIsNotLoggedIn, (req, res) => {
