@@ -1,6 +1,7 @@
 const passport = require('passport')
 const { Strategy } = require('passport-github2')
 const User = require('../dao/models/user.model')
+const Cart = require('../dao/models/carts.model')
 const { clientID, clientSecret, callbackURL } = require('./github.private')
 
 const initializeStrategy = () => {
@@ -18,6 +19,13 @@ const initializeStrategy = () => {
                     return done(null, user)
                 }
 
+                // crea un carrito para el usuario y luego se lo asigna
+                const newCart = await Cart.create({})
+                if (!newCart) {
+                    // error al crear carrito
+                    return done(null, false)
+                }
+
                 // crear el usuario, ya que no existe
                 const fullname = profile._json.name.split(' ')
                 const newUser = {
@@ -25,7 +33,8 @@ const initializeStrategy = () => {
                     lastName: fullname[1],
                     age: 18,
                     email: profile._json.email,
-                    password: ''
+                    password: '',
+                    cart: newCart.id
                 }
                 const result = await User.create(newUser)
                 done(null, result)
@@ -38,13 +47,11 @@ const initializeStrategy = () => {
 
 
     passport.serializeUser((user, done) => {
-        console.log('serialized!', user)
         done(null, user._id)
     })
 
     passport.deserializeUser(async (id, done) => {
         const user = await User.findById(id)
-        console.log('deserialized!', id, user)
         done(null, user)
     })
 }

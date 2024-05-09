@@ -19,6 +19,16 @@ const schema = new mongoose.Schema({
         unique: true
     },
     password: String,
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Cart',
+        required: true
+    },
+    role: {
+        type: String,
+        require: true,
+        default: "user"
+    }
 })
 
 module.exports = mongoose.model('User', schema, 'users')

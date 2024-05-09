@@ -7,7 +7,13 @@ class UserManager {
     }
 
     async getUserByEmail({ email }) {
-        return UserModel.findOne({ email })
+        try {
+            const user = await UserModel.findOne({ email })
+                .populate('cart')
+            return user.toJSON()
+        } catch (error) {
+            throw new Error(`User with email ${email} not found`)
+        }
     }
 
     async createNewUser({ firstName, lastName, age, email, password }) {

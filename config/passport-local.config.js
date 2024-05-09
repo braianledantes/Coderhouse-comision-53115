@@ -1,6 +1,7 @@
 const passport = require('passport')
 const { Strategy } = require('passport-local')
 const User = require('../dao/models/user.model')
+const Cart = require('../dao/models/carts.model')
 const hashingUtils = require('../utils/hashing')
 
 const initializeStrategy = () => {
@@ -19,12 +20,20 @@ const initializeStrategy = () => {
                 return done(null, false)
             }
 
+            // crea un carrito para el usuario y luego se lo asigna
+            const newCart = await Cart.create({})
+            if (!newCart) {
+                // error al crear carrito
+                return done(null, false)
+            }
+
             const newUser = {
                 firstName,
                 lastName,
                 age: +age,
                 email,
-                password: hashingUtils.hashPassword(password)
+                password: hashingUtils.hashPassword(password),
+                cart: newCart.id
             }
             const result = await User.create(newUser)
 

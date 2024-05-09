@@ -128,8 +128,6 @@ router.get('/profile', userIsLoggedIn, async (req, res) => {
         user = await um.getUserByEmail({ email: emailFromSession })
     }
 
-    console.log("/profile", user);
-
     res.render('profile', {
         title: 'Mi Perfil',
         user: {
