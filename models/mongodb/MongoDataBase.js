@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { mongoUrl, dbName } = require('../../config/db.config')
+const { mongoUrl, dbName } = require('../../config/mongodb.config')
 const CartsDao = require('./dao/CartsDao')
 const MessagesDao = require('./dao/MessagesDao')
 const ProductsDao = require('./dao/ProductsDao')

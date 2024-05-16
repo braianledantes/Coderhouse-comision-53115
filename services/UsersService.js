@@ -39,7 +39,7 @@ class UsersService {
         user.password = hashingUtils.hashPassword(user.password)
         // se asigna el carrito al usuario
         user.cart = newCart.id
-        const newUser = await this.usersDao.createUser(user)
+        const newUser = await this.usersDao.createNewUser(user)
         // se quita la password
         delete newUser.password
         return newUser

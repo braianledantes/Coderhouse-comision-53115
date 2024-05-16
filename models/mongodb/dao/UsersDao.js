@@ -21,7 +21,7 @@ class UserDao {
     }
 
     async createNewUser({ firstName, lastName, age, email, password, cart }) {
-        UserModel.create({
+        return UserModel.create({
             firstName,
             lastName,
             age: +age,

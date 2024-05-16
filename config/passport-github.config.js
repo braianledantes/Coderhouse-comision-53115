@@ -12,9 +12,11 @@ const initializeStrategy = ({ usersService }) => {
         },
         async (_accessToken, _refreshToken, profile, done) => {
             try {
-                const user = await usersService.getUserByEmail({ email: profile._json.email })
-                if (user) {
+                try {
+                    const user = await usersService.getUserByEmail({ email: profile._json.email })
                     return done(null, user)
+                } catch (error) {
+                    // no existe el usuario
                 }
 
                 // crear el usuario, ya que no existe
