@@ -7,7 +7,7 @@ const UsersDao = require('./dao/UsersDao')
 
 mongoose.connect(mongoUrl, { dbName })
     .then(() => { console.log('Mongodb conected') })
-    .catch((err) => { console.log('error connecting to mongo', err) })
+    .catch((err) => { console.error('Error connecting to Mongodb', err) })
 
 class MongoDataBase {
     getCartsDao() {
