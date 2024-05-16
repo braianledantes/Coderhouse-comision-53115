@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { validateGetProducts, validateNewProduct, validateUpdateProduct } = require('../validations/products.validations')
+const { validateGetProducts, validateNewProduct, validateUpdateProduct } = require('../middlewares/validations/products.validations')
 
 const createProductsRouter = ({ productsController }) => {
     const router = Router()

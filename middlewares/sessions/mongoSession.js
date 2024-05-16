@@ -1,6 +1,6 @@
 const MongoStore = require('connect-mongo')
 const session = require('express-session')
-const DbConfig = require('../config/db.config')
+const DbConfig = require('../../config/db.config')
 
 const storage = MongoStore.create({
     dbName: DbConfig.dbName,
@@ -8,11 +8,11 @@ const storage = MongoStore.create({
     ttl: 24 * 60 * 60 // 1 dia
 })
 
-const middleware = session({
+const sessionMiddleware = session({
     store: storage,
     secret: 'asdflasdoiufyoidf23',
     resave: true,
     saveUninitialized: true
 })
 
-module.exports = middleware
+module.exports = sessionMiddleware

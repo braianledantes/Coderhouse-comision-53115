@@ -1,6 +1,6 @@
 const { Router } = require('express')
-const { validateGetProducts } = require('../validations/products.validations')
-const { userIsLoggedIn, userIsNotLoggedIn } = require('../middlewares/auth.middleware')
+const { validateGetProducts } = require('../middlewares/validations/products.validations')
+const { userIsLoggedIn, userIsNotLoggedIn } = require('../middlewares/auth')
 
 const createViewRouter = ({ viewsController }) => {
     const router = Router()

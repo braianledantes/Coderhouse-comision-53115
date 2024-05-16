@@ -1,6 +1,6 @@
 const { Router } = require('express')
 
-const { validateUser, validateEmailAndPasswordUser } = require('../validations/user.validations')
+const { validateUser, validateEmailAndPasswordUser } = require('../middlewares/validations/user.validations')
 
 const createSessionsRouter = ({ sessionsController }) => {
     const router = Router()

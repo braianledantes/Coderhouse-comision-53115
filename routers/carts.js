@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { validateUpdateCart } = require('../validations/carts.validations.js')
+const { validateUpdateCart } = require('../middlewares/validations/carts.validations.js')
 
 const createCartsRouter = ({ cartsController }) => {
 
