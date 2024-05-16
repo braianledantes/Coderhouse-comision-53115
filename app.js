@@ -1,5 +1,4 @@
 const express = require('express')
-const mongoose = require('mongoose')
 const handlebars = require('express-handlebars')
 const morgan = require('morgan')
 const { createServer } = require('node:http')
@@ -7,14 +6,42 @@ const { Server } = require('socket.io')
 const passport = require('passport')
 const initializeGithubStrategy = require('./config/passport-github.config')
 const initializeLocalStrategy = require('./config/passport-local.config')
-const { dbName, mongoUrl } = require('./config/db.config')
 const sessionMiddleware = require('./session/mongoStorage')
-const productsRouter = require('./routers/products.routes')
-const cartsRouter = require('./routers/carts.routes')
-const chatRouter = require('./routers/chat.routes')
-const sessionsRouter = require('./routers/sessions.routes')
-const viewsRouter = require('./routers/views.routes')
+const MongoDataBase = require('./models/mongodb/MongoDataBase')
+const CartsService = require('./services/carts')
+const ChatsService = require('./services/chats')
+const ProductsService = require('./services/products')
+const UsersService = require('./services/users')
+const CartsController = require('./controllers/carts')
+const ChatsController = require('./controllers/chats')
+const ProductsController = require('./controllers/products')
+const SessionsController = require('./controllers/sessions')
+const ViewsController = require('./controllers/views')
+const createCartsRouter = require('./routers/carts')
+const createProductsRouter = require('./routers/products')
+const createChatsRouter = require('./routers/chat')
+const createSessionsRouter = require('./routers/sessions')
+const createViewsRouter = require('./routers/views');
 
+// inicializar capas
+const mongodb = new MongoDataBase()
+const cartsDao = mongodb.getCartsDao()
+const productsDao = mongodb.getProductsDao()
+const messagesDao = mongodb.getMessagesDao()
+const usersDao = mongodb.getUsersDao()
+
+const cartsService = new CartsService({ cartsDao, productsDao })
+const productsService = new ProductsService({ productsDao })
+const chatsService = new ChatsService({ messagesDao })
+const usersService = new UsersService({ usersDao })
+
+const cartsController = new CartsController({ cartsService })
+const chatsController = new ChatsController({ chatsService })
+const productsController = new ProductsController({ productsService })
+const sessionsController = new SessionsController({ usersService })
+const viewsController = new ViewsController({ cartsService, chatsService, productsService, usersService })
+
+// configurar app
 const PORT = 8080
 
 const app = express()
@@ -31,33 +58,22 @@ app.use(express.urlencoded({ extended: true }))
 app.use(morgan('tiny'))
 app.use(sessionMiddleware)
 
-initializeGithubStrategy()
-initializeLocalStrategy()
+initializeGithubStrategy({ usersService })
+initializeLocalStrategy({ usersService })
 app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(express.static('public'))
-app.use('/api/products', productsRouter)
-app.use('/api/carts', cartsRouter)
-app.use('/api/chat', chatRouter)
-app.use('/api/sessions', sessionsRouter)
-app.use('/', viewsRouter)
+app.use('/api/carts', createCartsRouter({ cartsController }))
+app.use('/api/chat', createChatsRouter({ chatsController }))
+app.use('/api/products', createProductsRouter({ productsController }))
+app.use('/api/sessions', createSessionsRouter({ sessionsController }))
+app.use('/', createViewsRouter({ viewsController }))
 
-const main = async () => {
-    await mongoose.connect(
-        mongoUrl,
-        {
-            dbName
-        }
-    )
+io.on('connection', socket => {
+    console.log('Cliente conectado')
+})
 
-    io.on('connection', socket => {
-        console.log('Cliente conectado')
-    })
-    
-    server.listen(PORT, () => {
-        console.log(`App listening on http://localhost:${PORT}`);
-    })
-}
-
-main()
+server.listen(PORT, () => {
+    console.log(`App listening on http://localhost:${PORT}`);
+})

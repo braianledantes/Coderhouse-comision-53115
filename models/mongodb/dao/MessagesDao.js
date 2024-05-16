@@ -1,8 +1,8 @@
-const MessageModel = require('../models/messages.model')
+const MessageModel = require('../models/message')
 
 const projection = { user: 1, message: 1 }
 
-class MessageManager {
+class MessageDao {
 
     #toMessageJson(obj) {
         const cart = obj.toJSON({ virtuals: true })
@@ -22,4 +22,4 @@ class MessageManager {
     }
 }
 
-module.exports = MessageManager
+module.exports = MessageDao

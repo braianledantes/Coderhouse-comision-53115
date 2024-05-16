@@ -1,10 +1,8 @@
 const passport = require('passport')
 const { Strategy } = require('passport-github2')
-const User = require('../dao/models/user.model')
-const Cart = require('../dao/models/carts.model')
 const { clientID, clientSecret, callbackURL } = require('./github.private')
 
-const initializeStrategy = () => {
+const initializeStrategy = ({ usersService }) => {
 
     passport.use('github', new Strategy(
         {
@@ -14,16 +12,9 @@ const initializeStrategy = () => {
         },
         async (_accessToken, _refreshToken, profile, done) => {
             try {
-                const user = await User.findOne({ email: profile._json.email })
+                const user = await usersService.getUserByEmail({ email: profile._json.email })
                 if (user) {
                     return done(null, user)
-                }
-
-                // crea un carrito para el usuario y luego se lo asigna
-                const newCart = await Cart.create({})
-                if (!newCart) {
-                    // error al crear carrito
-                    return done(null, false)
                 }
 
                 // crear el usuario, ya que no existe
@@ -33,10 +24,9 @@ const initializeStrategy = () => {
                     lastName: fullname[1],
                     age: 18,
                     email: profile._json.email,
-                    password: '',
-                    cart: newCart.id
+                    password: ''
                 }
-                const result = await User.create(newUser)
+                const result = await usersService.createUser({ user: newUser })
                 done(null, result)
             }
             catch (err) {
@@ -45,13 +35,12 @@ const initializeStrategy = () => {
         }
     ))
 
-
     passport.serializeUser((user, done) => {
         done(null, user._id)
     })
 
     passport.deserializeUser(async (id, done) => {
-        const user = await User.findById(id)
+        const user = await usersService.getUserById({ id })
         done(null, user)
     })
 }

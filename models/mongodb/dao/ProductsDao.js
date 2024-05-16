@@ -1,4 +1,4 @@
-const ProductModel = require("../models/product.model")
+const ProductModel = require("../models/product")
 
 const projection = {
     code: 1,
@@ -11,7 +11,7 @@ const projection = {
     status: 1
 }
 
-class ProductManager {
+class ProductDao {
 
     #toProductJson(obj) {
         const product = obj.toJSON({ virtuals: true })
@@ -29,7 +29,7 @@ class ProductManager {
         }
     }
 
-    async getProducts({ limit, page, category, availability, sort }) {
+    async getPaginationProducts({ limit, page, category, availability, sort }) {
         try {
             // crea la consulta para aplicar el filtro
             const andArray = []
@@ -105,4 +105,4 @@ class ProductManager {
     }
 }
 
-module.exports = ProductManager
+module.exports = ProductDao

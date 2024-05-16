@@ -1,6 +1,10 @@
-const UserModel = require("../models/user.model")
+const UserModel = require("../models/user")
 
-class UserManager {
+class UserDao {
+
+    async getUserById({ id }) {
+        return UserModel.findById(id)
+    }
 
     async getUserByEmailAndPassword({ email, password }) {
         return UserModel.findOne({ email, password })
@@ -16,15 +20,16 @@ class UserManager {
         }
     }
 
-    async createNewUser({ firstName, lastName, age, email, password }) {
+    async createNewUser({ firstName, lastName, age, email, password, cart }) {
         UserModel.create({
             firstName,
             lastName,
             age: +age,
             email,
-            password
+            password,
+            cart
         })
     }
 }
 
-module.exports = UserManager
+module.exports = UserDao

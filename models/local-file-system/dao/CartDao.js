@@ -1,7 +1,7 @@
 const { randomUUID } = require('node:crypto')
 const fs = require('node:fs/promises')
 
-class CartsManager {
+class CartDao {
     #path
 
     constructor(path) {
@@ -84,4 +84,4 @@ class CartsManager {
     }
 }
 
-module.exports = CartsManager
+module.exports = CartDao

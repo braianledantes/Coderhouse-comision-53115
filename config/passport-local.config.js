@@ -1,10 +1,7 @@
 const passport = require('passport')
 const { Strategy } = require('passport-local')
-const User = require('../dao/models/user.model')
-const Cart = require('../dao/models/carts.model')
-const hashingUtils = require('../utils/hashing')
 
-const initializeStrategy = () => {
+const initializeStrategy = ({ usersService }) => {
 
     passport.use('register', new Strategy({
         passReqToCallback: true,
@@ -14,16 +11,9 @@ const initializeStrategy = () => {
         const { firstName, lastName, age, email } = req.body
 
         try {
-            const user = await User.findOne({ email: username })
+            const user = await usersService.getUserByEmail({ email: profile._json.email })
             if (user) {
                 // error, usuario con ese email ya existe
-                return done(null, false)
-            }
-
-            // crea un carrito para el usuario y luego se lo asigna
-            const newCart = await Cart.create({})
-            if (!newCart) {
-                // error al crear carrito
                 return done(null, false)
             }
 
@@ -32,10 +22,9 @@ const initializeStrategy = () => {
                 lastName,
                 age: +age,
                 email,
-                password: hashingUtils.hashPassword(password),
-                cart: newCart.id
+                password
             }
-            const result = await User.create(newUser)
+            const result = await usersService.createUser({ user: newUser })
 
             // usuario nuevo creado exitosamente
             return done(null, result)
@@ -55,14 +44,8 @@ const initializeStrategy = () => {
                 return done(null, false)
             }
 
-            // 1. verificar que el usuario exista en la BD
-            const user = await User.findOne({ email: username })
+            const user = await usersService.getUserIfIsValid({ email: username, password })
             if (!user) {
-                return done(null, false)
-            }
-
-            // 2. validar su password
-            if (!hashingUtils.isValidPassword(password, user.password)) {
                 return done(null, false)
             }
 
@@ -77,7 +60,7 @@ const initializeStrategy = () => {
     })
 
     passport.deserializeUser(async (id, done) => {
-        const user = await User.findById(id)
+        const user = await usersService.getUserById({ id })
         done(null, user)
     })
 }

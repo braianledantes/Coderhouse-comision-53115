@@ -1,10 +1,10 @@
-const CartModel = require("../models/carts.model")
+const CartModel = require("../models/cart")
 
 const projection = {
     products: 1,
 }
 
-class CartManager {
+class CartsDao {
 
     #toCartJson(obj) {
         const cart = obj.toJSON({ virtuals: true })
@@ -56,4 +56,4 @@ class CartManager {
     }
 }
 
-module.exports = CartManager
+module.exports = CartsDao
