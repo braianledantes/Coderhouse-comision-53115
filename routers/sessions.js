@@ -7,13 +7,13 @@ const createSessionsRouter = ({ sessionsController }) => {
 
     router.post('/login', validateEmailAndPasswordUser, sessionsController.login)
     
-    router.get('faillogin', sessionsController.faillogin)
+    router.get('/faillogin', sessionsController.faillogin)
     
     router.get('/logout', sessionsController.logout)
     
     router.post('/register', validateUser, sessionsController.register)
     
-    router.get('failregister', sessionsController.failRegister)
+    router.get('/failregister', sessionsController.failRegister)
     
     router.get('/github', sessionsController.authenticateWithGithub)
     
