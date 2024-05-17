@@ -13,13 +13,15 @@ const initializeStrategy = ({ usersService }) => {
         async (_accessToken, _refreshToken, profile, done) => {
             try {
                 try {
+                    // buscar usuario por email
                     const user = await usersService.getUserByEmail({ email: profile._json.email })
+                    // usuario encontrado, todo bien
                     return done(null, user)
                 } catch (error) {
-                    // no existe el usuario
+                    // no se encontro el usuario, todo bien
                 }
 
-                // crear el usuario, ya que no existe
+                // crear usuario
                 const fullname = profile._json.name.split(' ')
                 const newUser = {
                     firstName: fullname[0],
@@ -29,9 +31,11 @@ const initializeStrategy = ({ usersService }) => {
                     password: ''
                 }
                 const result = await usersService.createUser({ user: newUser })
+                // usuario nuevo creado exitosamente
                 done(null, result)
             }
             catch (err) {
+                // error inesperado!
                 done(err)
             }
         }

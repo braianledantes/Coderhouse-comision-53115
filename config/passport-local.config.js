@@ -11,10 +11,14 @@ const initializeStrategy = ({ usersService }) => {
         const { firstName, lastName, age, email } = req.body
 
         try {
-            const user = await usersService.getUserByEmail({ email: profile._json.email })
-            if (user) {
-                // error, usuario con ese email ya existe
-                return done(null, false)
+            try {
+                const user = await usersService.getUserByEmail({ email: username })
+                if (user) {
+                    // error, usuario con ese email ya existe
+                    return done(null, false)
+                }
+            } catch (err) {
+                // no se encontro el usuario, todo bien
             }
 
             const newUser = {
