@@ -15,16 +15,20 @@ class ViewsController {
             title: 'Home',
             isLoggedIn,
             isNotLoggedIn: !isLoggedIn,
+            layout: isLoggedIn ? 'main-user-logged-in' : 'main'
         })
     }
 
-    home = async (_, res) => {
+    home = async (req, res) => {
+        const isLoggedIn = ![null, undefined].includes(req.session.user)
+
         const products = await this.productsService.getProducts({})
         const isEmpty = products.length === 0
 
         res.render('home', {
             isEmpty,
-            products
+            products,
+            layout: isLoggedIn ? 'main-user-logged-in' : 'main'
         })
     }
 
@@ -51,7 +55,8 @@ class ViewsController {
                 lastName: user.lastName,
                 age: user.age,
                 email: user.email
-            }
+            },
+            layout: 'main-user-logged-in'
         })
     }
 
@@ -59,9 +64,9 @@ class ViewsController {
         try {
             let { product } = await this.productsService.getProduct({ productId: req.params.pid })
 
-            res.render('product', { product })
+            res.render('product', { product, layout: 'main-user-logged-in' })
         } catch (error) {
-            res.render('product', {})
+            res.render('product', { layout: 'main-user-logged-in' })
         }
     }
 
@@ -71,22 +76,23 @@ class ViewsController {
 
         res.render('realtimeproducts', {
             isEmpty,
-            products
+            products,
+            layout: 'main-user-logged-in'
         })
     }
 
     chat = async (_, res) => {
         const messages = await this.chatsService.getMessages()
-        res.render('chat', { messages })
+        res.render('chat', { messages, layout: 'main-user-logged-in' })
     }
 
     cart = async (req, res) => {
         try {
             const result = await this.cartsService.getCartById(req.params.cid)
             result.products = result.products.filter(i => i && i.product)
-            return res.render('carts', result)
+            return res.render('carts', { ...result, layout: 'main-user-logged-in' })
         } catch (error) {
-            return res.render('carts', [])
+            return res.render('carts', { layout: 'main-user-logged-in'})
         }
     }
 
@@ -119,7 +125,8 @@ class ViewsController {
                 lastName: user.lastName,
                 age: user.age,
                 email: user.email
-            }
+            },
+            layout: 'main-user-logged-in'
         })
     }
 }
