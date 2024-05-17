@@ -24,8 +24,6 @@ const servicesFactory = new ServicesFactory({ database: mongodb })
 const controllersFactory = new ControllersFactory({ servicesFactory })
 
 // configurar app
-const PORT = 8080
-
 const app = express()
 
 // websocket
@@ -65,6 +63,8 @@ app.use('/api/sessions', createSessionsRouter({ sessionsController: controllersF
 app.use('/', createViewsRouter({ viewsController: controllersFactory.createViewsController()}))
 
 // iniciar app
+const PORT = process.env.PORT || 8080
+
 server.listen(PORT, () => {
     console.log(`App listening on http://localhost:${PORT}`);
 })

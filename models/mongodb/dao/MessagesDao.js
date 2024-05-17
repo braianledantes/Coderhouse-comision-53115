@@ -1,4 +1,4 @@
-const MessageModel = require('../models/message')
+const MessageModel = require('../schemas/message')
 
 const projection = { user: 1, message: 1 }
 
