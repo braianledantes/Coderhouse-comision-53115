@@ -17,7 +17,8 @@ class ChatsController {
 
     createMessage = async (req, res) => {
         try {
-            const { user, message } = req.body
+            const { message } = req.body
+            const user = req.session.user.email
             const newMessage = await this.chatsService.createMessage({ user, message })
     
             req.app.get('websocket').emit('new-message', { message: newMessage })

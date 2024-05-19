@@ -1,11 +1,5 @@
 const socket = io()
 
-
-if (!localStorage.getItem('user')) {
-    const user = prompt('¡Coloca tu email para continuar!')
-    localStorage.setItem('user', user)
-}
-
 const chat = document.getElementById('chat-messages')
 const form = document.getElementById('chat-form')
 const inputMessage = document.getElementById('input-message')
@@ -15,7 +9,6 @@ form.addEventListener('submit', async (e) => {
 
     if (inputMessage.value) {
         const message = {
-            user: localStorage.getItem('user'),
             message: inputMessage.value
         }
 
