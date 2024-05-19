@@ -62,9 +62,8 @@ class ViewsController {
 
     getProduct = async (req, res) => {
         try {
-            let { product } = await this.productsService.getProduct({ productId: req.params.pid })
-
-            res.render('product', { product, layout: 'main-user-logged-in' })
+            const { product } = await this.productsService.getProduct({ productId: req.params.pid })
+            res.render('product', { ...product, layout: 'main-user-logged-in' })
         } catch (error) {
             res.render('product', { layout: 'main-user-logged-in' })
         }
