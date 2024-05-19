@@ -88,11 +88,14 @@ class ViewsController {
 
     cart = async (req, res) => {
         try {
-            const result = await this.cartsService.getCartById(req.params.cid)
-            result.products = result.products.filter(i => i && i.product)
-            return res.render('carts', { ...result, layout: 'main-user-logged-in' })
+            const emailFromSession = req.session.user.email
+            const user = await this.usersService.getUserByEmail({ email: emailFromSession })
+            const cart = user.cart
+
+            cart.products = cart.products.filter(i => i && i.product)
+            return res.render('carts', { ...cart, layout: 'main-user-logged-in' })
         } catch (error) {
-            return res.render('carts', { layout: 'main-user-logged-in'})
+            return res.render('carts', { layout: 'main-user-logged-in' })
         }
     }
 

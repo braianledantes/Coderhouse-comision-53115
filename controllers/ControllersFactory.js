@@ -10,7 +10,10 @@ class ControllersFactory {
     }
 
     createCartsController() {
-        return new CartsController({ cartsService: this.servicesFactory.getCartsServiceInstance() })
+        return new CartsController({
+            usersService: this.servicesFactory.getUsersServiceInstance(),
+            cartsService: this.servicesFactory.getCartsServiceInstance()
+        })
     }
 
     createChatsController() {

@@ -3,11 +3,13 @@ const UserModel = require("../schemas/user")
 class UserDao {
 
     async getUserById({ id }) {
-        return UserModel.findById(id)
+        const user = await UserModel.findById(id)
+        return user.toJSON()
     }
 
     async getUserByEmailAndPassword({ email, password }) {
-        return UserModel.findOne({ email, password })
+        const user = await UserModel.findOne({ email, password })
+        return user.toJSON()
     }
 
     async getUserByEmail({ email }) {
@@ -21,7 +23,7 @@ class UserDao {
     }
 
     async createNewUser({ firstName, lastName, age, email, password, cart }) {
-        return UserModel.create({
+        const user = await UserModel.create({
             firstName,
             lastName,
             age: +age,
@@ -29,6 +31,7 @@ class UserDao {
             password,
             cart
         })
+        return user.toJSON()
     }
 }
 
