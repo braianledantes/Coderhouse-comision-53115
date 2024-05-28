@@ -1,4 +1,5 @@
 const express = require('express')
+const { Command } = require('commander')
 const handlebars = require('express-handlebars')
 const morgan = require('morgan')
 const { createServer } = require('node:http')
@@ -7,7 +8,7 @@ const passport = require('passport')
 const initializeGithubStrategy = require('./config/passport-github.config')
 const initializeLocalStrategy = require('./config/passport-local.config')
 const sessionMiddleware = require('./middlewares/sessions/mongoSession')
-const MongoDataBase = require('./models/mongodb/MongoDataBase')
+const ModelsFactory = require('./models/ModelsFactory')
 const ServicesFactory = require('./services/ServicesFactory')
 const ControllersFactory = require('./controllers/ControllersFactory')
 const createCartsRouter = require('./routers/carts')
@@ -16,10 +17,16 @@ const createChatsRouter = require('./routers/chat')
 const createSessionsRouter = require('./routers/sessions')
 const createViewsRouter = require('./routers/views')
 
+// inicializar programa
+const program = new Command()
+program.option('-d, --database <type>', 'Tipo de base de datos a utilizar', 'mongodb')
+program.parse()
+const programOptions = program.opts()
+
 // inicializar capa de datos
-const mongodb = new MongoDataBase()
+const database = ModelsFactory.createDatabaseImplementation(programOptions.database)
 // inicializar capa de servicios
-const servicesFactory = new ServicesFactory({ database: mongodb })
+const servicesFactory = new ServicesFactory({ database })
 // inicializar controladores
 const controllersFactory = new ControllersFactory({ servicesFactory })
 
