@@ -89,7 +89,8 @@ class ViewsController {
         try {
             const emailFromSession = req.session.user.email
             const user = await this.usersService.getUserByEmail({ email: emailFromSession })
-            const cart = await this.cartsService.getCartById(user.cart._id)
+            const cart = await this.cartsService.getCartById(user.cart.id)
+            console.log("cart", cart);
 
             cart.products = cart.products.filter(i => i && i.product)
             return res.render('carts', { ...cart, layout: 'main-user-logged-in' })

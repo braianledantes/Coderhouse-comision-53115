@@ -58,7 +58,6 @@ class UserDao {
         try {
             const user = await UserModel.findOne({ email })
                 .populate('cart')
-                console.log("user", user);
             return this.#mapUserToUserWithCartDto(user)
         } catch (error) {
             throw new Error(`User with email ${email} not found`)

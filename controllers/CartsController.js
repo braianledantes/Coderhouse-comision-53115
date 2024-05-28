@@ -83,7 +83,7 @@ class CartsController {
             const emailFromSession = req.session.user.email
             const user = (await this.usersService.getUserByEmail({ email: emailFromSession }))
     
-            const cid = user.cart._id
+            const cid = user.cart.id
             const newProducts = req.body.products
 
             const updatedCart = await this.cartsService.updateCartProducts(cid, newProducts)
@@ -98,7 +98,7 @@ class CartsController {
             const emailFromSession = req.session.user.email
             const user = await this.usersService.getUserByEmail({ email: emailFromSession })
     
-            const cid = user.cart._id
+            const cid = user.cart.id
 
             const updatedCart = await this.cartsService.deleteCartProducts(cid)
             res.json(updatedCart)
@@ -113,7 +113,7 @@ class CartsController {
             const emailFromSession = req.session.user.email
             const user = await this.usersService.getUserByEmail({ email: emailFromSession })
 
-            const cid = user.cart._id
+            const cid = user.cart.id
 
             const updatedCart = await this.cartsService.addProductToCart(cid, pid)
             res.json(updatedCart)
@@ -128,7 +128,7 @@ class CartsController {
             const emailFromSession = req.session.user.email
             const user = await this.usersService.getUserByEmail({ email: emailFromSession })
 
-            const cid = user.cart._id
+            const cid = user.cart.id
 
             const updatedCart = await this.cartsService.removeProductFromCart(cid, pid)
             return res.json(updatedCart)

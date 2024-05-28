@@ -10,7 +10,7 @@ class SessionsController {
         async (req, res) => {
             try {
                 // crear nueva sesión si el usuario existe
-                req.session.user = { email: req.user.email, _id: req.user._id }
+                req.session.user = { email: req.user.email, id: req.user.id }
 
                 res.redirect('/products')
             } catch (error) {
