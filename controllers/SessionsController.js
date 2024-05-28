@@ -10,7 +10,7 @@ class SessionsController {
         async (req, res) => {
             try {
                 // crear nueva sesión si el usuario existe
-                req.session.user = { email: req.user.email, id: req.user.id }
+                req.session.user = { email: req.user.email, role: req.user.role }
 
                 res.redirect('/products')
             } catch (error) {
@@ -53,7 +53,8 @@ class SessionsController {
     githubCallback = [
         passport.authenticate('github', { failureRedirect: '/' }),
         (req, res) => {
-            req.session.user = { email: req.user.email }
+            // crear nueva sesión si el usuario existe
+            req.session.user = { email: req.user.email, role: req.user.role }
             res.redirect('/products')
         }
     ]
