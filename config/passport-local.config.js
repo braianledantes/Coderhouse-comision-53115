@@ -1,5 +1,6 @@
 const passport = require('passport')
 const { Strategy } = require('passport-local')
+const CreateUserDto = require('../dtos/CreateUserDto')
 
 const initializeStrategy = ({ usersService }) => {
 
@@ -21,17 +22,11 @@ const initializeStrategy = ({ usersService }) => {
                 // no se encontro el usuario, todo bien
             }
 
-            const newUser = {
-                firstName,
-                lastName,
-                age: +age,
-                email,
-                password
-            }
-            const result = await usersService.createUser({ user: newUser })
+            const createUserDto = new CreateUserDto(firstName, lastName, +age, email, password)
+            const userDto = await usersService.createUser(createUserDto)
 
             // usuario nuevo creado exitosamente
-            return done(null, result)
+            return done(null, userDto)
         } catch (err) {
 
             // error inesperado!
@@ -60,7 +55,7 @@ const initializeStrategy = ({ usersService }) => {
     }))
 
     passport.serializeUser((user, done) => {
-        done(null, user._id)
+        done(null, user.id)
     })
 
     passport.deserializeUser(async (id, done) => {

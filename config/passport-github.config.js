@@ -1,6 +1,7 @@
 const passport = require('passport')
 const { Strategy } = require('passport-github2')
 const { clientID, clientSecret, callbackURL } = require('./github.private')
+const CreateUserDto = require('../dtos/CreateUserDto')
 
 const initializeStrategy = ({ usersService }) => {
 
@@ -15,24 +16,21 @@ const initializeStrategy = ({ usersService }) => {
                 try {
                     // buscar usuario por email
                     const user = await usersService.getUserByEmail({ email: profile._json.email })
+                    
                     // usuario encontrado, todo bien
                     return done(null, user)
                 } catch (error) {
+                    console.error(error);
                     // no se encontro el usuario, todo bien
                 }
 
                 // crear usuario
                 const fullname = profile._json.name.split(' ')
-                const newUser = {
-                    firstName: fullname[0],
-                    lastName: fullname[1],
-                    age: 18,
-                    email: profile._json.email,
-                    password: ''
-                }
-                const result = await usersService.createUser({ user: newUser })
+
+                const createUserDto = new CreateUserDto(fullname[0], fullname[1], 18, profile._json.email, '')
+                const userDto = await usersService.createUser(createUserDto)
                 // usuario nuevo creado exitosamente
-                done(null, result)
+                done(null, userDto)
             }
             catch (err) {
                 // error inesperado!
@@ -42,7 +40,7 @@ const initializeStrategy = ({ usersService }) => {
     ))
 
     passport.serializeUser((user, done) => {
-        done(null, user._id)
+        done(null, user.id)
     })
 
     passport.deserializeUser(async (id, done) => {

@@ -12,6 +12,12 @@ class CartsDao {
         return cart
     }
 
+    async createEmptyCart() {
+        const result = await CartModel.create({ products: [] })
+        const newCart = await CartModel.findById(result._id, projection)
+        return this.#toCartJson(newCart)
+    }
+
     async addCart({ products }) {
         const result = await CartModel.create({ products })
         const newCart = await CartModel.findById(result._id, projection)

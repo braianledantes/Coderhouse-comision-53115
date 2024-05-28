@@ -7,9 +7,10 @@ class UsersService {
     }
 
     getUserIfIsValid = async ({ email, password }) => {
-        const user = await this.usersDao.getUserByEmail({ email })
+        const userPassword = await this.usersDao.getUserPassword({ email })
 
-        if (user && hashingUtils.isValidPassword(password, user.password)) {
+        if (userPassword && hashingUtils.isValidPassword(password, userPassword)) {
+            const user = await this.usersDao.getUserByEmail({ email })
             return user
         }
 
@@ -17,32 +18,35 @@ class UsersService {
     }
 
     getUserById = async ({ id }) => {
-        const user = await this.usersDao.getUserById({ id })
-        // quita la password
-        delete user.password
-        return user
+        const userDto = await this.usersDao.getUserById({ id })
+        return userDto
     }
 
     getUserByEmail = async ({ email }) => {
-        const user = await this.usersDao.getUserByEmail({ email })
-        // quita la password
-        delete user.password
-        return user
+        const userDto = await this.usersDao.getUserByEmail({ email })
+        return userDto
     }
 
-    createUser = async ({ user }) => {
-        const newCart = await this.cartsDao.addCart({ products: [] })
+    createUser = async (createUserDto) => {
+        // se crea un carrito vacio
+        const newCart = await this.cartsDao.createEmptyCart()
         if (!newCart) {
             throw new Error('Error creating cart')
         }
-        // se hashea la password
-        user.password = hashingUtils.hashPassword(user.password)
-        // se asigna el carrito al usuario
-        user.cart = newCart.id
-        const newUser = await this.usersDao.createNewUser(user)
-        // se quita la password
-        delete newUser.password
-        return newUser
+
+        // se hashea la contraseña
+        const hashedPassword = hashingUtils.hashPassword(createUserDto.password)
+
+        // se crea el usuario
+        const newUserDto = await this.usersDao.createNewUser({
+            firstName: createUserDto.firstName,
+            lastName: createUserDto.lastName,
+            age: createUserDto.age,
+            email: createUserDto.email,
+            password: hashedPassword,
+            cart: newCart.id
+        })
+        return newUserDto
     }
 }
 
