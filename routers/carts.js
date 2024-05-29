@@ -15,6 +15,9 @@ const createCartsRouter = ({ cartsController }) => {
     router.post('/:cid/product/:pid', isNormalUser, cartsController.addProductToCart)
     router.delete('/:cid/products/:pid', cartsController.removeProductFromCart)
 
+    // ticket routes
+    router.get('/:cid/purchase', cartsController.createTicket)
+
     // current cart routes
     router.get('/', cartsController.getCurrentCart)
     router.put('/', validateUpdateCart, cartsController.updateCurrentCartProducts)

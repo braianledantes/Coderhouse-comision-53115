@@ -65,6 +65,18 @@ class CartsController {
         }
     }
 
+    // Ticket methods ----------------------
+    createTicket = async (req, res) => {
+
+        const { cid } = req.params
+        try {
+            const ticket = await this.cartsService.createTicket(cid)
+            res.json(ticket)
+        } catch (error) {
+            res.status(404).json({ message: error.message })
+        }
+    }
+
     // Current cart methods ----------------------
 
     getCurrentCart = async (req, res) => {
