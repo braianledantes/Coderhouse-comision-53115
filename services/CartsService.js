@@ -83,6 +83,11 @@ class CartsService {
     createTicket = async (cartId) => {
         const cart = await this.cartsDao.getCartById(cartId)
 
+        // si no hay productos en el carrito, lanza un error
+        if (cart.products.length == 0) {
+            throw new Error(`Cart with id ${cartId} is empty`)
+        }
+
         // obtener mail del usuario del carrito de la bd
         const user = await this.usersDao.getUserByCartId(cartId)
         const userEmail = user.email
