@@ -1,4 +1,4 @@
-const ProductModel = require("../models/ProductModel")
+const { ProductModel } = require("../models/ProductModel")
 
 const projection = {
     code: 1,

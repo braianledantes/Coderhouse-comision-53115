@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
-const TicketModel = require("../models/TicketModel");
+const { TicketModel } = require("../models/TicketModel");
+const TicketDto = require("../../../dtos/TicketDto");
 
 class TicketDao {
     async createTicket({ amount, purchaser }) {
@@ -8,7 +9,13 @@ class TicketDao {
             amount,
             purchaser
         })
-        return ticket
+
+        return new TicketDto({
+            code: ticket.code,
+            purchase_datetime: ticket.purchase_datetime,
+            amount: ticket.amount,
+            purchaser: ticket.purchaser
+        })
     }
 }
 

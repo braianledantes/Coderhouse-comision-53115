@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const TicketDto = require('../../../dtos/TicketDto');
 
 const ticketSchema = new mongoose.Schema({
     code: {
@@ -23,4 +24,4 @@ const ticketSchema = new mongoose.Schema({
 
 const TicketModel = mongoose.model('Ticket', ticketSchema, 'tickets');
 
-module.exports = TicketModel
+module.exports = { TicketModel }

@@ -1,4 +1,4 @@
-const UserModel = require("../models/UserModel")
+const { UserModel } = require("../models/UserModel")
 const UserDto = require("../../../dtos/UserDto")
 const UserWithCartDto = require("../../../dtos/UserWithCartDto")
 const admin = require("../../../config/admin")
