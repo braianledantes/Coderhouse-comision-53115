@@ -1,4 +1,4 @@
-const CartModel = require("../schemas/cart")
+const CartModel = require("../models/CartModel")
 
 const projection = {
     products: 1,

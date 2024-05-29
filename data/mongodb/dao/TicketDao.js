@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-const TicketModel = require("../schemas/ticket");
+const TicketModel = require("../models/TicketModel");
 
 class TicketDao {
     async createTicket({ amount, purchaser }) {
