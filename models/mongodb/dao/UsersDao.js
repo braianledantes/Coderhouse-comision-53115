@@ -56,7 +56,7 @@ class UserDao {
 
     async getUserByEmail({ email }) {
         try {
-            
+
             if (admin.isAdmin(email)) {
                 return this.#mapUserToUserDto(admin.userAdmin)
             }
@@ -66,6 +66,15 @@ class UserDao {
             return this.#mapUserToUserWithCartDto(user)
         } catch (error) {
             throw new Error(`User with email ${email} not found`)
+        }
+    }
+
+    async getUserByCartId(cartId) {
+        try {
+            const user = await UserModel.findOne({ cart: cartId })
+            return this.#mapUserToUserDto(user)
+        } catch (error) {
+            throw new Error(`User with cartId ${cartId} not found`)
         }
     }
 

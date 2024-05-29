@@ -16,7 +16,9 @@ class ServicesFactory {
         if (!this.cartsService) {
             this.cartsService = new CartsService({
                 cartsDao: this.database.getCartsDao(),
-                productsDao: this.database.getProductsDao()
+                productsDao: this.database.getProductsDao(),
+                ticketDao: this.database.getTicketDao(),
+                usersDao: this.database.getUsersDao()
             })
         }
         return this.cartsService

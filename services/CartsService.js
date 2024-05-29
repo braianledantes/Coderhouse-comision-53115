@@ -1,8 +1,10 @@
 class CartsService {
 
-    constructor({ cartsDao, productsDao }) {
+    constructor({ cartsDao, productsDao, ticketDao, usersDao }) {
         this.cartsDao = cartsDao
         this.productsDao = productsDao
+        this.ticketDao = ticketDao
+        this.usersDao = usersDao
     }
 
     createEmptyCart = async () => {
@@ -76,6 +78,33 @@ class CartsService {
         }
 
         throw new Error(`Product with id ${productId} not found in this cart ${cartId}`)
+    }
+
+    createTicket = async (cartId) => {
+        const cart = await this.cartsDao.getCartById(cartId)
+
+        // obtener mail del usuario del carrito de la bd
+        const user = await this.usersDao.getUserByCartId(cartId)
+        const userEmail = user.email
+
+        let amount = 0
+
+        // verifica que haya stock suficiente para los productos del carrito
+        for (const productCart of cart.products) {
+            const product = await this.productsDao.getProductById(productCart.product)
+            if (product.stock < productCart.quantity) {
+                throw new Error(`Product with code ${product.code} has not enough stock`)
+            }
+            // suma el total de la compra
+            amount += product.price * productCart.quantity
+        }
+        
+        const newTicket = await this.ticketDao.createTicket({ amount, purchaser: userEmail })
+
+        // elimina los productos del carrito
+        await this.cartsDao.updateCart(cartId, { products: [] })
+
+        return newTicket
     }
 }
 
