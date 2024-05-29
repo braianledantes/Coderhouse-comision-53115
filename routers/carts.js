@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const { validateUpdateCart } = require('../middlewares/validations/carts.validations.js')
+const { isNormalUser } = require('../middlewares/auth.js')
 
 const createCartsRouter = ({ cartsController }) => {
 
@@ -11,7 +12,7 @@ const createCartsRouter = ({ cartsController }) => {
     router.put('/:cid', validateUpdateCart, cartsController.updateCartProducts)
     router.delete('/:cid', cartsController.deleteCartProducts)
  
-    router.post('/:cid/product/:pid', cartsController.addProductToCart)
+    router.post('/:cid/product/:pid', isNormalUser, cartsController.addProductToCart)
     router.delete('/:cid/products/:pid', cartsController.removeProductFromCart)
 
     // current cart routes
@@ -19,7 +20,7 @@ const createCartsRouter = ({ cartsController }) => {
     router.put('/', validateUpdateCart, cartsController.updateCurrentCartProducts)
     router.delete('/', cartsController.deleteCurrentCartProducts)
  
-    router.post('/products/:pid', cartsController.addProductToCurrentCart)
+    router.post('/products/:pid', isNormalUser, cartsController.addProductToCurrentCart)
     router.delete('/products/:pid', cartsController.removeProductFromCurrentCart)
 
     return router
