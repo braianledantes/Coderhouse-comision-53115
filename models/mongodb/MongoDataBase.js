@@ -4,6 +4,7 @@ const CartsDao = require('./dao/CartsDao')
 const MessagesDao = require('./dao/MessagesDao')
 const ProductsDao = require('./dao/ProductsDao')
 const UsersDao = require('./dao/UsersDao')
+const TicketDao = require('./dao/TicketDao')
 
 mongoose.connect(mongoUrl, { dbName })
     .then(() => { console.log('Mongodb conected') })
@@ -24,6 +25,10 @@ class MongoDataBase {
 
     getUsersDao() {
         return new UsersDao()
+    }
+
+    getTicketDao() {
+        return new TicketDao()
     }
 }
 
