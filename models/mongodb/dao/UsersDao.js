@@ -1,6 +1,7 @@
 const UserModel = require("../schemas/user")
 const UserDto = require("../../../dtos/UserDto")
 const UserWithCartDto = require("../../../dtos/UserWithCartDto")
+const admin = require("../../../config/admin")
 
 class UserDao {
 
@@ -45,17 +46,21 @@ class UserDao {
     }
 
     async getUserById({ id }) {
-        const user = await UserModel.findById(id)
-        return this.#mapUserToUserDto(user)
-    }
+        if (admin.isAdmin(id)) {
+            return this.#mapUserToUserDto(admin.userAdmin)
+        }
 
-    async getUserByEmailAndPassword({ email, password }) {
-        const user = await UserModel.findOne({ email, password })
+        const user = await UserModel.findById(id)
         return this.#mapUserToUserDto(user)
     }
 
     async getUserByEmail({ email }) {
         try {
+            
+            if (admin.isAdmin(email)) {
+                return this.#mapUserToUserDto(admin.userAdmin)
+            }
+
             const user = await UserModel.findOne({ email })
                 .populate('cart')
             return this.#mapUserToUserWithCartDto(user)
@@ -66,6 +71,10 @@ class UserDao {
 
     async getUserPassword({ email }) {
         try {
+            if (admin.isAdmin(email)) {
+                return admin.userAdmin.password
+            }
+
             const user = await UserModel.findOne({ email })
             return user.password
         } catch (error) {
