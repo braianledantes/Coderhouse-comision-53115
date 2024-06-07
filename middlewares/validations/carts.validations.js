@@ -1,4 +1,6 @@
 const z = require('zod')
+const ERROR_CODES = require('../../errors/errorCodes')
+const { CustomError } = require('../../errors/CustomError')
 
 const putCartSchema = z.object({
     products: z.array(
@@ -17,7 +19,12 @@ function validateUpdateCart(req, res, next) {
         return next()
     }
 
-    return res.status(400).json({ message: JSON.parse(result.error.message) })
+    throw new CustomError({
+        name: 'ValidationError',
+        message: "Invalid input to update cart",
+        cause: result.error.errors,
+        code: ERROR_CODES.INVALID_INPUT
+    })
 }
 
 module.exports = { validateUpdateCart }

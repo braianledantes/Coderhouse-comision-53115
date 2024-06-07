@@ -1,5 +1,7 @@
 const { query, validationResult, matchedData } = require('express-validator')
 const z = require('zod')
+const { CustomError } = require('../../errors/CustomError')
+const ERROR_CODES = require('../../errors/errorCodes')
 
 validateGetProducts = [
     query('limit')
@@ -44,17 +46,6 @@ const productSchema = z.object({
 })
 
 function validateNewProduct(req, res, next) {
-    const result = productSchema.partial().safeParse(req.body)
-    if (result.success) {
-        // cambia el contenido del body con los datos correctos
-        req.body = result.data
-        return next()
-    }
-
-    return res.status(400).json({ message: JSON.parse(result.error.message) })
-}
-
-function validateUpdateProduct(req, res, next) {
     const result = productSchema.safeParse(req.body)
     if (result.success) {
         // cambia el contenido del body con los datos correctos
@@ -62,7 +53,28 @@ function validateUpdateProduct(req, res, next) {
         return next()
     }
 
-    return res.status(400).json({ message: JSON.parse(result.error.message) })
+    throw new CustomError({
+        name: 'ValidationError',
+        message: "Invalid input to create product",
+        cause: result.error.errors,
+        code: ERROR_CODES.INVALID_INPUT
+    })
+}
+
+function validateUpdateProduct(req, res, next) {
+    const result = productSchema.partial().safeParse(req.body)
+    if (result.success) {
+        // cambia el contenido del body con los datos correctos
+        req.body = result.data
+        return next()
+    }
+
+    throw new CustomError({
+        name: 'ValidationError',
+        message: "Invalid input to update product",
+        cause: result.error.errors,
+        code: ERROR_CODES.INVALID_INPUT
+    })
 }
 
 module.exports = { validateGetProducts, validateNewProduct, validateUpdateProduct }

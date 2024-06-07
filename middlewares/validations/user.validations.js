@@ -1,4 +1,6 @@
 const z = require('zod')
+const { CustomError } = require('../../errors/CustomError')
+const ERROR_CODES = require('../../errors/errorCodes')
 
 const UserSchema = z.object({
     firstName: z.string(),
@@ -17,7 +19,12 @@ module.exports = {
             return next()
         }
     
-        return res.status(400).json({ message: JSON.parse(result.error.message) })
+        throw new CustomError({
+            name: 'ValidationError',
+            message: "Invalid input to create user",
+            cause: result.error.errors,
+            code: ERROR_CODES.INVALID_INPUT
+        })
     },
     validateEmailAndPasswordUser: (req, res, next) => {
         const schema =  z.object({
@@ -32,6 +39,11 @@ module.exports = {
             return next()
         }
     
-        return res.status(400).json({ message: JSON.parse(result.error.message) })
+        throw new CustomError({
+            name: 'ValidationError',
+            message: "Invalid input user email or password",
+            cause: result.error.errors,
+            code: ERROR_CODES.INVALID_INPUT
+        })
     }
  }
