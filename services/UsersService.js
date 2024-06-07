@@ -1,3 +1,4 @@
+const { CustomError } = require('../errors/CustomError')
 const hashingUtils = require('../utils/hashing')
 
 class UsersService {
@@ -30,9 +31,6 @@ class UsersService {
     createUser = async (createUserDto) => {
         // se crea un carrito vacio
         const newCart = await this.cartsDao.createEmptyCart()
-        if (!newCart) {
-            throw new Error('Error creating cart')
-        }
 
         // se hashea la contraseña
         const hashedPassword = hashingUtils.hashPassword(createUserDto.password)

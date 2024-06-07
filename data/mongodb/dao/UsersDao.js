@@ -2,11 +2,17 @@ const { UserModel } = require("../models/UserModel")
 const UserDto = require("../../../dtos/UserDto")
 const UserWithCartDto = require("../../../dtos/UserWithCartDto")
 const admin = require("../../../config/admin")
+const { CustomError } = require("../../../errors/CustomError")
+const ERROR_CODES = require("../../../errors/errorCodes")
 
 class UserDao {
 
     #mapUserToUserDto(user) {
-        if (!user) throw new Error('User not found')
+        if (!user) throw new CustomError({
+            name: 'UserNotFound',
+            message: 'User not found',
+            code: ERROR_CODES.INVALID_INPUT
+        })
 
         const userDto = new UserDto({
             id: user._id.toString(),
@@ -22,7 +28,11 @@ class UserDao {
     }
 
     #mapUserToUserWithCartDto(user) {
-        if (!user) throw new Error('User not found')
+        if (!user) throw new CustomError({
+            name: 'UserNotFound',
+            message: 'User not found',
+            code: ERROR_CODES.INVALID_INPUT
+        })
 
         const cart = {
             id: user.cart._id.toString(),
@@ -65,7 +75,11 @@ class UserDao {
                 .populate('cart')
             return this.#mapUserToUserWithCartDto(user)
         } catch (error) {
-            throw new Error(`User with email ${email} not found`)
+            throw new CustomError({
+                name: 'UserNotFound',
+                message: `User with email ${email} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
     }
 
@@ -74,7 +88,11 @@ class UserDao {
             const user = await UserModel.findOne({ cart: cartId })
             return this.#mapUserToUserDto(user)
         } catch (error) {
-            throw new Error(`User with cartId ${cartId} not found`)
+            throw new CustomError({
+                name: 'UserNotFound',
+                message: `User with cartId ${cartId} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
     }
 
@@ -87,7 +105,11 @@ class UserDao {
             const user = await UserModel.findOne({ email })
             return user.password
         } catch (error) {
-            throw new Error(`User with email ${email} not found`)
+            throw new CustomError({
+                name: 'UserNotFound',
+                message: `User with email ${email} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
 
     }
