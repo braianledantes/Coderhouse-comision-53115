@@ -50,8 +50,8 @@ class ProductDao {
                 query,
                 {
                     sort: sort ? { price: sort } : undefined,
-                    limit: limit,
-                    page: page,
+                    limit: limit ?? 20,
+                    page: page ?? 1,
                     projection,
                     lean: true
                 }

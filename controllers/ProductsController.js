@@ -5,7 +5,7 @@ class ProductsController {
     }
 
     getPaginationProducts = async (req, res) => {
-        const pagination = this.productsService.getPaginationProducts({
+        const pagination = await this.productsService.getPaginationProducts({
             baseUrl: req.baseUrl,
             params: req.params
         })
