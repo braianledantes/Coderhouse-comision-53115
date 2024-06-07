@@ -1,5 +1,7 @@
 const { randomUUID } = require('node:crypto')
 const fs = require('node:fs/promises')
+const ERROR_CODES = require('../../../errors/errorCodes')
+const { CustomError } = require('../../../errors/CustomError')
 
 class ProductDao {
     #path
@@ -53,7 +55,11 @@ class ProductDao {
         }      
 
         if (products.some(p => p.code == code)) {
-            throw new Error(`Product with code ${code} already exists`)
+            throw new CustomError({
+                name: 'ProductAlreadyExists',
+                message: `Product with code ${code} already exists`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
 
         products.push(newProduct)
@@ -70,7 +76,11 @@ class ProductDao {
         const products = await this.#getProductsFromFile()
         const product = products.find(p => p.id == id)
         if (!product) {
-            throw new Error(`Product with id ${id} not found`)
+            throw new CustomError({
+                name: 'ProductNotFound',
+                message: `Product with id ${id} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
         return product
     }
@@ -80,7 +90,11 @@ class ProductDao {
         const productIndex = products.findIndex(p => p.id == id)
 
         if (productIndex < 0) {
-            throw new Error(`Product with id ${id} not found`)
+            throw new CustomError({
+                name: 'ProductNotFound',
+                message: `Product with id ${id} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
         const updatedProduct = { ...products[productIndex], ...data }
 
@@ -95,7 +109,11 @@ class ProductDao {
         const i = products.findIndex(p => p.id == id)
 
         if (i === -1) {
-            throw new Error(`Product with id ${id} not found`)
+            throw new CustomError({
+                name: 'ProductNotFound',
+                message: `Product with id ${id} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
 
         products.splice(i, 1)

@@ -14,13 +14,9 @@ class ProductsController {
     }
 
     getProduct = async (req, res) => {
-        try {
-            const pid = req.params.pid
-            const result = await this.productsService.getProduct({ productId: pid })
-            res.json(result)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const pid = req.params.pid
+        const result = await this.productsService.getProduct({ productId: pid })
+        res.json(result)
     }
 
     createProduct = async (req, res) => {
@@ -34,7 +30,7 @@ class ProductsController {
                 .json({ message: "Product created", product: productCreated })
         } catch (error) {
             req.app.get('websocket').emit('product-error', { message: 'Error to create product' })
-            res.status(400).json({ message: error.message })
+            throw error
         }
     }
 
@@ -48,7 +44,7 @@ class ProductsController {
             res.json({ product: productUpdated })
         } catch (error) {
             req.app.get('websocket').emit('product-error', { message: 'Error to update product' })
-            res.status(400).json({ message: error.message })
+            throw error
         }
     }
 
@@ -62,7 +58,7 @@ class ProductsController {
             res.json({ message: `Product ${pid} deleted` })
         } catch (error) {
             req.app.get('websocket').emit('product-error', { message: 'Error to delete product' })
-            res.status(400).json({ message: error.message })
+            throw error
         }
     }
 

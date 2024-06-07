@@ -1,4 +1,6 @@
 const { ProductModel } = require("../models/ProductModel")
+const { CustomError } = require("../../../errors/CustomError")
+const ERROR_CODES = require("../../../errors/errorCodes")
 
 const projection = {
     code: 1,
@@ -13,6 +15,25 @@ const projection = {
 
 class ProductDao {
 
+    #handleError(error) {
+        if (error.name == 'MongoServerError' && error.code == 11000) {
+            // Throw a custom error if the product already exists
+            const err = new CustomError({
+                name: 'ProductAlreadyExists',
+                message: `Product already exists`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
+            throw err
+        } else {
+            // Throw a database error
+            throw new CustomError({
+                name: 'DatabaseError',
+                message: 'Error while creating product',
+                code: ERROR_CODES.DATABASE_ERROR
+            })
+        }
+    }
+
     #toProductJson(obj) {
         const product = obj.toJSON({ virtuals: true })
         delete product._id
@@ -25,7 +46,7 @@ class ProductDao {
             const newProduct = await ProductModel.findById(result._id, projection)
             return this.#toProductJson(newProduct)
         } catch (error) {
-            throw new Error(`Product with code ${code} already exists`)
+            this.#handleError(error)
         }
     }
 
@@ -68,9 +89,12 @@ class ProductDao {
                 hasNextPage: result.hasNextPage
             }
         } catch (error) {
-            return {
-                status: "error"
-            }
+            console.error(error)
+            throw new CustomError({
+                name: 'DatabaseError',
+                message: 'Error while fetching products',
+                code: ERROR_CODES.DATABASE_ERROR
+            })
         }
     }
 
@@ -82,7 +106,7 @@ class ProductDao {
             )
             return this.#toProductJson(product)
         } catch (error) {
-            throw new Error(`Product with id ${id} not found`)
+            this.#handleError(error)
         }
 
     }
@@ -93,14 +117,18 @@ class ProductDao {
             const updatedProduct = await ProductModel.findOne({ _id: id }, projection)
             return this.#toProductJson(updatedProduct)
         } catch (error) {
-            throw new Error(`Product with id ${id} not found`)
+            this.#handleError(error)
         }
     }
 
     async deleteProduct(id) {
         const result = await ProductModel.deleteOne({ _id: id })
         if (result.deletedCount == 0) {
-            throw new Error(`Product with id ${id} not found`)
+            throw new CustomError({
+                name: 'ProductNotFound',
+                message: `Product with id ${id} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
     }
 }
