@@ -1,4 +1,6 @@
 const MongoDataBase = require("./mongodb/MongoDataBase");
+const { CustomError } = require("../errors/CustomError");
+const ERROR_CODES = require("../errors/errorCodes");
 
 class ModelsFactory {
     static createDatabaseImplementation(type) {
@@ -9,7 +11,11 @@ class ModelsFactory {
                 database = new MongoDataBase();
                 break;
             default:
-                throw new Error('Tipo de implementación de base de datos no válido');
+                throw new CustomError({
+                    name: 'InvalidDatabaseType',
+                    message: 'Invalid database type',
+                    code: ERROR_CODES.INVALID_DATABASE_TYPE
+                });
         }
 
         return database;
