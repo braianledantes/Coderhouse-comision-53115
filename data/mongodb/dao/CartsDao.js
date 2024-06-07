@@ -1,3 +1,6 @@
+const { th } = require("@faker-js/faker")
+const { CustomError } = require("../../../errors/CustomError")
+const ERROR_CODES = require("../../../errors/errorCodes")
 const { CartModel } = require("../models/CartModel")
 
 const projection = {
@@ -13,15 +16,31 @@ class CartsDao {
     }
 
     async createEmptyCart() {
-        const result = await CartModel.create({ products: [] })
-        const newCart = await CartModel.findById(result._id, projection)
-        return this.#toCartJson(newCart)
+        try {
+            const result = await CartModel.create({ products: [] })
+            const newCart = await CartModel.findById(result._id, projection)
+            return this.#toCartJson(newCart)
+        } catch (error) {
+            throw new CustomError({
+                name: 'CartCreationError',
+                message: 'Error while creating cart',
+                code: ERROR_CODES.DATABASE_ERROR
+            })
+        }
     }
 
     async addCart({ products }) {
-        const result = await CartModel.create({ products })
-        const newCart = await CartModel.findById(result._id, projection)
-        return this.#toCartJson(newCart)
+        try {
+            const result = await CartModel.create({ products })
+            const newCart = await CartModel.findById(result._id, projection)
+            return this.#toCartJson(newCart)
+        } catch (error) {
+            throw new CustomError({
+                name: 'CartCreationError',
+                message: 'Error while creating cart with products',
+                code: ERROR_CODES.DATABASE_ERROR
+            })
+        }
     }
 
     async getCarts() {
@@ -39,7 +58,22 @@ class CartsDao {
                 .populate('products.product')
             return this.#toCartJson(cart)
         } catch (error) {
-            throw new Error(`Cart with id ${id} not found`)
+            if (error.name == 'MongoServerError' && error.code == 11000) {
+                // Throw a custom error if the product already exists
+                const err = new CustomError({
+                    name: 'CartAlreadyExists',
+                    message: `Cart with id ${id} already exists`,
+                    code: ERROR_CODES.INVALID_INPUT
+                })
+                throw err
+            } else {
+                // Throw a database error
+                throw new CustomError({
+                    name: 'DatabaseError',
+                    message: 'Error while creating cart',
+                    code: ERROR_CODES.DATABASE_ERROR
+                })
+            }
         }
 
     }
@@ -50,14 +84,33 @@ class CartsDao {
             const updatedCart = await CartModel.findOne({ _id: id }, projection)
             return this.#toCartJson(updatedCart)
         } catch (error) {
-            throw new Error(`Cart with id ${id} not found`)
+            if (error.name == 'MongoServerError' && error.code == 11000) {
+                // Throw a custom error if the product already exists
+                const err = new CustomError({
+                    name: 'CartAlreadyExists',
+                    message: `Cart with id ${id} already exists`,
+                    code: ERROR_CODES.INVALID_INPUT
+                })
+                throw err
+            } else {
+                // Throw a database error
+                throw new CustomError({
+                    name: 'DatabaseError',
+                    message: 'Error while creating cart',
+                    code: ERROR_CODES.DATABASE_ERROR
+                })
+            }
         }
     }
 
     async deleteCart(id) {
         const result = await CartModel.deleteOne({ _id: id })
         if (result.deletedCount == 0) {
-            throw new Error(`Cart with id ${id} not found`)
+            throw new CustomError({
+                name: 'CartNotFound',
+                message: `Cart with id ${id} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
         }
     }
 }
