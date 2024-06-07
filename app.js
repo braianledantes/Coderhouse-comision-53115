@@ -8,6 +8,7 @@ const passport = require('passport')
 const initializeGithubStrategy = require('./config/passport-github.config')
 const initializeLocalStrategy = require('./config/passport-local.config')
 const sessionMiddleware = require('./middlewares/sessions/mongoSession')
+const errorHandler = require('./middlewares/errorHandler')
 const ModelsFactory = require('./data/ModelsFactory')
 const ServicesFactory = require('./services/ServicesFactory')
 const ControllersFactory = require('./controllers/ControllersFactory')
@@ -74,6 +75,9 @@ app.use('/', createViewsRouter({ viewsController: controllersFactory.createViews
 app.get('/mockingproducts', (_, res) => {
     res.json(createRandromProducts())
 })
+
+// error handler
+app.use(errorHandler)
 
 // iniciar app
 const PORT = process.env.PORT || 8080
