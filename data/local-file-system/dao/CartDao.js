@@ -1,5 +1,7 @@
 const { randomUUID } = require('node:crypto')
 const fs = require('node:fs/promises')
+const { CustomError } = require('../../../errors/CustomError')
+const ERROR_CODES = require('../../../errors/errorCodes')
 
 class CartDao {
     #path
@@ -50,7 +52,11 @@ class CartDao {
         const carts = await this.#getCartsFromFile()
         const cart = carts.find(c => c.id == id)
         if (!cart) {
-            throw new Error(`Cart with id ${id} not found`)
+            throw new CustomError({
+                name: 'CartNotFound',
+                message: `Cart with id ${id} not found`,
+                code: ERROR_CODES.DATABASE_ERROR
+            })
         }
         return cart
     }
@@ -60,7 +66,11 @@ class CartDao {
         const index = carts.findIndex(c => c.id == id)
 
         if (index < 0) {
-            throw new Error(`Cart with id ${id} not found`)
+            throw new CustomError({
+                name: 'CartNotFound',
+                message: `Cart with id ${id} not found`,
+                code: ERROR_CODES.DATABASE_ERROR
+            })
         }
         const updatedCart = { ...carts[index], ...data }
 
@@ -75,7 +85,11 @@ class CartDao {
         const i = carts.findIndex(c => c.id == id)
 
         if (i === -1) {
-            throw new Error(`Cart with id ${id} not found`)
+            throw new CustomError({
+                name: 'CartNotFound',
+                message: `Cart with id ${id} not found`,
+                code: ERROR_CODES.DATABASE_ERROR
+            })
         }
 
         carts.splice(i, 1)
