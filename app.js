@@ -16,6 +16,7 @@ const createProductsRouter = require('./routers/products')
 const createChatsRouter = require('./routers/chat')
 const createSessionsRouter = require('./routers/sessions')
 const createViewsRouter = require('./routers/views')
+const { createRandromProducts } = require('./mocks/generateProducts')
 
 // inicializar programa
 const program = new Command()
@@ -68,6 +69,11 @@ app.use('/api/products', createProductsRouter({ productsController: controllersF
 app.use('/api/sessions', createSessionsRouter({ sessionsController: controllersFactory.createSessionsController()}))
 // views routers
 app.use('/', createViewsRouter({ viewsController: controllersFactory.createViewsController()}))
+
+// mock data
+app.get('/mockingproducts', (_, res) => {
+    res.json(createRandromProducts())
+})
 
 // iniciar app
 const PORT = process.env.PORT || 8080
