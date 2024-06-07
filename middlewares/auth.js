@@ -1,9 +1,16 @@
+const { CustomError } = require("../errors/CustomError")
+const ERROR_CODES = require("../errors/errorCodes")
+
 module.exports = {
     userIsLoggedIn: (req, res, next) => {
         // el usuario debe tener una sesion iniciada
         const isLoggedIn = ![null, undefined].includes(req.session.user)
         if (!isLoggedIn) {
-            return res.status(401).json({ error: "User should be logged in!"})
+            throw new CustomError({
+                name: "PermissionDenied",
+                message: "User should be logged in!",
+                code: ERROR_CODES.PERMISSION_DENIED
+            })
         }
 
         next()
@@ -12,7 +19,11 @@ module.exports = {
         // el usuario debe tener una sesion iniciada
         const isLoggedIn = ![null, undefined].includes(req.session.user)
         if (isLoggedIn) {
-            return res.status(401).json({ error: "User should not be logged in!"})
+            throw new CustomError({
+                name: "PermissionDenied",
+                message: "User should not be logged in!",
+                code: ERROR_CODES.PERMISSION_DENIED
+            })
         }
 
         next()
@@ -21,7 +32,11 @@ module.exports = {
         // el usuario debe ser admin
         const isAdmin = req.session.user.role === "admin"
         if (!isAdmin) {
-            return res.status(401).json({ error: "User should be admin!" })
+            throw new CustomError({
+                name: "PermissionDenied",
+                message: "User should be admin!",
+                code: ERROR_CODES.PERMISSION_DENIED
+            })
         }
 
         next()
@@ -30,7 +45,11 @@ module.exports = {
         // el usuario debe ser admin
         const isNormalUser = req.session.user.role === "user"
         if (!isNormalUser) {
-            return res.status(401).json({ error: "User should be normal user!" })
+            throw new CustomError({
+                name: "PermissionDenied",
+                message: "User should be normal user!",
+                code: ERROR_CODES.PERMISSION_DENIED
+            })
         }
 
         next()
