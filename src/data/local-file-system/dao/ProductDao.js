@@ -1,7 +1,7 @@
 const { randomUUID } = require('node:crypto')
 const fs = require('node:fs/promises')
-const ERROR_CODES = require('../../../errors/errorCodes')
-const { CustomError } = require('../../../errors/CustomError')
+const ERROR_CODES = require('./../../errors/errorCodes')
+const { CustomError } = require('./../../errors/CustomError')
 
 class ProductDao {
     #path

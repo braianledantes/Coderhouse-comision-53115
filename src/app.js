@@ -45,7 +45,7 @@ app.set('websocket', io)
 
 // handlebars
 app.engine('handlebars', handlebars.engine())
-app.set('views', './views')
+app.set('views', `${__dirname}/views`)
 app.set('view engine', 'handlebars')
 
 // middlewares
@@ -61,7 +61,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // public web site
-app.use(express.static('public'))
+app.use(express.static(`${__dirname}/public`))
 
 // api routers
 app.use('/api/carts', createCartsRouter({ cartsController: controllersFactory.createCartsController() }))
