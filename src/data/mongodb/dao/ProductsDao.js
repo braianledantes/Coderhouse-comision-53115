@@ -21,7 +21,8 @@ class ProductDao {
             const err = new CustomError({
                 name: 'ProductAlreadyExists',
                 message: `Product already exists`,
-                code: ERROR_CODES.INVALID_INPUT
+                code: ERROR_CODES.INVALID_INPUT,
+                cause: error
             })
             throw err
         } else {
@@ -29,7 +30,8 @@ class ProductDao {
             throw new CustomError({
                 name: 'DatabaseError',
                 message: 'Error while creating product',
-                code: ERROR_CODES.DATABASE_ERROR
+                code: ERROR_CODES.DATABASE_ERROR,
+                cause: error
             })
         }
     }
@@ -89,11 +91,11 @@ class ProductDao {
                 hasNextPage: result.hasNextPage
             }
         } catch (error) {
-            console.error(error)
             throw new CustomError({
                 name: 'DatabaseError',
                 message: 'Error while fetching products',
-                code: ERROR_CODES.DATABASE_ERROR
+                code: ERROR_CODES.DATABASE_ERROR,
+                cause: error
             })
         }
     }
