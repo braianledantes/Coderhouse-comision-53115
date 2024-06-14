@@ -2,6 +2,7 @@ const express = require('express')
 const { Command } = require('commander')
 const handlebars = require('express-handlebars')
 const morgan = require('morgan')
+const { addLogger } = require('./utils/logger')
 const { createServer } = require('node:http')
 const { Server } = require('socket.io')
 const passport = require('passport')
@@ -52,6 +53,7 @@ app.set('view engine', 'handlebars')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('tiny'))
+app.use(addLogger)
 app.use(sessionMiddleware)
 
 // se inicializan las estrategias de passport
@@ -76,6 +78,18 @@ app.get('/mockingproducts', (_, res) => {
     res.json(createRandromProducts())
 })
 
+// endpoint para testear logs
+app.get('/loggerTest', (req, res) => {
+    req.logger.fatal('Log test fatal')
+    req.logger.error('Log test error')
+    req.logger.warning('Log test warning')
+    req.logger.info('Log test info')
+    req.logger.http('Log test http')
+    req.logger.debug('Log test debug')
+
+    res.send('Log test')
+})
+
 // error handler
 app.use(errorHandler)
 
@@ -83,5 +97,5 @@ app.use(errorHandler)
 const PORT = process.env.PORT || 8080
 
 server.listen(PORT, () => {
-    console.log(`App listening on http://localhost:${PORT}`);
+    console.log(`App listening on http://localhost:${PORT}`)
 })
