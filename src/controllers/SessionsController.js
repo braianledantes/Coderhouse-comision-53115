@@ -1,4 +1,5 @@
 const passport = require('passport')
+const { CustomError } = require('../errors/CustomError')
 
 class SessionsController {
     constructor({ usersService }) {
@@ -14,8 +15,12 @@ class SessionsController {
 
                 res.redirect('/products')
             } catch (error) {
-                console.error(error);
-                res.status(500).json({ error })
+                throw new  CustomError({
+                    name: 'RequestError',
+                    message: 'Error en login',
+                    code: ERROR_CODES.AUTHENTICATION_FAILED,
+                    cause: error
+                })
             }
         }
     ]
@@ -30,7 +35,12 @@ class SessionsController {
                 return res.redirect('/')
             }
 
-            return res.status(500).json({ error: err })
+            throw new  CustomError({
+                name: 'RequestError',
+                message: 'Error logging out',
+                code: ERROR_CODES.AUTHENTICATION_FAILED,
+                cause: err
+            })
         })
     }
 
@@ -60,19 +70,18 @@ class SessionsController {
     ]
 
     getCurrentUser = async (req, res) => {
-        try {
-            const emailFromSession = req.session.user?.email
-    
-            if (!emailFromSession) {
-                return res.status(401).json({ message: "User not logged in" })
-            }
-    
-            const user = await this.usersService.getUserByEmail({ email: emailFromSession })
-            return res.json(user)
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message })
+        const emailFromSession = req.session.user?.email
+
+        if (!emailFromSession) {
+            throw new  CustomError({
+                name: 'RequestError',
+                message: 'User not logged in',
+                code: ERROR_CODES.AUTHENTICATION_FAILED
+            })
         }
+
+        const user = await this.usersService.getUserByEmail({ email: emailFromSession })
+        return res.json(user)
     }
 }
 
