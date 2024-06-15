@@ -6,147 +6,98 @@ class CartsController {
     }
 
     createEmptyCart = async (_, res) => {
-        try {
-            const newCart = this.cartsService.createEmptyCart()
-            res.status(201).json(newCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const newCart = this.cartsService.createEmptyCart()
+        res.status(201).json(newCart)
     }
 
     getCart = async (req, res) => {
         const cid = req.params.cid
-        try {
-            const cart = await this.cartsService.getProductsCart(cid)
-            res.json({ products: cart.products })
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const cart = await this.cartsService.getProductsCart(cid)
+        res.json({ products: cart.products })
     }
 
     updateCartProducts = async (req, res) => {
         const cid = req.params.cid
         const newProducts = req.body.products
-        try {
-            const updatedCart = await this.cartsService.updateCartProducts(cid, newProducts)
-            res.json(updatedCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const updatedCart = await this.cartsService.updateCartProducts(cid, newProducts)
+        res.json(updatedCart)
     }
 
     deleteCartProducts = async (req, res) => {
         const cid = req.params.cid
-        try {
-            const updatedCart = await this.cartsService.deleteCartProducts(cid)
-            res.json(updatedCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const updatedCart = await this.cartsService.deleteCartProducts(cid)
+        res.json(updatedCart)
     }
 
     addProductToCart = async (req, res) => {
         const { cid, pid } = req.params
-        try {
-            const updatedCart = await this.cartsService.addProductToCart(cid, pid)
-            res.json(updatedCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const updatedCart = await this.cartsService.addProductToCart(cid, pid)
+        res.json(updatedCart)
     }
 
     removeProductFromCart = async (req, res) => {
         const { cid, pid } = req.params
-        try {
-            const updatedCart = await this.cartsService.removeProductFromCart(cid, pid)
-            return res.json(updatedCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const updatedCart = await this.cartsService.removeProductFromCart(cid, pid)
+        return res.json(updatedCart)
     }
 
     // Ticket methods ----------------------
     createTicket = async (req, res) => {
-
         const { cid } = req.params
-        try {
-            const ticket = await this.cartsService.createTicket(cid)
-            res.json(ticket)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const ticket = await this.cartsService.createTicket(cid)
+        res.json(ticket)
     }
 
     // Current cart methods ----------------------
 
     getCurrentCart = async (req, res) => {
-        try {
-            const emailFromSession = req.session.user.email
-            const user = (await this.usersService.getUserByEmail({ email: emailFromSession }))
-            const cart = user.cart
-            res.json({ products: cart.products })
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const emailFromSession = req.session.user.email
+        const user = (await this.usersService.getUserByEmail({ email: emailFromSession }))
+        const cart = user.cart
+        res.json({ products: cart.products })
     }
 
     updateCurrentCartProducts = async (req, res) => {
-        try {
-            const emailFromSession = req.session.user.email
-            const user = (await this.usersService.getUserByEmail({ email: emailFromSession }))
-    
-            const cid = user.cart.id
-            const newProducts = req.body.products
+        const emailFromSession = req.session.user.email
+        const user = (await this.usersService.getUserByEmail({ email: emailFromSession }))
 
-            const updatedCart = await this.cartsService.updateCartProducts(cid, newProducts)
-            res.json(updatedCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const cid = user.cart.id
+        const newProducts = req.body.products
+
+        const updatedCart = await this.cartsService.updateCartProducts(cid, newProducts)
+        res.json(updatedCart)
     }
 
     deleteCurrentCartProducts = async (req, res) => {
-        try {
-            const emailFromSession = req.session.user.email
-            const user = await this.usersService.getUserByEmail({ email: emailFromSession })
-    
-            const cid = user.cart.id
+        const emailFromSession = req.session.user.email
+        const user = await this.usersService.getUserByEmail({ email: emailFromSession })
 
-            const updatedCart = await this.cartsService.deleteCartProducts(cid)
-            res.json(updatedCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const cid = user.cart.id
+
+        const updatedCart = await this.cartsService.deleteCartProducts(cid)
+        res.json(updatedCart)
     }
 
     addProductToCurrentCart = async (req, res) => {
         const { pid } = req.params
-        try {
-            const emailFromSession = req.session.user.email
-            const user = await this.usersService.getUserByEmail({ email: emailFromSession })
+        const emailFromSession = req.session.user.email
+        const user = await this.usersService.getUserByEmail({ email: emailFromSession })
 
-            const cid = user.cart.id
+        const cid = user.cart.id
 
-            const updatedCart = await this.cartsService.addProductToCart(cid, pid)
-            res.json(updatedCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const updatedCart = await this.cartsService.addProductToCart(cid, pid)
+        res.json(updatedCart)
     }
 
     removeProductFromCurrentCart = async (req, res) => {
         const { pid } = req.params
-        try {
-            const emailFromSession = req.session.user.email
-            const user = await this.usersService.getUserByEmail({ email: emailFromSession })
+        const emailFromSession = req.session.user.email
+        const user = await this.usersService.getUserByEmail({ email: emailFromSession })
 
-            const cid = user.cart.id
+        const cid = user.cart.id
 
-            const updatedCart = await this.cartsService.removeProductFromCart(cid, pid)
-            return res.json(updatedCart)
-        } catch (error) {
-            res.status(404).json({ message: error.message })
-        }
+        const updatedCart = await this.cartsService.removeProductFromCart(cid, pid)
+        return res.json(updatedCart)
     }
 }
 
