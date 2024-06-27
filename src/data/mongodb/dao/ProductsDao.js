@@ -10,7 +10,8 @@ const projection = {
     stock: 1,
     price: 1,
     category: 1,
-    status: 1
+    status: 1,
+    owner: 1
 }
 
 class ProductDao {

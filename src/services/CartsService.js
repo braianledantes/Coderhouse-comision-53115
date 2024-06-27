@@ -44,10 +44,14 @@ class CartsService {
     }
 
     addProductToCart = async (cartId, productId) => {
+        // obtiene el usuario del carrito
+        const user = await this.usersDao.getUserByCartId(cartId)
+        // obtiene el carrito de la bd
         const cart = await this.cartsDao.getCartById(cartId)
+
         // verifica que exista el producto, si no existe lanza un error
-        const existsProduct = await this.productsDao.getProductById(productId)
-        if (!existsProduct) {
+        const product = await this.productsDao.getProductById(productId)
+        if (!product) {
             throw new CustomError({
                 name: 'ProductNotFound',
                 message: `Product with id ${productId} not found`,
@@ -55,7 +59,17 @@ class CartsService {
             })
         }
 
-        const productCart = cart.products.find(e => e.product.id == productId)
+        // verifica que el producto le pertenezca al usuario
+        if (product.owner != user.id) {
+            throw new CustomError({
+                name: 'ProductNotBelongsToUser',
+                message: `Product with id ${productId} does not belong to user ${user.id}`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
+        }
+        
+        // agrega el producto al carrito o incrementa la cantidad si ya existe
+        const productCart = cart.products.find(e => e.product?.id == productId)
         if (productCart) {
             productCart.quantity++
         } else {
@@ -63,6 +77,7 @@ class CartsService {
             cart.products.push(newProductCart)
         }
 
+        // actualiza el carrito en la bd
         const updatedCart = await this.cartsDao.updateCart(cartId, cart)
 
         return updatedCart

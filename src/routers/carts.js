@@ -13,7 +13,7 @@ const createCartsRouter = ({ cartsController }) => {
     router.put('/:cid', validateUpdateCart, cartsController.updateCartProducts)
     router.delete('/:cid', cartsController.deleteCartProducts)
  
-    router.post('/:cid/product/:pid', validateUserRoles(ROLES.NORMAL), cartsController.addProductToCart)
+    router.post('/:cid/product/:pid', validateUserRoles(ROLES.NORMAL, ROLES.PREMIUM), cartsController.addProductToCart)
     router.delete('/:cid/products/:pid', cartsController.removeProductFromCart)
 
     // ticket routes
@@ -24,7 +24,7 @@ const createCartsRouter = ({ cartsController }) => {
     router.put('/', validateUpdateCart, cartsController.updateCurrentCartProducts)
     router.delete('/', cartsController.deleteCurrentCartProducts)
  
-    router.post('/products/:pid', validateUserRoles(ROLES.NORMAL), cartsController.addProductToCurrentCart)
+    router.post('/products/:pid', validateUserRoles(ROLES.NORMAL, ROLES.PREMIUM), cartsController.addProductToCurrentCart)
     router.delete('/products/:pid', cartsController.removeProductFromCurrentCart)
 
     return router
