@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const { validateUpdateCart } = require('../middlewares/validations/carts.validations.js')
-const { validateUserRoles, ROLES } = require('../middlewares/auth.js')
+const { validateUserRoles } = require('../middlewares/auth.js')
+const { ROLES } = require('../data/userRoles.js')
 
 const createCartsRouter = ({ cartsController }) => {
 

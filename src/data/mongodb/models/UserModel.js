@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { ROLES } = require('../../userRoles')
 
 const schema = new mongoose.Schema({
     firstName: {
@@ -26,6 +27,7 @@ const schema = new mongoose.Schema({
     },
     role: {
         type: String,
+        enum: ROLES,
         require: true,
         default: "user"
     }

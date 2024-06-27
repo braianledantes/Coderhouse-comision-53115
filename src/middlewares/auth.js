@@ -1,12 +1,6 @@
 const { CustomError } = require("../errors/CustomError")
 const ERROR_CODES = require("../errors/errorCodes")
 
-const ROLES = {
-    ADMIN:  "admin",
-    NORMAL: "user",
-    PREMIUM: "premium"
-}
-
 module.exports = {
     userIsLoggedIn: (req, res, next) => {
         // el usuario debe tener una sesion iniciada
@@ -45,6 +39,5 @@ module.exports = {
         }
 
         next()
-    },
-    ROLES
+    }
 }
