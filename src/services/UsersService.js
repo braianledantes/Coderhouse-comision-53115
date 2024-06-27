@@ -89,6 +89,7 @@ class UsersService {
     }
 
     restorePassword = async ({ email, password1, password2 }) => {
+        // se valida que las contraseñas sean iguales
         if (password1 !== password2) {
             throw new CustomError({
                 name: 'PasswordsDoNotMatch',
@@ -106,6 +107,27 @@ class UsersService {
             })
         }
 
+        const userPassword = await this.usersDao.getUserPassword({ email })
+        
+        // si no se encuentra el usuario lanzar error
+        if (!userPassword) {
+            throw new CustomError({
+                name: 'UserNotFound',
+                message: `User with email ${email} not found`,
+                code: ERROR_CODES.INVALID_INPUT
+            })
+        }
+
+        // si es la misma contraseña que la anterior lanzar error
+        if (hashingUtils.isValidPassword(password1, userPassword)) {
+            throw new CustomError({
+                name: 'SamePassword',
+                message: 'New password is the same as the old one',
+                code: ERROR_CODES.INVALID_INPUT
+            })
+        }
+
+        // se hashea la nueva contraseña y se actualiza en la base de datos
         const hashedPassword = hashingUtils.hashPassword(password1)
         await this.usersDao.updateUserPassword({ email, password: hashedPassword })
     }
