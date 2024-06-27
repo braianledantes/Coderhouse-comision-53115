@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 const { CustomError } = require('../errors/CustomError')
 const ERROR_CODES = require('../errors/errorCodes')
+const { ROLES } = require('../data/userRoles')
 
 class UsersService {
     constructor({ usersDao, cartsDao }) {
@@ -130,6 +131,13 @@ class UsersService {
         // se hashea la nueva contraseña y se actualiza en la base de datos
         const hashedPassword = hashingUtils.hashPassword(password1)
         await this.usersDao.updateUserPassword({ email, password: hashedPassword })
+    }
+
+    changeUserRole = async (uid) => {
+        const user = await this.usersDao.getUserById({ id: uid })
+        const newRole = user.role ===  ROLES.NORMAL ? ROLES.PREMIUM : ROLES.NORMAL
+        const updatedUser = await this.usersDao.updateUserRole({ id: uid, role: newRole })
+        return updatedUser
     }
 }
 

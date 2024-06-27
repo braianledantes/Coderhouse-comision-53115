@@ -3,6 +3,7 @@ const ChatsController = require('./ChatsController')
 const ProductsController = require('./ProductsController')
 const SessionsController = require('./SessionsController')
 const ViewsController = require('./ViewsController')
+const UsersController = require('./UsersController')
 
 class ControllersFactory {
     constructor({ servicesFactory }) {
@@ -26,6 +27,10 @@ class ControllersFactory {
 
     createSessionsController() {
         return new SessionsController({ usersService: this.servicesFactory.getUsersServiceInstance() })
+    }
+
+    createUsersController() {
+        return new UsersController({ usersService: this.servicesFactory.getUsersServiceInstance() })
     }
 
     createViewsController() {

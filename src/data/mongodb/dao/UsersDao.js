@@ -130,6 +130,11 @@ class UserDao {
         await UserModel.findOneAndUpdate({ email }, { password })
         return true
     }
+
+    async updateUserRole({ id, role }) {
+        const user = await UserModel.findOneAndUpdate({ _id: id }, { role }, { new: true })
+        return this.#mapUserToUserDto(user)
+    }
 }
 
 module.exports = UserDao

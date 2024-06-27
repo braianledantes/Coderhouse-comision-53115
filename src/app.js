@@ -17,6 +17,7 @@ const createCartsRouter = require('./routers/carts')
 const createProductsRouter = require('./routers/products')
 const createChatsRouter = require('./routers/chat')
 const createSessionsRouter = require('./routers/sessions')
+const createUsersRouter = require('./routers/users')
 const createViewsRouter = require('./routers/views')
 const { createRandromProducts } = require('./mocks/generateProducts')
 
@@ -70,6 +71,7 @@ app.use('/api/carts', createCartsRouter({ cartsController: controllersFactory.cr
 app.use('/api/chat', createChatsRouter({ chatsController: controllersFactory.createChatsController() }))
 app.use('/api/products', createProductsRouter({ productsController: controllersFactory.createProductsController()}))
 app.use('/api/sessions', createSessionsRouter({ sessionsController: controllersFactory.createSessionsController()}))
+app.use('/api/users', createUsersRouter({ usersController: controllersFactory.createUsersController()}))
 // views routers
 app.use('/', createViewsRouter({ viewsController: controllersFactory.createViewsController()}))
 
