@@ -127,7 +127,8 @@ class ViewsController {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 age: user.age,
-                email: user.email
+                email: user.email,
+                role: user.role
             },
             layout: 'main-user-logged-in'
         })
