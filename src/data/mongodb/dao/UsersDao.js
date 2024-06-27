@@ -125,6 +125,11 @@ class UserDao {
         })
         return this.#mapUserToUserDto(user)
     }
+
+    async updateUserPassword({ email, password }) {
+        await UserModel.findOneAndUpdate({ email }, { password })
+        return true
+    }
 }
 
 module.exports = UserDao

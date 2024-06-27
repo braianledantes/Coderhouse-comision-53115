@@ -83,6 +83,22 @@ class SessionsController {
         const user = await this.usersService.getUserByEmail({ email: emailFromSession })
         return res.json(user)
     }
+
+    restorePasswordRequest = async (req, res) => {
+        const { email } = req.query
+        await this.usersService.sendRestorePasswordEmail({ email })
+        res.send('Email sent!')
+    }
+
+
+    restorePassword = async (req, res) => {
+        const { email, password1, password2, token } = req.body
+
+        await this.usersService.validateToken({ token })
+        await this.usersService.restorePassword({ email, password1, password2 })
+
+        res.redirect('/')
+    }
 }
 
 module.exports = SessionsController

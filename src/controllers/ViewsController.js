@@ -132,6 +132,30 @@ class ViewsController {
             layout: 'main-user-logged-in'
         })
     }
+
+    restorepasswordrequest = (_, res) => {
+        res.render('restorepasswordrequest', {
+            title: 'Recuperar contraseña',
+            layout: 'main'
+        })
+    }
+
+    restorePassword = async (req, res) => {
+        const token = req.params.token
+
+        if (!token) {
+            return res.send('Token not found')
+        }
+        
+        const email = await this.usersService.validateToken({ token })
+        
+        res.render('restorepassword', {
+            title: 'Recuperar contraseña',
+            layout: 'main',
+            token,
+            email
+        })
+    }
 }
 
 module.exports = ViewsController

@@ -15,6 +15,8 @@ const createViewRouter = ({ viewsController }) => {
     router.get('/login', userIsNotLoggedIn, viewsController.login)
     router.get('/register', userIsNotLoggedIn, viewsController.register)
     router.get('/profile', userIsLoggedIn, viewsController.profile)
+    router.get('/restore-password', userIsNotLoggedIn, viewsController.restorepasswordrequest)
+    router.get('/restore-password/:token', userIsNotLoggedIn, viewsController.restorePassword)
 
     return router
 }

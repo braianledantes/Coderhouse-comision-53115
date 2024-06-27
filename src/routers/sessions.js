@@ -21,6 +21,9 @@ const createSessionsRouter = ({ sessionsController }) => {
 
     router.get('/current', userIsLoggedIn, sessionsController.getCurrentUser)
 
+    router.get('/restore-password', userIsNotLoggedIn, sessionsController.restorePasswordRequest)
+    router.post('/restore-password', userIsNotLoggedIn, sessionsController.restorePassword)
+
     return router
 }
 
