@@ -94,10 +94,18 @@ class SessionsController {
     restorePassword = async (req, res) => {
         const { email, password1, password2, token } = req.body
 
-        await this.usersService.validateToken({ token })
-        await this.usersService.restorePassword({ email, password1, password2 })
+        try {
+            await this.usersService.validateToken({ token })
+            await this.usersService.restorePassword({ email, password1, password2 })
+            res.redirect('/')
+        } catch (error) {
+            // si el token ha expirado se redirige a la página de inicio
+            if (error.name === 'TokenExpiredError') {
+                return res.redirect('/restore-password')
+            }
+            throw error
+        }
 
-        res.redirect('/')
     }
 }
 
