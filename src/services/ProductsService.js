@@ -1,3 +1,5 @@
+const { ROLES } = require("../data/userRoles")
+
 class ProductsService {
     constructor({ productsDao, usersDao }) {
         this.productsDao = productsDao
@@ -48,13 +50,25 @@ class ProductsService {
         return productCreated
     }
 
-    updateProduct = async ({ productId, productData }) => {
-        const productUpdated = await this.productsDao.updateProduct(productId, productData)
-        return productUpdated
+    updateProduct = async ({ productId, productData, userEmail }) => {
+        const user = await this.usersDao.getUserByEmail({ email: userEmail })
+
+        if (user.role === ROLES.ADMIN) {
+            await this.productsDao.updateProductOwner(productId, productData, user.id)
+        } else {
+            const productUpdated = await this.productsDao.updateProduct(productId, productData)
+            return productUpdated
+        }
     }
 
-    deleteProduct = async ({ productId }) => {
-        await this.productsDao.deleteProduct(productId)
+    deleteProduct = async ({ productId, userEmail }) => {
+        const user = await this.usersDao.getUserByEmail({ email: userEmail })
+
+        if (user.role === ROLES.ADMIN) {
+            await this.productsDao.deleteProduct(productId)
+        } else {
+            await this.productsDao.deleteProductOwner(productId, user.id)
+        }
     }
 }
 

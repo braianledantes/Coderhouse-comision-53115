@@ -36,10 +36,11 @@ class ProductsController {
     }
 
     updateProduct = async (req, res) => {
+        const userEmail = req.session.user.email
         const productData = req.body
         const productId = req.params.pid
         try {
-            const productUpdated = await this.productsService.updateProduct({ productId, productData })
+            const productUpdated = await this.productsService.updateProduct({ productId, productData, userEmail })
             req.app.get('websocket').emit('product-updated', { product: productUpdated })
 
             res.json({ product: productUpdated })
@@ -51,8 +52,9 @@ class ProductsController {
 
     deleteProduct = async (req, res) => {
         const pid = req.params.pid
+        const userEmail = req.session.user.email
         try {
-            await this.productsService.deleteProduct({ productId: pid })
+            await this.productsService.deleteProduct({ productId: pid, userEmail })
 
             req.app.get('websocket').emit('product-deleted', { productId: pid })
 

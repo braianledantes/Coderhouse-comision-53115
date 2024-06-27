@@ -123,6 +123,16 @@ class ProductDao {
         }
     }
 
+    async updateProductOwner(id, data, idUserOwner) {
+        try {
+            await ProductModel.updateOne({ _id: id, owner: idUserOwner }, data)
+            const updatedProduct = await ProductModel.findOne({ _id: id }, projection)
+            return this.#toProductJson(updatedProduct)
+        } catch (error) {
+            this.#handleError(error)
+        }
+    }
+
     async deleteProduct(id) {
         const result = await ProductModel.deleteOne({ _id: id })
         if (result.deletedCount == 0) {
@@ -130,6 +140,17 @@ class ProductDao {
                 name: 'ProductNotFound',
                 message: `Product with id ${id} not found`,
                 code: ERROR_CODES.INVALID_INPUT
+            })
+        }
+    }
+
+    async deleteProductOwner(id, idUserOwner) {
+        const result = await ProductModel.findOneAndDelete({ _id: id, owner: idUserOwner })
+        if (!result) {
+            throw new CustomError({
+                name: 'ProductNotFound',
+                message: 'Product not found',
+                code: ERROR_CODES.NOT_FOUND
             })
         }
     }
