@@ -1,6 +1,7 @@
 class ProductsService {
-    constructor({ productsDao }) {
+    constructor({ productsDao, usersDao }) {
         this.productsDao = productsDao
+        this.usersDao = usersDao
     }
 
     getPaginationProducts = async ({ baseUrl, params }) => {
@@ -38,7 +39,11 @@ class ProductsService {
         return { product }
     }
 
-    createProduct = async ({ newProduct }) => {
+    createProduct = async ({ newProduct, userEmail }) => {
+        const user = await this.usersDao.getUserByEmail({ email: userEmail })
+        // asigna el id del usuario al producto
+        newProduct.owner = user.id
+
         const productCreated = await this.productsDao.addProduct(newProduct)
         return productCreated
     }

@@ -33,7 +33,10 @@ class ServicesFactory {
 
     getProductsServiceInstance() {
         if (!this.productsService) {
-            this.productsService = new ProductsService({ productsDao: this.database.getProductsDao() })
+            this.productsService = new ProductsService({ 
+                productsDao: this.database.getProductsDao(),
+                usersDao: this.database.getUsersDao()
+             })
         }
         return this.productsService
     }

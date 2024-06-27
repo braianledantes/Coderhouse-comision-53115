@@ -21,8 +21,9 @@ class ProductsController {
 
     createProduct = async (req, res) => {
         try {
+            const userEmail = req.session.user.email
             const newProduct = req.body
-            const productCreated = await this.productsService.createProduct({ newProduct })
+            const productCreated = await this.productsService.createProduct({ newProduct, userEmail })
 
             req.app.get('websocket').emit('product-created', { product: productCreated })
 
