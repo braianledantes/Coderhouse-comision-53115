@@ -1,6 +1,12 @@
 const { CustomError } = require("../errors/CustomError")
 const ERROR_CODES = require("../errors/errorCodes")
 
+const ROLES = {
+    ADMIN:  "admin",
+    NORMAL: "user",
+    PREMIUM: "premium"
+}
+
 module.exports = {
     userIsLoggedIn: (req, res, next) => {
         // el usuario debe tener una sesion iniciada
@@ -28,30 +34,17 @@ module.exports = {
 
         next()
     },
-    isUserAdmin: (req, res, next) => {
-        // el usuario debe ser admin
-        const isAdmin = req.session.user.role === "admin"
-        if (!isAdmin) {
+    validateUserRoles: (...roles) => (req, res, next) => {
+        const isRoleValid = roles.includes(req.session.user.role)
+        if (!isRoleValid) {
             throw new CustomError({
                 name: "PermissionDenied",
-                message: "User should be admin!",
+                message: "User should have a valid role!",
                 code: ERROR_CODES.PERMISSION_DENIED
             })
         }
 
         next()
     },
-    isNormalUser: (req, res, next) => {
-        // el usuario debe ser admin
-        const isNormalUser = req.session.user.role === "user"
-        if (!isNormalUser) {
-            throw new CustomError({
-                name: "PermissionDenied",
-                message: "User should be normal user!",
-                code: ERROR_CODES.PERMISSION_DENIED
-            })
-        }
-
-        next()
-    }
+    ROLES
 }
