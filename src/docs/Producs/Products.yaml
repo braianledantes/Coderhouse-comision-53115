@@ -1,0 +1,278 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtiene los productos paginados
+      tags:
+        - Products
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: Número de página
+        - in: query
+          name: limit
+          schema:
+            type: number
+          description: Cantidad de productos por página
+        - in: query
+          name: category
+          schema:
+            type: string
+          description: Categoría del producto
+        - in: query
+          name: sort
+          schema:
+            type: enum
+            enum:
+              - asc
+              - desc
+          description: Orden de los productos
+        - in: query
+          name: availability
+          schema:
+            type: boolean
+          description: Disponibilidad del producto
+      responses:
+        '200':
+          description: Productos paginados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/PaginatedProducts'
+        '500':
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Error'
+    post:
+      summary: Crea un producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Product'
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Error'
+    put:
+      summary: Actualiza un producto
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/Product'
+      responses:
+        '200':
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Error'
+    delete:
+      summary: Elimina un producto
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      responses:
+        '200':
+          description: Producto eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: 'Product 667db63996def7a175c6ef22 deleted'
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Error'
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del producto
+        code:
+          type: string
+          description: Código del producto
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        thumbnail:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: URL de la imagen del producto
+        stock:
+          type: number
+          description: Cantidad en stock
+        price:
+          type: number
+          description: Precio del producto
+        category:
+          type: string
+          description: Categoría del producto
+        status:
+          type: boolean
+          description: Estado del producto
+        owner:
+          type: string
+          description: ID del usuario propietario
+      
+  requestBodies:
+    Product:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Código del producto
+              title:
+                type: string
+                description: Nombre del producto
+              description:
+                type: string
+                description: Descripción del producto
+              thumbnail:
+                type: array
+                items:
+                  type: string
+                  format: uri
+                description: URL de la imagen del producto
+              stock:
+                type: number
+                description: Cantidad en stock
+              price:
+                type: number
+                description: Precio del producto
+              category:
+                type: string
+                description: Categoría del producto
+              status:
+                type: boolean
+                description: Estado del producto
+  responses:
+    PaginatedProducts:
+      type: object
+      properties:
+        status:
+          type: string
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        prevPage:
+          type: number
+        nextPage:
+          type: number
+        page:
+          type: number
+        hasPrevPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+        prevLink:
+          type: string
+        nextLink:
+          type: string
+      example:
+        status: 'success'
+        payload:
+          - id: '1'
+            code: 'P001'
+            title: 'Producto 1'
+            description: 'Descripción del producto 1'
+            thumbnail: ['https://example.com/product1.jpg']
+            stock: 10
+            price: 100
+            category: 'Categoría 1'
+            status: true
+          - id: '2'
+            code: 'P002'
+            title: 'Producto 2'
+            description: 'Descripción del producto 2'
+            thumbnail: ['https://example.com/product2.jpg']
+            stock: 5
+            price: 200
+            category: 'Categoría 2'
+            status: true
+        prevPage: 1
+        nextPage: 3
+        page: 2
+        hasPrevPage: true
+        hasNextPage: true
+        prevLink: '/api/products?page=1&limit=2'
+        nextLink: '/api/products?page=3&limit=2'
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      example:
+        status: 'error'
+        message: 'Error de validación'

@@ -1,0 +1,195 @@
+paths:
+  /api/carts:
+    post:
+      summary: Crea un carrito vacío
+      tags:
+        - Carts
+      responses:
+        '201':
+          description: Carrito creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/responses/Error'
+    get:
+      summary: Obtiene el carrito de la sesión actual
+      tags:
+        - Carts
+      responses:
+        '200':
+          description: Carrito obtenido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/responses/Error'
+    put:
+      summary: Actualiza el carrito de la sesión actual
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Carrito actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/responses/Error'
+    delete:
+      summary: Elimina el carrito de la sesión actual
+      tags:
+        - Carts
+      responses:
+        '200':
+          description: Carrito eliminado
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Error'
+      
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene los productos del carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        '200':
+          description: Productos del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/responses/Error'
+    put:
+      summary: Actualiza los productos del carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      requestBody:
+
+      
+    delete:
+      summary: Elimina los productos del carrito indicado
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        '200':
+          description: Carrito eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Error'
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ID del producto
+              quantity:
+                type: number
+                description: Cantidad del producto
+      example:
+        id: '1'
+        products:
+          - id: '1'
+            name: 'Producto 1'
+            price: 100
+            quantity: 2
+          - id: '2'
+            name: 'Producto 2'
+            price: 200
+            quantity: 1
+  requestBodies:
+    Cart:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              products:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: string
+                      description: ID del producto
+                    quantity:
+                      type: number
+                      description: Cantidad del producto
+  responses:
+      Error:
+        type: object
+        properties:
+          status:
+            type: string
+          message:
+            type: string
+        example:
+          status: 'error'
+          message: 'Internal server error'

@@ -12,7 +12,7 @@ class CartsController {
 
     getCart = async (req, res) => {
         const cid = req.params.cid
-        const cart = await this.cartsService.getProductsCart(cid)
+        const cart = await this.cartsService.getCartById(cid)
         res.json({ products: cart.products })
     }
 

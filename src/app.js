@@ -20,6 +20,8 @@ const createSessionsRouter = require('./routers/sessions')
 const createUsersRouter = require('./routers/users')
 const createViewsRouter = require('./routers/views')
 const { createRandromProducts } = require('./mocks/generateProducts')
+const swaggerJSDoc = require('swagger-jsdoc')
+const { serve, setup } = require('swagger-ui-express')
 
 // inicializar programa
 const program = new Command()
@@ -62,6 +64,24 @@ initializeGithubStrategy({ usersService: servicesFactory.getUsersServiceInstance
 initializeLocalStrategy({ usersService: servicesFactory.getUsersServiceInstance()})
 app.use(passport.initialize())
 app.use(passport.session())
+
+console.log(__dirname)
+
+// swagger docs
+const swaggetOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentación de la API de Codehouse E-commerce',
+            version: '1.0.0',
+            description: 'API para E-commerce de Codehouse'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+};
+
+const specs = swaggerJSDoc(swaggetOptions);
+app.use('/api-docs', serve, setup(specs));
 
 // public web site
 app.use(express.static(`${__dirname}/public`))
