@@ -4,7 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test --recursive",
+    "test:products": "mocha test/products.test.js",
+    "test:carts": "mocha test/carts.test.js",
+    "test:sessions": "mocha test/sessions.test.js",
     "dev-watch": "node --env-file .env.development --watch ./src/app.js -d mongodb",
     "dev": "node --env-file .env.development ./src/app.js -d mongodb",
     "start": "node --env-file .env.production ./src/app.js"
@@ -35,5 +38,10 @@
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.13.0",
     "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "chai": "^4.4.1",
+    "mocha": "^10.6.0",
+    "supertest": "^7.0.0"
   }
 }

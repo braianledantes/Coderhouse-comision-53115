@@ -1,5 +1,6 @@
 const passport = require('passport')
 const { CustomError } = require('../errors/CustomError')
+const ERROR_CODES = require('../errors/errorCodes')
 
 class SessionsController {
     constructor({ usersService }) {
