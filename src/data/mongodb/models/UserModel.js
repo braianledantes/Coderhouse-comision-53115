@@ -30,6 +30,10 @@ const schema = new mongoose.Schema({
         enum: ROLES,
         require: true,
         default: "premium" // TODO cambiar a "user"
+    },
+    lastConnection: {
+        type: Date,
+        default: Date.now
     }
 })
 

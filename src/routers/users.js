@@ -5,6 +5,10 @@ const createUsersRouter = ({ usersController }) => {
 
     router.put('/premium/:uid', usersController.changeUserRole)
 
+    router.get('/', usersController.getAllUsers)
+
+    router.delete('/', usersController.deleteInactiveUsers)
+
     return router
 }
 

@@ -1,4 +1,5 @@
 const { CustomError } = require('../errors/CustomError')
+const ERROR_CODES = require('../errors/errorCodes')
 
 class UsersController {
     constructor({ usersService }) {
@@ -15,6 +16,35 @@ class UsersController {
             throw new CustomError({
                 name: 'RequestError',
                 message: 'Error changing user role',
+                code: ERROR_CODES.INVALID_INPUT,
+                cause: error
+            })
+        }
+    }
+
+    getAllUsers = async (_req, res) => {
+        try {
+            const users = await this.usersService.getAllUsers()
+            res.json(users)
+        } catch (error) {
+            throw new CustomError({
+                name: 'RequestError',
+                message: 'Error getting all users',
+                code: ERROR_CODES.INVALID_INPUT,
+                cause: error
+            })
+        }
+    }
+
+    deleteInactiveUsers = async (_req, res) => {
+        try {
+            const cantUsersDeleted = await this.usersService.deleteInactiveUsers()
+            res.json({ message: `${cantUsersDeleted} users deleted` })
+        } catch (error) {
+            console.log(error)
+            throw new CustomError({
+                name: 'RequestError',
+                message: 'Error deleting inactive users',
                 code: ERROR_CODES.INVALID_INPUT,
                 cause: error
             })

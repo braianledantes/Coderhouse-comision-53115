@@ -1,6 +1,6 @@
 const hashingUtils = require('../utils/hashing')
 const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer')
+const { sendEmail } = require('../utils/email')
 const { CustomError } = require('../errors/CustomError')
 const ERROR_CODES = require('../errors/errorCodes')
 const { ROLES } = require('../data/userRoles')
@@ -55,18 +55,8 @@ class UsersService {
         const user = await this.usersDao.getUserByEmail({ email })
         const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' })
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            port: 587,
-            auth: {
-                user: process.env.GMAIL_ACCOUNT,
-                pass: process.env.GMAIL_PASSWORD
-            }
-        })
-
-        transporter.sendMail({
-            from: process.env.GMAIL_ACCOUNT,
-            to: user.email,
+        await sendEmail({
+            email: user.email,
             subject: 'Restore password',
             text: `Click on the following link to restore your password: http://localhost:8080/restore-password/${token}`
         })
@@ -138,6 +128,41 @@ class UsersService {
         const newRole = user.role ===  ROLES.NORMAL ? ROLES.PREMIUM : ROLES.NORMAL
         const updatedUser = await this.usersDao.updateUserRole({ id: uid, role: newRole })
         return updatedUser
+    }
+
+    getAllUsers = async () => {
+        const users = await this.usersDao.getAllUsers()
+        return users
+    }
+
+    /**
+     * Limpia todos los usuarios que no hayan tenido conexion en los ultimos 2 dias.
+     * Envia un correo indicando al usuario que su cuenta ha sido eliminada por iniactividad.
+     */
+    deleteInactiveUsers = async () => {
+        const twoDaysAgo = new Date()
+        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+
+        const usersToDelete = await this.usersDao.getUsersByLastConnection({ lastConnection: twoDaysAgo })
+        // elimina los usuarios
+        await this.usersDao.deleteInactiveUsers({ lastConnection: twoDaysAgo })
+        // envia un correo a los usuarios eliminados
+        usersToDelete.forEach(async user => {
+            await sendEmail({
+                email: user.email,
+                subject: 'Account deleted',
+                text: 'Your account has been deleted due to inactivity'
+            })
+        })
+        // retorna la cantidad de usuarios eliminados
+        return usersToDelete.length
+    }
+
+    /**
+     * Actualiza la fecha de ultima conexion del usuario a la fecha actual
+     */
+    updateLastConnection = async ({ id }) => {
+        await this.usersDao.updateLastConnection({ id, lastConnection: new Date() })
     }
 }
 

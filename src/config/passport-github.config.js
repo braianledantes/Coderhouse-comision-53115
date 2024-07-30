@@ -45,6 +45,10 @@ const initializeStrategy = ({ usersService }) => {
 
     passport.deserializeUser(async (id, done) => {
         const user = await usersService.getUserById({ id })
+        // si el usuario existe, se actualiza la fecha de ultima conexion
+        if (user) {
+            await usersService.updateLastConnection({ id: user.id })
+        }
         done(null, user)
     })
 }

@@ -135,6 +135,42 @@ class UserDao {
         const user = await UserModel.findOneAndUpdate({ _id: id }, { role }, { new: true })
         return this.#mapUserToUserDto(user)
     }
+
+    async getAllUsers() {
+        const users = await UserModel.find()
+        return users.map(user => this.#mapUserToUserDto(user))
+    }
+
+    async deleteUserById({ id }) {
+        await UserModel.findByIdAndDelete(id)
+        return true
+    }
+
+    async updateLastConnection({ id, lastConnection }) {
+        const userUpdated = await UserModel.findOneAndUpdate(
+            { _id: id },
+            { lastConnection },
+            { new: true }
+        )
+        return userUpdated
+    }
+
+    /**
+     * Obtiene los usuarios que no se han conectado desde la fecha pasada como parámetro.
+     */
+    async getUsersByLastConnection({ lastConnection }) {
+        const users = await UserModel.find({ lastConnection: { $lt: lastConnection } })
+        return users.map(user => this.#mapUserToUserDto(user))
+    }
+
+    /**
+     * Elimina los usuarios que no se han conectado desde la fecha pasada como parámetro.
+     */
+    async deleteInactiveUsers({ lastConnection }) {
+        await UserModel.deleteMany({ lastConnection: { $lt: lastConnection } })
+        return true
+    }
+
 }
 
 module.exports = UserDao
