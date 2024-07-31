@@ -13,6 +13,10 @@
         <h1><a href="/home">Tienda Coder</a></h1>
         <nav>
             <ul>
+                {{!-- si isAdmin agrega el link para ver los usuarios --}}
+                {{#if isAdmin}}
+                <li><a href="/users">Usuarios</a></li>
+                {{/if}}
                 <li><a href="/realtimeproducts">Productos en tiempo real</a></li>
                 <li><a href="/products">Paginación de productos</a></li>
                 <li><a href="/carts">Carrito</a></li>

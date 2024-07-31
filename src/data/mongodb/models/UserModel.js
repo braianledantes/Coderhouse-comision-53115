@@ -29,7 +29,7 @@ const schema = new mongoose.Schema({
         type: String,
         enum: ROLES,
         require: true,
-        default: "premium" // TODO cambiar a "user"
+        default: "user"
     },
     lastConnection: {
         type: Date,

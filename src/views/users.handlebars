@@ -1,0 +1,31 @@
+<table class="user-table" border="1" >
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each users}}
+        <tr>
+            <td>{{firstName}}</td>
+            <td>{{lastName}}</td>
+            <td>{{age}}</td>
+            <td>{{email}}</td>
+            <td>{{role}}</td>
+            <td>
+                <button onclick="deleteUserById('{{id}}')">Eliminar</button>
+                {{!-- si el usuario tiele el rol de user agregar una accion para cambiarlo a premium --}}
+                {{#if isUser}}
+                <button onclick="changeRoleToPremium('{{id}}')">Cambiar rol a Premium</button>
+                {{/if}}
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+
+    <script src="/scripts/userslist.js"></script>

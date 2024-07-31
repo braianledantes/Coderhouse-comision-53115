@@ -1,4 +1,6 @@
 const { Router } = require('express')
+const { userIsLoggedIn, validateUserRoles } = require('../middlewares/auth')
+const { ROLES } = require('../data/userRoles')
 
 const createUsersRouter = ({ usersController }) => {
     const router = Router()
@@ -8,6 +10,8 @@ const createUsersRouter = ({ usersController }) => {
     router.get('/', usersController.getAllUsers)
 
     router.delete('/', usersController.deleteInactiveUsers)
+
+    router.delete('/:uid', userIsLoggedIn, validateUserRoles(ROLES.ADMIN), usersController.deleteUserById)
 
     return router
 }

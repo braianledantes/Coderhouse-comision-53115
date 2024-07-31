@@ -164,6 +164,14 @@ class UsersService {
     updateLastConnection = async ({ id }) => {
         await this.usersDao.updateLastConnection({ id, lastConnection: new Date() })
     }
+
+
+    /**
+     * Elimina un usuario por su id.
+     */
+    deleteUserById = async ({ id }) => {
+        return await this.usersDao.deleteUserById({ id })
+    }
 }
 
 module.exports = UsersService

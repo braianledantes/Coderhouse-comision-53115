@@ -136,14 +136,17 @@ class UserDao {
         return this.#mapUserToUserDto(user)
     }
 
+    /**
+     * obtiene todos los usuarios que no sean administradores.
+     */
     async getAllUsers() {
-        const users = await UserModel.find()
+        const users = await UserModel.find({ role: { $ne: 'admin' } })
         return users.map(user => this.#mapUserToUserDto(user))
     }
 
     async deleteUserById({ id }) {
-        await UserModel.findByIdAndDelete(id)
-        return true
+        const userDeleted = await UserModel.findByIdAndDelete(id)
+        return this.#mapUserToUserDto(userDeleted)
     }
 
     async updateLastConnection({ id, lastConnection }) {

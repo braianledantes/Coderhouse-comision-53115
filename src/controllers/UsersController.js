@@ -36,6 +36,21 @@ class UsersController {
         }
     }
 
+    deleteUserById = async (req, res) => {
+        try {
+            const { uid } = req.params
+            const userDeleted = await this.usersService.deleteUserById({ id: uid })
+            res.json({ message: 'User deleted', user: userDeleted })
+        } catch (error) {
+            throw new CustomError({
+                name: 'RequestError',
+                message: 'Error deleting user',
+                code: ERROR_CODES.INVALID_INPUT,
+                cause: error
+            })
+        }
+    }
+
     deleteInactiveUsers = async (_req, res) => {
         try {
             const cantUsersDeleted = await this.usersService.deleteInactiveUsers()

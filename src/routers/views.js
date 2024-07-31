@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const { validateGetProducts } = require('../middlewares/validations/products.validations')
-const { userIsLoggedIn, userIsNotLoggedIn } = require('../middlewares/auth')
+const { userIsLoggedIn, userIsNotLoggedIn, validateUserRoles } = require('../middlewares/auth')
+const { ROLES } = require('../data/userRoles')
 
 const createViewRouter = ({ viewsController }) => {
     const router = Router()
@@ -17,6 +18,7 @@ const createViewRouter = ({ viewsController }) => {
     router.get('/profile', userIsLoggedIn, viewsController.profile)
     router.get('/restore-password', userIsNotLoggedIn, viewsController.restorepasswordrequest)
     router.get('/restore-password/:token', userIsNotLoggedIn, viewsController.restorePassword)
+    router.get('/users', userIsLoggedIn, validateUserRoles(ROLES.ADMIN), viewsController.users)
 
     return router
 }
