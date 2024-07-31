@@ -1,4 +1,5 @@
 const { ROLES } = require("../data/userRoles")
+const { sendEmail } = require("../utils/email")
 
 class ProductsService {
     constructor({ productsDao, usersDao }) {
@@ -61,13 +62,27 @@ class ProductsService {
         }
     }
 
+    /**
+     * Elimina un producto, si el usuario es admin elimina el producto, si es premium elimina el
+     * producto si es suyo y envía un correo
+     */
     deleteProduct = async ({ productId, userEmail }) => {
         const user = await this.usersDao.getUserByEmail({ email: userEmail })
 
         if (user.role === ROLES.ADMIN) {
             await this.productsDao.deleteProduct(productId)
         } else {
-            await this.productsDao.deleteProductOwner(productId, user.id)
+            const productDeleted = await this.productsDao.deleteProductOwner(productId, user.id)
+
+            if (productDeleted && user.role === ROLES.PREMIUM) {
+
+                await sendEmail({
+                    email: user.email,
+                    subject: 'Producto eliminado',
+                    text: `El producto con código ${productDeleted.code} ha sido eliminado, si no fuiste tú, contacta a soporte`
+                })
+
+            }
         }
     }
 }

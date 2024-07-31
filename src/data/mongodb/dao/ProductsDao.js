@@ -154,6 +154,7 @@ class ProductDao {
                 code: ERROR_CODES.NOT_FOUND
             })
         }
+        return this.#toProductJson(result)
     }
 }
 
