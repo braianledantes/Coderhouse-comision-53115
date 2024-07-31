@@ -10,12 +10,12 @@ class TicketDao {
             purchaser
         })
 
-        return new TicketDto({
-            code: ticket.code,
-            purchase_datetime: ticket.purchase_datetime,
-            amount: ticket.amount,
-            purchaser: ticket.purchaser
-        })
+        return new TicketDto(
+            ticket.code,
+            ticket.purchase_datetime,
+            ticket.amount,
+            ticket.purchaser
+        )
     }
 }
 
