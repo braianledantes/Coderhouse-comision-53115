@@ -54,11 +54,12 @@ class UsersService {
     sendRestorePasswordEmail = async ({ email }) => {
         const user = await this.usersDao.getUserByEmail({ email })
         const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' })
+        const baseUrl = process.env.BASE_URL || 'http://localhost:8080'
 
         await sendEmail({
             email: user.email,
             subject: 'Restore password',
-            text: `Click on the following link to restore your password: http://localhost:8080/restore-password/${token}`
+            text: `Click on the following link to restore your password: ${baseUrl}/restore-password/${token}`
         })
     }
 
