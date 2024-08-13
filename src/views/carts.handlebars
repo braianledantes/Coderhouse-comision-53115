@@ -13,4 +13,13 @@
         </article>
         {{/each}}
     </section>
+
+    <section class="cart-actions">
+        <h3>Total: $<span id="total">{{total}}</span></h3>
+
+        <button onclick="purchase('{{id}}')">Comprar</button>
+        <button onclick="emptyCart('{{id}}')">Vaciar carrito</button>
+    </section>
 </section>
+
+<script src="/scripts/cart.js"></script>
