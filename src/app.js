@@ -55,7 +55,9 @@ app.set('view engine', 'handlebars')
 // middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(morgan('tiny'))
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('tiny'))
+}
 app.use(addLogger)
 app.use(sessionMiddleware)
 
