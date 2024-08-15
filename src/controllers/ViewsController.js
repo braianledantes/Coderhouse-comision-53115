@@ -87,7 +87,7 @@ class ViewsController {
         const products = await this.productsService.getProducts({ sort: 'desc' })
         const isEmpty = products.length === 0
 
-        res.render('realtimeproducts', {
+        res.render('realTimeProducts', {
             isAdmin,
             isEmpty,
             products,
